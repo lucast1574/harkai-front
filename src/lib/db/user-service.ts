@@ -2,7 +2,7 @@ import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase/config";
 import { User } from "firebase/auth";
 
-export type UserRole = "admin" | "company" | "user" | null;
+export type UserRole = "admin" | "gov" | "user" | null;
 
 export interface UserProfile {
   uid: string;
@@ -54,7 +54,7 @@ export async function createOrUpdateUser(firebaseUser: User) {
     email: firebaseUser.email,
     displayName: firebaseUser.displayName,
     photoURL: firebaseUser.photoURL,
-    role: "admin",
+    role: "user",
     createdAt: serverTimestamp(),
     lastLogin: serverTimestamp(),
   };

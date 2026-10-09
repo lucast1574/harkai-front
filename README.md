@@ -1,36 +1,13 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Harkai panel web
 
-## Getting Started
+Aplicación web para usuarios, gobiernos locales y administradores. El repositorio de la landing pública es `harkai-landing`.
 
-First, run the development server:
+- Panel y enlaces de reportes: `https://panel.harkai.lat` y `/incidents/{id}`.
+- Landing: `https://harkai.lat`.
+- API común: `https://api.harkai.lat`.
+- Alojamiento: Dokploy, servicio dentro del proyecto `harkai`.
+- Desarrollo: `npm ci`, `npm run dev`; compilación: `npm run build`.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+La migración a Go está en la rama `codex/harkai-rebuild`. El cliente original todavía conserva adaptadores que se reemplazarán: no se debe considerar listo para producción hasta completar la migración y las pruebas. Firebase se utilizará exclusivamente para Google login y FCM; roles y datos pertenecen al backend.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Navegación principal mediante sidebar, componentes reutilizables y acceso institucional protegido por roles en la API. Sin pagos activos durante esta etapa.

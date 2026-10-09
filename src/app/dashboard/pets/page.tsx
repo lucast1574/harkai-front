@@ -1,4 +1,6 @@
 import { ReportBrowser } from "@/features/reports/report-browser";
 export default function Page(): React.JSX.Element {
-  return <ReportBrowser title="Reportes de la comunidad" />;
+  return (
+    <ReportBrowser title="Mascotas perdidas y encontradas" fixedType="pet" />
+  );
 }

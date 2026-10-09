@@ -1,17 +1,13 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
 import {
   Map,
   BarChart3,
-  ShieldCheck,
   Users,
   Plus,
-  Heart,
-  MapPin,
-  Newspaper,
-  Settings,
   LogIn,
   LogOut,
   Menu,
@@ -23,20 +19,17 @@ import {
 import { useAuth } from "@/lib/auth";
 import { Notice } from "./ui";
 const navigation = [
-  { href: "/dashboard", label: "Mi zona", icon: Map },
-  { href: "/dashboard/incidents", label: "Reportes", icon: ShieldCheck },
-  { href: "/dashboard/report", label: "Crear reporte", icon: Plus },
-  { href: "/dashboard/pets", label: "Mascotas", icon: Heart },
-  { href: "/dashboard/places", label: "Lugares de ayuda", icon: MapPin },
-  { href: "/dashboard/news", label: "Actualidad", icon: Newspaper },
-  { href: "/dashboard/analytics", label: "Panorama", icon: BarChart3 },
-  { href: "/dashboard/history", label: "Mis reportes", icon: History },
-  { href: "/dashboard/help", label: "Ayuda", icon: MessageCircle },
-  { href: "/dashboard/profile", label: "Mi cuenta", icon: Settings },
+  { href: "/dashboard", label: "Mapa de mi zona", icon: Map },
+  { href: "/dashboard/incidents", label: "Comunidad", icon: MessageCircle },
+  {
+    href: "/dashboard/archive",
+    label: "Historial de la ciudad",
+    icon: History,
+  },
   {
     href: "/dashboard/gov",
-    label: "Municipalidad",
-    icon: Map,
+    label: "Gestión municipal",
+    icon: BarChart3,
     institutional: true,
   },
   {
@@ -60,12 +53,21 @@ export function Shell({
   const content = (
     <>
       <Link href="/dashboard" className="brand" onClick={close}>
-        <span className="brand-symbol">H</span>
+        <Image
+          src="/icon.png"
+          alt=""
+          width="52"
+          height="52"
+          className="brand-icon"
+          unoptimized
+        />
         <span>
           harkai<small>El pulso de tu comunidad</small>
         </span>
       </Link>
-      <div className="sidebar-label">EXPLORA TU ZONA</div>
+      <Link href="/dashboard/report" className="sidebar-create" onClick={close}>
+        <Plus size={17} /> Crear reporte
+      </Link>
       <nav aria-label="Navegación principal">
         {navigation
           .filter(
@@ -81,13 +83,22 @@ export function Shell({
               className={path === n.href ? "nav-link active" : "nav-link"}
               aria-current={path === n.href ? "page" : undefined}
             >
+              {n.href === "/dashboard" && (
+                <span className="nav-section-label">EXPLORAR</span>
+              )}
+              {n.href === "/dashboard/archive" && (
+                <span className="nav-section-label">TU ESPACIO</span>
+              )}
+              {n.href === "/dashboard/gov" && (
+                <span className="nav-section-label">GESTIÓN</span>
+              )}
               <n.icon size={19} />
-              {n.label}
+              <span className="nav-text">{n.label}</span>
             </Link>
           ))}
       </nav>
       <div className="sidebar-bottom">
-        <div className="account">
+        <Link href="/dashboard/profile" className="account" onClick={close}>
           <span className="avatar">{user?.name.slice(0, 1) || "H"}</span>
           <span>
             {user?.name || "Explora libremente"}
@@ -99,7 +110,10 @@ export function Shell({
                   : "Comunidad"}
             </small>
           </span>
-        </div>
+        </Link>
+        <Link href="/dashboard/help" onClick={close} className="text-button">
+          <MessageCircle size={16} /> Ayuda y orientación
+        </Link>
         {user ? (
           <button
             className="text-button"
@@ -156,7 +170,12 @@ export function Shell({
         </button>
         {content}
       </dialog>
-      <main id="contenido" className="main-content">
+      <main
+        id="contenido"
+        className={
+          path === "/dashboard" ? "main-content map-content" : "main-content"
+        }
+      >
         {(error || logoutError) && (
           <Notice error>{error || logoutError}</Notice>
         )}

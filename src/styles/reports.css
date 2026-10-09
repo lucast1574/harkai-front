@@ -1,0 +1,129 @@
+.coverage {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--muted);
+  margin: 23px 0 12px;
+}
+.coverage label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.zone-map {
+  height: 480px;
+  width: 100%;
+  z-index: 1;
+}
+.map-panel {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--surface);
+  margin-bottom: 24px;
+}
+.map-note {
+  padding: 14px 22px;
+  margin: 0;
+  font-size: 12px;
+}
+.report-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+.report-card {
+  display: block;
+  background: var(--surface);
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition:
+    transform 0.2s,
+    border-color 0.2s;
+}
+.report-card:hover {
+  border-color: #76c38a;
+  transform: translateY(-2px);
+}
+.report-card-head,
+.report-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.report-card p {
+  margin: 15px 0;
+  color: var(--muted);
+  line-height: 1.65;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.category-label {
+  font-weight: 700;
+  font-size: 14px;
+}
+.status {
+  font-size: 10px;
+  letter-spacing: 0.2px;
+  padding: 5px 9px;
+  border-radius: 7px;
+  display: inline-block;
+}
+.status.pending {
+  background: #fff3db;
+  color: #8a5c1e;
+}
+.status.confirmed {
+  background: #e4f5e8;
+  color: #287a40;
+}
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 22px;
+}
+.metrics article {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  padding: 22px;
+  border-radius: 16px;
+}
+.metrics span {
+  font-size: 12px;
+  color: var(--muted);
+  display: block;
+}
+.metrics strong {
+  display: block;
+  font-size: 36px;
+  letter-spacing: -2px;
+  font-weight: 600;
+}
+.chart-row {
+  display: grid;
+  grid-template-columns: 180px 1fr 35px;
+  gap: 14px;
+  align-items: center;
+  margin: 15px 0;
+  font-size: 12px;
+}
+.chart-track {
+  height: 8px;
+  background: var(--bg);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.chart-track > div {
+  height: 100%;
+  background: #57b969;
+  border-radius: 10px;
+}

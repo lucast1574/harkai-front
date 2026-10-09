@@ -4,7 +4,7 @@ import { limitedBody } from "@/lib/server/body";
 export const dynamic = "force-dynamic";
 type Context = { params: Promise<{ path: string[] }> };
 const paths =
-  /^(meta|me(?:\/preferences|\/incidents)?|alerts|emergency-contacts|analysis\/(?:text|audio)|incidents(?:\/[a-f0-9]{24}(?:\/confirm|\/status)?)?|media(?:\/[a-f0-9]{24})?|gov\/incidents|admin\/(?:incidents|emergency-contacts|users(?:\/[a-f0-9]{24}\/role)?))$/;
+  /^(meta|archive\/(?:incidents|districts)|me(?:\/preferences|\/incidents)?|alerts|emergency-contacts|analysis\/(?:text|audio)|incidents(?:\/[a-f0-9]{24}(?:\/confirm|\/status|\/comments(?:\/[a-f0-9]{24})?)?)?|media(?:\/[a-f0-9]{24})?|gov\/incidents|admin\/(?:incidents|emergency-contacts|users(?:\/[a-f0-9]{24}\/role)?))$/;
 async function proxy(
   request: NextRequest,
   context: Context,
@@ -49,3 +49,4 @@ export const GET = proxy;
 export const POST = proxy;
 export const PATCH = proxy;
 export const PUT = proxy;
+export const DELETE = proxy;

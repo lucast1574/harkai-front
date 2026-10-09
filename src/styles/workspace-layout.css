@@ -1,0 +1,71 @@
+:root {
+  --bg: #f6f7f3;
+  --border: #e1e6de;
+  --green: #69df70;
+}
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+.sidebar {
+  width: 224px;
+  padding: 26px 18px;
+  gap: 18px;
+}
+.brand {
+  font-size: 28px;
+}
+.brand-logo {
+  width: 144px;
+  height: 46px;
+  object-fit: contain;
+  object-position: left;
+}
+.sidebar nav {
+  gap: 3px;
+}
+.sidebar-create {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #6bde73;
+  color: #09271c;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  min-height: 43px;
+  margin: 5px 0 12px;
+}
+.nav-link {
+  position: relative;
+  padding: 10px 12px;
+  font-size: 12px;
+  min-height: 40px;
+}
+.nav-link:has(.nav-section-label) {
+  margin-top: 28px;
+}
+.nav-section-label {
+  position: absolute;
+  top: -22px;
+  left: 12px;
+  color: #7f99aa;
+  font-size: 9px;
+  letter-spacing: 1.7px;
+  pointer-events: none;
+}
+.main-content {
+  margin-left: 224px;
+  padding: 40px clamp(22px, 3vw, 48px) 60px;
+}
+.page-heading {
+  margin-bottom: 24px;
+}
+h1 {
+  font-size: clamp(30px, 3vw, 42px);
+  letter-spacing: -1.6px;
+}
+.eyebrow {
+  letter-spacing: 1.6px;
+  margin-bottom: 12px;
+}

@@ -56,6 +56,8 @@ export type AuthResult = {
   expires_in: number;
 };
 export type Area = {
+  district?: string;
+  before?: string;
   latitude: number;
   longitude: number;
   radius: number;
@@ -76,6 +78,8 @@ export function areaQuery(area: Area): string {
     radius_meters: String(area.radius),
     limit: "100",
   });
+  if (area.district) q.set("district", area.district);
+  if (area.before) q.set("before", new Date(area.before).toISOString());
   if (area.type) q.set("type", area.type);
   if (area.after) q.set("after", new Date(area.after).toISOString());
   return q.toString();

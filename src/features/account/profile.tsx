@@ -112,6 +112,24 @@ export function Profile(): React.JSX.Element {
           {busy ? "Guardando…" : "Guardar cambios"}
         </button>
       </form>
+      <section className="panel account-privacy">
+        <h2>Tu actividad y privacidad</h2>
+        <a className="button secondary" href="/dashboard/history">
+          Mis reportes
+        </a>
+        <p className="muted small">
+          Consulta cómo se usan tus datos o solicita la eliminación de tu
+          cuenta.
+        </p>
+        <div className="page-actions">
+          <a className="button secondary" href="https://harkai.lat/privacidad/">
+            Política de privacidad
+          </a>
+          <a className="text-button" href="https://harkai.lat/eliminar-cuenta/">
+            Solicitar eliminación de cuenta ↗
+          </a>
+        </div>
+      </section>
     </>
   );
 }

@@ -4,10 +4,12 @@ export function Summary({
   incidents,
   categories,
   partial,
+  loading = false,
 }: {
   incidents: Incident[];
   categories: Category[];
   partial: boolean;
+  loading?: boolean;
 }): React.JSX.Element {
   const confirmed = incidents.filter((i) => i.verified).length;
   const counts = categories
@@ -22,15 +24,15 @@ export function Summary({
       <div className="metrics">
         <article>
           <span>Reportes cargados</span>
-          <strong>{incidents.length}</strong>
+          <strong>{loading ? "—" : incidents.length}</strong>
         </article>
         <article>
           <span>No verificados</span>
-          <strong>{incidents.length - confirmed}</strong>
+          <strong>{loading ? "—" : incidents.length - confirmed}</strong>
         </article>
         <article>
           <span>Confirmados por la comunidad</span>
-          <strong>{confirmed}</strong>
+          <strong>{loading ? "—" : confirmed}</strong>
         </article>
       </div>
       <section className="panel distribution">
@@ -40,7 +42,11 @@ export function Summary({
             ? "Consulta parcial: carga todas las páginas para ampliar la muestra."
             : "Cifras de los reportes cargados en la zona y el periodo consultados."}
         </p>
-        {counts.length ? (
+        {loading ? (
+          <p className="muted" role="status">
+            Consultando los reportes…
+          </p>
+        ) : counts.length ? (
           counts.map((c) => (
             <div className="chart-row" key={c.id}>
               <span>{c.label}</span>

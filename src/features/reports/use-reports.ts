@@ -17,7 +17,7 @@ export function useReports(
 } {
   const [items, setItems] = useState<Incident[]>([]);
   const [cursor, setCursor] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const version = useRef(0);
   const { user } = useAuth();

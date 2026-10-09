@@ -1,4 +1,4 @@
-import { ReportBrowser } from "@/features/reports/report-browser";
-export default function Page(): React.JSX.Element {
-  return <ReportBrowser title="Panorama de tu zona" stats />;
+import { redirect } from "next/navigation";
+export default function Page(): never {
+  return redirect("/dashboard/archive");
 }

@@ -1,0 +1,88 @@
+.zone-controls {
+  border-top: 1px solid var(--border);
+  padding-top: 18px;
+}
+.zone-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 10px;
+  margin-bottom: 14px;
+  color: var(--muted);
+}
+.zone-caption > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.zone-caption strong {
+  font-size: 10px;
+  font-weight: 400;
+}
+.live-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  background: #51ba75;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.zone-options {
+  display: grid;
+  grid-template-columns: 85px 1fr;
+  gap: 10px;
+}
+.zone-options .field {
+  font-size: 10px;
+  gap: 5px;
+}
+.zone-options .field select {
+  font-size: 11px;
+  min-height: 38px;
+  padding: 8px 6px;
+  background: var(--surface);
+}
+.location-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 11px;
+  min-height: 39px;
+  margin-top: 12px;
+}
+.coordinate-options {
+  font-size: 11px;
+  margin-top: 12px;
+  color: var(--muted);
+}
+.coordinate-options summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.coordinate-options form {
+  margin-top: 12px;
+  gap: 10px;
+}
+.coordinate-options .two-columns {
+  gap: 8px;
+}
+.coordinate-options .field {
+  font-size: 10px;
+}
+.coordinate-options input {
+  padding: 8px;
+  font-size: 11px;
+}
+.coordinate-options .button {
+  font-size: 11px;
+  min-height: 36px;
+  padding: 8px;
+}

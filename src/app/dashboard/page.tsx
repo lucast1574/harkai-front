@@ -1,4 +1,4 @@
-import { ReportBrowser } from "@/features/reports/report-browser";
+import { MapWorkspace } from "@/features/map/map-workspace";
 export default function Page(): React.JSX.Element {
-  return <ReportBrowser />;
+  return <MapWorkspace />;
 }

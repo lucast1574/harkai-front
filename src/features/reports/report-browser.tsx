@@ -5,7 +5,9 @@ import { Heading, Notice } from "@/components/ui";
 import { Access } from "@/components/access";
 import { useResource } from "@/lib/use-resource";
 import { LIMA, type Area, type Meta } from "@/lib/contracts";
+import { ZoneControls } from "./zone-controls";
 import { AreaFilter } from "./area-filter";
+import { ReportCollection } from "./report-collection";
 import { ReportCard } from "./report-card";
 import { useReports } from "./use-reports";
 import ZoneMap from "../map/map-loader";
@@ -18,6 +20,7 @@ export function ReportBrowser({
   history = false,
   map = true,
   stats = false,
+  mode = "cards",
 }: {
   title?: string;
   fixedType?: string;
@@ -25,6 +28,7 @@ export function ReportBrowser({
   history?: boolean;
   map?: boolean;
   stats?: boolean;
+  mode?: "cards" | "directory" | "feed" | "analytics";
 }): React.JSX.Element {
   if (institutional || history)
     return (
@@ -36,6 +40,7 @@ export function ReportBrowser({
           history={history}
           map={map}
           stats={stats}
+          mode={mode}
         />
       </Access>
     );
@@ -47,6 +52,7 @@ export function ReportBrowser({
       history={history}
       map={map}
       stats={stats}
+      mode={mode}
     />
   );
 }
@@ -57,6 +63,7 @@ function Browser({
   history,
   map,
   stats,
+  mode,
 }: {
   title: string;
   fixedType?: string;
@@ -64,6 +71,7 @@ function Browser({
   history: boolean;
   map: boolean;
   stats: boolean;
+  mode: "cards" | "directory" | "feed" | "analytics";
 }): React.JSX.Element {
   const [area, setArea] = useState<Area>({ ...LIMA, type: fixedType || "" });
   const [heat, setHeat] = useState(false);
@@ -81,8 +89,13 @@ function Browser({
         }
         title={title}
       >
-        Reportes de la comunidad. Una confirmación comunitaria no sustituye una
-        verificación oficial.
+        {mode === "directory"
+          ? "Busca un reporte, revisa su estado y abre el detalle para ver su ubicación o confirmar lo ocurrido."
+          : mode === "feed"
+            ? "Una cronología de lo que comparte la comunidad en tu zona. Los reportes se muestran como fueron publicados; no son noticias verificadas por una redacción."
+            : mode === "analytics"
+              ? "Entiende la muestra de reportes de tu consulta: qué se reporta y cuántos cuentan con una confirmación comunitaria."
+              : "Explora aportes de la comunidad en la zona que elijas."}
       </Heading>
       <div className="page-actions">
         <Link className="button" href="/dashboard/report">
@@ -109,13 +122,29 @@ function Browser({
           </button>
         )}
       </div>
-      <AreaFilter
-        area={area}
-        categories={categories}
-        onChange={setArea}
-        fixedType={fixedType}
-        dates={institutional || history}
-      />
+      {institutional || history ? (
+        <AreaFilter
+          area={area}
+          categories={categories}
+          onChange={setArea}
+          fixedType={fixedType}
+          dates={institutional || history}
+        />
+      ) : (
+        <details className="collection-zone">
+          <summary>
+            Zona de consulta · {area.radius / 1000} km alrededor de{" "}
+            {area.latitude.toFixed(3)}, {area.longitude.toFixed(3)}{" "}
+            <span>Cambiar zona o categoría ↓</span>
+          </summary>
+          <ZoneControls
+            area={area}
+            categories={categories}
+            onChange={setArea}
+            fixedType={fixedType}
+          />
+        </details>
+      )}
       {(metaError || reports.error) && (
         <Notice error>{metaError || reports.error}</Notice>
       )}
@@ -124,6 +153,7 @@ function Browser({
           incidents={reports.items}
           categories={categories}
           partial={!!reports.cursor}
+          loading={reports.loading}
         />
       )}
       <div className="coverage">
@@ -155,25 +185,42 @@ function Browser({
             area={area}
             incidents={reports.items}
             categories={categories}
-            heat={heat}
+            heat={mode === "analytics" || heat}
           />
         </section>
       )}
-      <section className="report-grid" aria-label="Reportes de esta consulta">
-        {reports.items.map((i) => (
-          <ReportCard key={i.id} incident={i} categories={categories} />
-        ))}
-      </section>
-      {reports.loading && <Notice>Cargando reportes…</Notice>}
-      {!reports.loading && !reports.error && !reports.items.length && (
-        <section className="empty panel">
-          <h2>Aún no hay reportes en esta consulta</h2>
-          <p>
-            Prueba otra zona o categoría. La ausencia de reportes no garantiza
-            que no existan riesgos.
-          </p>
-        </section>
+      {mode === "directory" || mode === "feed" ? (
+        <ReportCollection
+          incidents={reports.items}
+          categories={categories}
+          feed={mode === "feed"}
+          loading={reports.loading}
+        />
+      ) : (
+        mode !== "analytics" && (
+          <section
+            className="report-grid"
+            aria-label="Reportes de esta consulta"
+          >
+            {reports.items.map((i) => (
+              <ReportCard key={i.id} incident={i} categories={categories} />
+            ))}
+          </section>
+        )
       )}
+      {reports.loading && <Notice>Cargando reportes…</Notice>}
+      {!reports.loading &&
+        !reports.error &&
+        !reports.items.length &&
+        mode === "cards" && (
+          <section className="empty panel">
+            <h2>Aún no hay reportes en esta consulta</h2>
+            <p>
+              Prueba otra zona o categoría. La ausencia de reportes no garantiza
+              que no existan riesgos.
+            </p>
+          </section>
+        )}
       {reports.cursor && (
         <button
           className="button secondary"

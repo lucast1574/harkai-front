@@ -1,4 +1,5 @@
 "use client";
+import { Comments } from "../community/comments";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -205,6 +206,7 @@ export function ReportDetail({ id }: { id: string }): React.JSX.Element {
           />
         </section>
       </div>
+      <Comments incidentId={id} />
     </>
   );
 }

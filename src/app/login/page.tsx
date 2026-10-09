@@ -118,6 +118,21 @@ export default function Login(): React.JSX.Element {
         >
           {register ? "Ya tengo una cuenta" : "Crear una cuenta con mi correo"}
         </button>
+        <p className="small muted">
+          Consulta los{" "}
+          <a className="legal-link" href="https://harkai.lat/terminos/">
+            términos
+          </a>
+          , la{" "}
+          <a className="legal-link" href="https://harkai.lat/privacidad/">
+            política de privacidad
+          </a>{" "}
+          y las{" "}
+          <a className="legal-link" href="https://harkai.lat/normas-comunidad/">
+            normas de publicación
+          </a>{" "}
+          antes de crear tu cuenta.
+        </p>
       </section>
     </>
   );

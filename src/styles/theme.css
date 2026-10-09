@@ -1,0 +1,17 @@
+html[data-theme="dark"] {
+  --bg: #0b202b;
+  --surface: #142d37;
+  --ink: #e2eeea;
+  --muted: #9dafb1;
+  --border: #2a424a;
+}
+html[data-theme="dark"] .notice {
+  background: #153b2c;
+  color: #bddecb;
+  border-color: #365b48;
+}
+html[data-theme="dark"] .notice.error {
+  background: #412722;
+  color: #f7c7bd;
+  border-color: #66443d;
+}

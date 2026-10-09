@@ -73,6 +73,12 @@ export function AuthProvider({
   };
   const logout = async (): Promise<void> => {
     await session("DELETE");
+    const { clearPush } = await import("./push");
+    try {
+      await clearPush(false);
+    } catch {
+      /* The Go session is already revoked. */
+    }
     setUser(null);
     return;
   };

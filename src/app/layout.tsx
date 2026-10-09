@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { AuthProvider } from "@/lib/auth";
+import { PushInbox } from "@/features/notifications/push-inbox";
 import { Shell } from "@/components/shell";
 import "./globals.css";
 export const metadata: Metadata = {
@@ -7,9 +8,13 @@ export const metadata: Metadata = {
   description: "Reportes comunitarios, mapas e información útil sobre tu zona.",
   metadataBase: new URL("https://panel.harkai.lat"),
   icons: {
-    icon: [{ url: "/icon.png?v=harkai-1", type: "image/png", sizes: "512x512" }],
+    icon: [
+      { url: "/icon.png?v=harkai-1", type: "image/png", sizes: "512x512" },
+    ],
     shortcut: "/icon.png?v=harkai-1",
-    apple: [{ url: "/icon.png?v=harkai-1", type: "image/png", sizes: "512x512" }],
+    apple: [
+      { url: "/icon.png?v=harkai-1", type: "image/png", sizes: "512x512" },
+    ],
   },
 };
 export default function RootLayout({
@@ -22,6 +27,7 @@ export default function RootLayout({
       <body>
         <AuthProvider>
           <Shell>{children}</Shell>
+          <PushInbox />
         </AuthProvider>
       </body>
     </html>

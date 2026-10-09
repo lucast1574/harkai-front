@@ -24,3 +24,9 @@ El panel usa Leaflet y OpenStreetMap. Las gráficas y CSV describen la muestra c
 La navegación principal del usuario tiene Mapa, Comunidad e Historial de la ciudad. Mascotas y Lugares de ayuda se abren dentro de Comunidad; los reportes propios y privacidad se gestionan desde la cuenta. El historial usa archive/incidents con distrito, fechas y zona, incluye alertas vencidas y reportes resueltos y excluye los ocultos. Los distritos son etiquetas aportadas por usuarios, no geometrías oficiales.
 
 La conversación de cada reporte usa GET/POST/DELETE incidents/{id}/comments, con paginación y permisos de Go. Solo el autor o el admin puede retirar un comentario. Se muestra un marcador sin texto ni nombre. No se renderiza HTML aportado por usuarios.
+
+## Notificaciones por dispositivo
+
+Mi cuenta permite activar FCM con consentimiento y registrar una zona con ubicación en primer plano. Go aplica radio y preferencias, incluyendo reportes no verificados; el navegador no recibe texto, contacto ni coordenadas en el aviso. El botón permanece deshabilitado mientras `/v1/meta` no habilite push o falte `NEXT_PUBLIC_FIREBASE_VAPID_KEY`.
+
+El service worker se empaqueta localmente con el SDK modular en `npm run build` y `npm run dev`, sin scripts remotos. La clave VAPID es pública y va como argumento de build; la credencial privada FCM solo pertenece al entorno del backend. Al cerrar sesión se revoca la elegibilidad en Go y se retira el token local. La prueba de recepción real requiere activar permisos en un navegador compatible con HTTPS.

@@ -1,4 +1,5 @@
 "use client";
+import { PushSettings } from "@/features/notifications/push-settings";
 import { useState } from "react";
 import { useAuth } from "@/lib/auth";
 import { api } from "@/lib/api";
@@ -112,6 +113,7 @@ export function Profile(): React.JSX.Element {
           {busy ? "Guardando…" : "Guardar cambios"}
         </button>
       </form>
+      <PushSettings key={user.id} />
       <section className="panel account-privacy">
         <h2>Tu actividad y privacidad</h2>
         <a className="button secondary" href="/dashboard/history">

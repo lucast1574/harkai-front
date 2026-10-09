@@ -1,5 +1,6 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { DomEvent } from "leaflet";
 import {
   CircleMarker,
   MapContainer,
@@ -43,8 +44,19 @@ function SelectCenter({
   onChange: (point: Point) => void;
 }): React.JSX.Element {
   const map = useMap();
+  const control = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    const node = control.current;
+    if (!node) return;
+    DomEvent.disableClickPropagation(node);
+    DomEvent.disableScrollPropagation(node);
+    return () => {
+      DomEvent.off(node);
+    };
+  }, []);
   return (
     <button
+      ref={control}
       className="button secondary point-center"
       type="button"
       onClick={() => {

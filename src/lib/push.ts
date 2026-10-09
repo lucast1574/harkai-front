@@ -58,11 +58,12 @@ export async function subscribe(
     serviceWorkerRegistration: registration,
   });
   if (!token) throw new Error("No se pudo registrar este navegador.");
+  const coordinates = { latitude: zone.latitude, longitude: zone.longitude };
   const result = await api<{ id: string }>("me/devices", {
     method: "PUT",
-    body: JSON.stringify({ token, platform: "web", ...zone }),
+    body: JSON.stringify({ token, platform: "web", ...coordinates }),
   });
-  const value = { ...zone, user, device: result.id };
+  const value = { ...coordinates, user, device: result.id };
   localStorage.setItem(storageKey, JSON.stringify(value));
   return value;
 }

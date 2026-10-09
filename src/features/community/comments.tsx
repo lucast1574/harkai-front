@@ -224,7 +224,7 @@ function Thread({ incidentId }: { incidentId: string }): React.JSX.Element {
       ) : (
         <div className="discussion-login">
           <p>Explora la conversación. Para participar, ingresa a tu cuenta.</p>
-          <Link className="button secondary" href="/login">
+          <Link className="button secondary" href="/dashboard/profile">
             Ingresar para comentar
           </Link>
         </div>

@@ -2,6 +2,7 @@
 import type { Area, Category } from "@/lib/contracts";
 import { Field, Select } from "@/components/ui";
 import { useState } from "react";
+import { LocationControl } from "../map/location-control";
 export function AreaFilter({
   area,
   categories,
@@ -16,7 +17,6 @@ export function AreaFilter({
   dates?: boolean;
 }): React.JSX.Element {
   const [draft, setDraft] = useState(area);
-  const [error, setError] = useState("");
   return (
     <form
       className="area-filter panel"
@@ -27,35 +27,6 @@ export function AreaFilter({
     >
       <div className="filter-heading">
         <h2>Ubicación de consulta</h2>
-        <button
-          type="button"
-          className="text-button"
-          onClick={() => {
-            if (!navigator.geolocation) {
-              setError("La ubicación no está disponible en este navegador.");
-              return;
-            }
-            navigator.geolocation.getCurrentPosition(
-              (p) => {
-                const next = {
-                  ...draft,
-                  latitude: p.coords.latitude,
-                  longitude: p.coords.longitude,
-                };
-                setDraft(next);
-                onChange({ ...next, type: fixedType || next.type });
-                setError("");
-              },
-              () =>
-                setError(
-                  "No se pudo obtener tu ubicación. Puedes ingresar coordenadas.",
-                ),
-              { timeout: 10000, maximumAge: 60000 },
-            );
-          }}
-        >
-          Usar mi ubicación
-        </button>
       </div>
       <div className="filter-fields">
         <Field
@@ -121,11 +92,14 @@ export function AreaFilter({
           Consultar zona
         </button>
       </div>
-      {error && (
-        <p role="alert" className="error">
-          {error}
-        </p>
-      )}
+      <LocationControl
+        point={draft}
+        onChange={(point) => {
+          const next = { ...draft, ...point, type: fixedType || draft.type };
+          setDraft(next);
+          onChange(next);
+        }}
+      />
     </form>
   );
 }

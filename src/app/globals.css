@@ -16,6 +16,8 @@
 @import "../styles/workspace-responsive.css";
 @import "../styles/community.css";
 @import "../styles/archive.css";
+@import "../styles/account-help.css";
+@import "../styles/location.css";
 .brand-icon {
   width: 52px;
   height: 52px;

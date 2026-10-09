@@ -149,7 +149,7 @@ export function ReportDetail({ id }: { id: string }): React.JSX.Element {
                   Confirmo que observé este hecho
                 </button>
               ) : (
-                <Link className="button" href="/login">
+                <Link className="button" href="/dashboard/profile">
                   Ingresar para confirmar
                 </Link>
               ))}

@@ -13,7 +13,7 @@ Las consultas pasan por `/api/backend` y las sesiones por `/api/session`. Los to
 
 ## Desarrollo
 
-Node 24. Ejecuta `npm ci`, `npm run dev`. Configura `API_BASE_URL=http://localhost:8080` y `APP_ORIGIN=http://localhost:3000` para una API local aislada. Verifica con `npm run typecheck`, `npm run lint` y `npm run build`.
+Node 24. Ejecuta `npm ci`, `npm run dev`. Configura `API_BASE_URL=http://localhost:8080` y `APP_ORIGIN=http://localhost:3000` para una API local aislada. Verifica con `npm run typecheck`, `npm run lint`, `npm test` y `npm run build`.
 
 ## Dokploy
 
@@ -21,12 +21,18 @@ Docker standalone, puerto 3000, usuario sin privilegios. Entorno de servidor: `A
 
 El panel usa Leaflet y OpenStreetMap. Las gráficas y CSV describen la muestra cargada y avisan si quedan páginas. Comunidad reúne actividad y conversaciones sobre reportes comunitarios. /dashboard/news redirige a esa sección; no hay una fuente editorial inventada. /dashboard/analytics redirige al historial visual de la ciudad. Pagos están desactivados. Google y FCM solo se presentan como operativos después de completar configuración y pruebas de esos circuitos.
 
-La navegación principal del usuario tiene Mapa, Comunidad e Historial de la ciudad. Mascotas y Lugares de ayuda se abren dentro de Comunidad; los reportes propios y privacidad se gestionan desde la cuenta. El historial usa archive/incidents con distrito, fechas y zona, incluye alertas vencidas y reportes resueltos y excluye los ocultos. Los distritos son etiquetas aportadas por usuarios, no geometrías oficiales.
+La navegación principal del usuario tiene Mapa, Ayuda y orientación, Comunidad, Historial de la ciudad y Red de apoyo. Esta última reúne mascotas y lugares de ayuda; los reportes propios y privacidad se gestionan desde la cuenta. El historial usa archive/incidents con distrito, fechas y zona, incluye alertas vencidas y reportes resueltos y excluye los ocultos. Los distritos son etiquetas aportadas por usuarios, no geometrías oficiales.
 
 La conversación de cada reporte usa GET/POST/DELETE incidents/{id}/comments, con paginación y permisos de Go. Solo el autor o el admin puede retirar un comentario. Se muestra un marcador sin texto ni nombre. No se renderiza HTML aportado por usuarios.
 
 ## Notificaciones por dispositivo
 
-Mi cuenta permite activar FCM con consentimiento y registrar una zona con ubicación en primer plano. Go aplica radio y preferencias, incluyendo reportes no verificados; el navegador no recibe texto, contacto ni coordenadas en el aviso. El botón permanece deshabilitado mientras `/v1/meta` no habilite push o falte `NEXT_PUBLIC_FIREBASE_VAPID_KEY`.
+Mi cuenta reúne registro, inicio/cierre de sesión, perfil, preferencias y actividad. Los reportes nuevos se publican exclusivamente desde la app móvil; la web conserva comentarios, confirmación y gestión de reportes propios. El proxy web rechaza POST incidents, media y analysis/audio, y las rutas antiguas de publicación/acceso dirigen a Mi cuenta.
+
+Mi cuenta permite activar FCM con consentimiento y registrar una zona elegida en el mapa o con ubicación en primer plano. Go aplica radio y preferencias, incluyendo reportes no verificados; el navegador no recibe texto, contacto ni coordenadas en el aviso. El botón permanece deshabilitado mientras `/v1/meta` no habilite push o falte `NEXT_PUBLIC_FIREBASE_VAPID_KEY`.
 
 El service worker se empaqueta localmente con el SDK modular en `npm run build` y `npm run dev`, sin scripts remotos. La clave VAPID es pública y va como argumento de build; la credencial privada FCM solo pertenece al entorno del backend. Al cerrar sesión se revoca la elegibilidad en Go y se retira el token local. La prueba de recepción real requiere activar permisos en un navegador compatible con HTTPS.
+
+## Ubicación en desktop
+
+El mapa principal admite zoom con la rueda. LocationControl comparte selección manual y geolocalización entre mapa, historial, filtros y notificaciones. La búsqueda usa precisión normal y una posición reciente de hasta dos minutos, con un límite de veinte segundos; distingue permisos bloqueados, equipo sin ubicación y timeout. La consulta no depende de GPS: se puede elegir un punto en un diálogo Leaflet, con controles de teclado y coordenadas. No se calcula una ubicación personal a partir de la IP. La orientación por categoría es pública; la consulta por texto sigue autenticada.

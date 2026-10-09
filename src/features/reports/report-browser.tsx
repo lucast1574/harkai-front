@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import Link from "next/link";
 import { Heading, Notice } from "@/components/ui";
 import { Access } from "@/components/access";
 import { useResource } from "@/lib/use-resource";
@@ -98,9 +97,6 @@ function Browser({
               : "Explora aportes de la comunidad en la zona que elijas."}
       </Heading>
       <div className="page-actions">
-        <Link className="button" href="/dashboard/report">
-          + Crear reporte
-        </Link>
         <button
           className="button secondary"
           disabled={reports.loading}

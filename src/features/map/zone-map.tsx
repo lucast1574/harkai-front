@@ -17,6 +17,7 @@ type Props = {
   incidents: Incident[];
   categories: Category[];
   heat?: boolean;
+  scrollWheelZoom?: boolean;
   selectedId?: string;
   onSelect?: (id: string) => void;
   onMove?: (latitude: number, longitude: number) => void;
@@ -78,6 +79,7 @@ export default function ZoneMap({
   incidents,
   categories,
   heat = false,
+  scrollWheelZoom = false,
   selectedId,
   onSelect,
   onMove,
@@ -87,7 +89,7 @@ export default function ZoneMap({
       className="zone-map"
       center={[area.latitude, area.longitude]}
       zoom={13}
-      scrollWheelZoom={false}
+      scrollWheelZoom={scrollWheelZoom}
       zoomControl={false}
     >
       <View

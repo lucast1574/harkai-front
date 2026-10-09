@@ -1,14 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import {
-  ArrowUpRight,
-  MapPin,
-  Plus,
-  RefreshCw,
-  ShieldCheck,
-  X,
-} from "lucide-react";
+import { ArrowUpRight, MapPin, RefreshCw, ShieldCheck, X } from "lucide-react";
 import { LIMA, dateLabel, type Area, type Meta } from "@/lib/contracts";
 import { useResource } from "@/lib/use-resource";
 import { Notice } from "@/components/ui";
@@ -45,9 +38,7 @@ export function MapWorkspace(): React.JSX.Element {
             <br />
             en el mapa.
           </h1>
-          <p>
-            Descubre qué se está reportando y comparte lo que pasa en tu zona.
-          </p>
+          <p>Descubre qué pasa en tu zona y participa en las conversaciones.</p>
         </header>
         <ZoneControls
           area={area}
@@ -87,11 +78,11 @@ export function MapWorkspace(): React.JSX.Element {
               </span>
               <h3>Esta zona aún no tiene reportes</h3>
               <p>
-                Mueve el mapa para explorar otro lugar, o sé la primera persona
-                en compartir un reporte.
+                Mueve el mapa o elige otra zona para explorar los aportes de la
+                comunidad.
               </p>
-              <Link href="/dashboard/report">
-                Crear un reporte <ArrowUpRight size={14} />
+              <Link href="/dashboard/archive">
+                Explorar el historial <ArrowUpRight size={14} />
               </Link>
             </div>
           )}
@@ -140,6 +131,7 @@ export function MapWorkspace(): React.JSX.Element {
       </aside>
       <div className="map-stage">
         <ZoneMap
+          scrollWheelZoom
           area={area}
           incidents={reports.items}
           categories={categories}
@@ -168,9 +160,6 @@ export function MapWorkspace(): React.JSX.Element {
             <MapPin size={15} /> Buscar en esta zona
           </button>
         )}
-        <Link className="button map-create" href="/dashboard/report">
-          <Plus size={18} /> Crear reporte
-        </Link>
         <div className="map-legend">
           <span>
             <i className="report-dot confirmed" /> Confirmado

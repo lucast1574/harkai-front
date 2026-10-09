@@ -29,9 +29,9 @@ export function Access({
       <section className="panel">
         <h2>Tu cuenta conecta a tu comunidad</h2>
         <p>
-          Ingresa para publicar, confirmar reportes y guardar tus preferencias.
+          Ingresa para comentar, confirmar reportes y guardar tus preferencias.
         </p>
-        <Link className="button" href="/login">
+        <Link className="button" href="/dashboard/profile">
           Ingresar o crear cuenta
         </Link>
       </section>

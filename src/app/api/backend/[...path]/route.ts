@@ -11,6 +11,14 @@ async function proxy(
 ): Promise<Response> {
   const path = (await context.params).path.join("/");
   if (!paths.test(path)) return new Response(null, { status: 404 });
+  if (
+    request.method === "POST" &&
+    ["incidents", "media", "analysis/audio"].includes(path)
+  )
+    return Response.json(
+      { error: { code: "mobile_publication_only" } },
+      { status: 403 },
+    );
   const write = !["GET", "HEAD"].includes(request.method);
   if (write && !allowedOrigin(request))
     return new Response(null, { status: 403 });

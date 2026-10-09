@@ -1,8 +1,7 @@
 "use client";
-import { useState } from "react";
-import { LocateFixed, SlidersHorizontal } from "lucide-react";
+import { LocationControl } from "../map/location-control";
 import type { Area, Category } from "@/lib/contracts";
-import { Field, Select } from "@/components/ui";
+import { Select } from "@/components/ui";
 export function ZoneControls({
   area,
   categories,
@@ -14,8 +13,6 @@ export function ZoneControls({
   onChange: (a: Area) => void;
   fixedType?: string;
 }): React.JSX.Element {
-  const [error, setError] = useState("");
-  const [busy, setBusy] = useState(false);
   return (
     <div className="zone-controls">
       <div className="zone-caption">
@@ -55,95 +52,10 @@ export function ZoneControls({
           </Select>
         )}
       </div>
-      <button
-        className="location-button"
-        disabled={busy}
-        onClick={() => {
-          if (!navigator.geolocation) {
-            setError("Este navegador no ofrece ubicación.");
-            return;
-          }
-          setBusy(true);
-          navigator.geolocation.getCurrentPosition(
-            (p) => {
-              onChange({
-                ...area,
-                latitude: p.coords.latitude,
-                longitude: p.coords.longitude,
-              });
-              setBusy(false);
-              setError("");
-            },
-            () => {
-              setBusy(false);
-              setError(
-                "No se pudo obtener tu ubicación. Mueve el mapa o cambia las coordenadas.",
-              );
-            },
-            { timeout: 10000, maximumAge: 60000 },
-          );
-        }}
-      >
-        <LocateFixed size={16} />
-        {busy ? "Buscando ubicación…" : "Usar mi ubicación"}
-      </button>
-      <details className="coordinate-options">
-        <summary>
-          <SlidersHorizontal size={14} /> Cambiar coordenadas
-        </summary>
-        <Coordinates
-          key={`${area.latitude}:${area.longitude}`}
-          area={area}
-          onChange={onChange}
-        />
-      </details>
-      {error && (
-        <p className="error small" role="alert">
-          {error}
-        </p>
-      )}
+      <LocationControl
+        point={area}
+        onChange={(point) => onChange({ ...area, ...point })}
+      />
     </div>
-  );
-}
-function Coordinates({
-  area,
-  onChange,
-}: {
-  area: Area;
-  onChange: (a: Area) => void;
-}): React.JSX.Element {
-  const [lat, setLat] = useState(String(area.latitude));
-  const [lng, setLng] = useState(String(area.longitude));
-  return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        onChange({ ...area, latitude: Number(lat), longitude: Number(lng) });
-      }}
-    >
-      <div className="two-columns">
-        <Field
-          label="Latitud"
-          type="number"
-          step="any"
-          min={-90}
-          max={90}
-          required
-          value={lat}
-          onChange={(e) => setLat(e.target.value)}
-        />
-        <Field
-          label="Longitud"
-          type="number"
-          step="any"
-          min={-180}
-          max={180}
-          required
-          value={lng}
-          onChange={(e) => setLng(e.target.value)}
-        />
-      </div>
-      <button className="button secondary">Consultar ubicación</button>
-    </form>
   );
 }

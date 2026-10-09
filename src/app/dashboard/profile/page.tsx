@@ -1,9 +1,4 @@
-import { Access } from "@/components/access";
-import { Profile } from "@/features/account/profile";
+import { Account } from "@/features/account/account";
 export default function Page(): React.JSX.Element {
-  return (
-    <Access>
-      <Profile />
-    </Access>
-  );
+  return <Account />;
 }

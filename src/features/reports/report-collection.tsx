@@ -180,7 +180,7 @@ export function ReportCollection({
           <p>
             {incidents.length
               ? "Prueba otro texto o estado de confirmación."
-              : "Consulta otro lugar o comparte un reporte para aportar a la comunidad."}
+              : "Consulta otro lugar o revisa el historial de la ciudad."}
           </p>
         </div>
       )}

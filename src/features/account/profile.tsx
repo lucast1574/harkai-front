@@ -1,4 +1,7 @@
 "use client";
+import Link from "next/link";
+import { MobileReporting } from "./mobile-reporting";
+import { AccountSession } from "./account-session";
 import { PushSettings } from "@/features/notifications/push-settings";
 import { useState } from "react";
 import { useAuth } from "@/lib/auth";
@@ -40,9 +43,25 @@ export function Profile(): React.JSX.Element {
   if (!user) return <></>;
   return (
     <>
-      <Heading title="Tu cuenta, a tu manera">
+      <Heading
+        eyebrow="TU ESPACIO EN HARKAI"
+        title={`Hola, ${user.name.split(" ")[0]}.`}
+      >
         Preferencias compartidas entre la web y la app móvil.
       </Heading>
+      <section className="panel account-overview">
+        <span className="account-large-avatar">{user.name.slice(0, 1)}</span>
+        <div>
+          <h2>{user.name}</h2>
+          <p className="muted">{user.email}</p>
+          <span className="small muted">Una cuenta para web y móvil</span>
+        </div>
+        <Link className="button secondary" href="/dashboard/history">
+          Mis reportes
+        </Link>
+      </section>
+      <MobileReporting />
+      <h2 className="account-section-title">Perfil y preferencias</h2>
       <form
         className="panel form-panel"
         key={JSON.stringify(user)}
@@ -114,11 +133,9 @@ export function Profile(): React.JSX.Element {
         </button>
       </form>
       <PushSettings key={user.id} />
+      <AccountSession />
       <section className="panel account-privacy">
         <h2>Tu actividad y privacidad</h2>
-        <a className="button secondary" href="/dashboard/history">
-          Mis reportes
-        </a>
         <p className="muted small">
           Consulta cómo se usan tus datos o solicita la eliminación de tu
           cuenta.

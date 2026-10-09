@@ -8,6 +8,8 @@ export class ApiError extends Error {
   }
 }
 function errorLabel(status: number, code: string): string {
+  if (code === "mobile_publication_only")
+    return "Los reportes se publican desde la app móvil de Harkai.";
   if (code === "image_rejected")
     return "La foto no pasó la revisión. Elige otra evidencia.";
   return (

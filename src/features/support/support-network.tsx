@@ -17,23 +17,22 @@ export function SupportNetwork(): React.JSX.Element {
   return (
     <>
       <Heading eyebrow="COMUNIDAD QUE ACOMPAÑA" title="Una red para ayudarnos.">
-        Encuentra mascotas perdidas o encontradas y lugares de ayuda compartidos
-        por tu comunidad. Abre un reporte para conversar o consultar su contacto
-        público.
+        Consulta contactos por distrito y centros de salud. También encuentra
+        mascotas perdidas o encontradas y lugares compartidos por tu comunidad.
       </Heading>
       <div className="support-choices" aria-label="Tipo de ayuda">
         {[
+          {
+            type: "place",
+            icon: HeartHandshake,
+            title: "Lugares de ayuda",
+            description: "Centros de salud y recursos de la comunidad.",
+          },
           {
             type: "pet",
             icon: PawPrint,
             title: "Mascotas",
             description: "Perdidas y encontradas cerca de ti.",
-          },
-          {
-            type: "place",
-            icon: HeartHandshake,
-            title: "Lugares de ayuda",
-            description: "Recursos y espacios publicados por la comunidad.",
           },
         ].map((choice) => (
           <button
@@ -118,8 +117,9 @@ export function SupportNetwork(): React.JSX.Element {
         </button>
       )}
       <p className="muted small">
-        Los lugares son aportes comunitarios: no implican afiliación ni atención
-        oficial garantizada. Confirma disponibilidad antes de acudir.
+        Los aportes comunitarios no implican afiliación ni atención oficial
+        garantizada. Los centros del directorio incluyen su fuente
+        institucional.
       </p>
     </>
   );

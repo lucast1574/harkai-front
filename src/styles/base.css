@@ -1,10 +1,14 @@
 :root {
-  --bg: #f3f6f4;
+  --bg: #f4f6f8;
+  --surface-soft: #f8fafb;
+  --accent-soft: #edf6f0;
+  --accent-ink: #276346;
+  --border-hover: #b8c7c0;
   --surface: #fff;
-  --ink: #102a30;
-  --muted: #627477;
-  --border: #e1e8e3;
-  --green: #57d463;
+  --ink: #172c3c;
+  --muted: #617181;
+  --border: #e1e7ec;
+  --green: #76df85;
   --navy: #011935;
 }
 * {
@@ -14,7 +18,7 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Inter", "Segoe UI", Arial, Helvetica, sans-serif;
   font-size: 15px;
   line-height: 1.6;
 }

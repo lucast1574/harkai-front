@@ -94,6 +94,7 @@ export function ArchiveExplorer(): React.JSX.Element {
             categories={categories}
             partial={!!reports.cursor}
             loading={reports.loading}
+            unavailable={!!reports.error}
           />
           <section className="archive-map map-panel">
             <div className="archive-map-heading">
@@ -132,6 +133,7 @@ export function ArchiveExplorer(): React.JSX.Element {
         incidents={reports.items}
         categories={categories}
         loading={reports.loading}
+        unavailable={!!reports.error}
         archive
       />
       {reports.cursor && (

@@ -28,16 +28,16 @@
   display: none;
 }
 .archive-filters > .muted {
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.7;
   margin-top: -8px;
 }
 .archive-filters .field {
-  font-size: 11px;
+  font-size: 13px;
 }
 .archive-filters .field input,
 .archive-filters .field select {
-  font-size: 11px;
+  font-size: 13px;
 }
 .archive-overview {
   min-width: 0;
@@ -52,7 +52,7 @@
   font-size: 30px;
 }
 .archive-overview .metrics span {
-  font-size: 10px;
+  font-size: 12px;
 }
 .archive-map-heading {
   display: flex;
@@ -67,19 +67,19 @@
   margin-bottom: 4px;
 }
 .archive-map-heading p {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--muted);
   margin: 0;
 }
 .archive-map-heading .checkbox {
-  font-size: 10px;
+  font-size: 12px;
 }
 .archive-map .zone-map {
   height: 370px;
 }
 .archive-overview .chart-row {
   grid-template-columns: 130px 1fr 25px;
-  font-size: 10px;
+  font-size: 12px;
   gap: 8px;
 }
 .archive-overview .distribution {
@@ -117,7 +117,7 @@
     font-size: 18px;
   }
   .discussion-heading p {
-    font-size: 11px;
+    font-size: 13px;
   }
   .discussion-icon {
     width: 40px;

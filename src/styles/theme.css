@@ -1,5 +1,9 @@
 html[data-theme="dark"] {
   --bg: #0b202b;
+  --surface-soft: #19323e;
+  --accent-soft: #193e32;
+  --accent-ink: #a4dfb6;
+  --border-hover: #526e67;
   --surface: #142d37;
   --ink: #e2eeea;
   --muted: #9dafb1;

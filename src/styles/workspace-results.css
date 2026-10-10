@@ -16,7 +16,7 @@
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 2px 6px;
-  font-size: 10px;
+  font-size: 12px;
   margin-left: 5px;
   color: var(--muted);
 }
@@ -56,7 +56,7 @@
   margin-bottom: 9px;
 }
 .rail-empty p {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--muted);
   line-height: 1.8;
 }
@@ -64,14 +64,14 @@
   display: inline-flex;
   gap: 6px;
   align-items: center;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   color: #359059;
 }
 .rail-footnote {
   display: flex;
   gap: 9px;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.6;
   color: var(--muted);
   border-top: 1px solid var(--border);

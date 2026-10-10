@@ -5,6 +5,7 @@ import { ArrowUpRight, MapPin, RefreshCw, ShieldCheck, X } from "lucide-react";
 import { LIMA, dateLabel, type Area, type Meta } from "@/lib/contracts";
 import { useResource } from "@/lib/use-resource";
 import { Notice } from "@/components/ui";
+import { QueryOverview } from "../reports/query-overview";
 import { useReports } from "../reports/use-reports";
 import { Verification } from "../reports/report-card";
 import { ZoneControls } from "../reports/zone-controls";
@@ -32,18 +33,25 @@ export function MapWorkspace(): React.JSX.Element {
     >
       <aside className="explore-rail">
         <header className="explore-heading">
-          <span className="eyebrow">CERCA DE TI</span>
-          <h1>
-            Tu comunidad,
-            <br />
-            en el mapa.
-          </h1>
-          <p>Descubre qué pasa en tu zona y participa en las conversaciones.</p>
+          <span className="eyebrow">MAPA DE MI ZONA</span>
+          <h1>Qué pasa cerca de ti.</h1>
+          <p>
+            Consulta las alertas vigentes, abre un reporte y conversa con tu
+            comunidad.
+          </p>
         </header>
         <ZoneControls
           area={area}
           categories={categories}
           onChange={changeArea}
+        />
+        <QueryOverview
+          compact
+          area={area}
+          incidents={reports.items}
+          loading={reports.loading}
+          partial={!!reports.cursor}
+          unavailable={!!reports.error}
         />
         <div className="rail-results">
           <div className="results-heading">

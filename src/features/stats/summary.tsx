@@ -5,11 +5,13 @@ export function Summary({
   categories,
   partial,
   loading = false,
+  unavailable = false,
 }: {
   incidents: Incident[];
   categories: Category[];
   partial: boolean;
   loading?: boolean;
+  unavailable?: boolean;
 }): React.JSX.Element {
   const confirmed = incidents.filter((i) => i.verified).length;
   const counts = categories
@@ -24,15 +26,23 @@ export function Summary({
       <div className="metrics">
         <article>
           <span>Reportes cargados</span>
-          <strong>{loading ? "—" : incidents.length}</strong>
+          <strong>
+            {loading || unavailable ? "—" : incidents.length}
+            {!loading && !unavailable && partial ? "+" : ""}
+          </strong>
+          <small className="muted">En esta consulta</small>
         </article>
         <article>
           <span>No verificados</span>
-          <strong>{loading ? "—" : incidents.length - confirmed}</strong>
+          <strong>
+            {loading || unavailable ? "—" : incidents.length - confirmed}
+          </strong>
+          <small className="muted">Pendientes de confirmación</small>
         </article>
         <article>
           <span>Confirmados por la comunidad</span>
-          <strong>{loading ? "—" : confirmed}</strong>
+          <strong>{loading || unavailable ? "—" : confirmed}</strong>
+          <small className="muted">Al menos otro usuario confirmó</small>
         </article>
       </div>
       <section className="panel distribution">
@@ -42,7 +52,11 @@ export function Summary({
             ? "Consulta parcial: carga todas las páginas para ampliar la muestra."
             : "Cifras de los reportes cargados en la zona y el periodo consultados."}
         </p>
-        {loading ? (
+        {unavailable ? (
+          <p className="muted">
+            No se pudo cargar la consulta. Actualiza para ver el resumen.
+          </p>
+        ) : loading ? (
           <p className="muted" role="status">
             Consultando los reportes…
           </p>

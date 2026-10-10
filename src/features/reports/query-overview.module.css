@@ -1,0 +1,120 @@
+.overview {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin: 24px 0;
+  overflow: hidden;
+}
+.context {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border);
+  color: var(--accent-ink);
+}
+.context div {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+}
+.context strong {
+  color: var(--ink);
+  font-size: 14px;
+}
+.context span {
+  color: var(--muted);
+  font-size: 12px;
+}
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: 22px 24px;
+}
+.metrics article {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 4px 10px;
+  padding: 0 20px;
+  border-left: 1px solid var(--border);
+}
+.metrics article:first-child {
+  border: 0;
+  padding-left: 0;
+}
+.metrics svg {
+  color: var(--muted);
+  margin-top: 9px;
+}
+.metrics strong {
+  font-size: 30px;
+  letter-spacing: -1px;
+  line-height: 1.3;
+  font-variant-numeric: tabular-nums;
+}
+.metrics span {
+  grid-column: 2;
+  font-size: 12px;
+  color: var(--muted);
+}
+.overview p {
+  margin: 0;
+  padding: 12px 24px;
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-size: 12px;
+}
+.compact {
+  margin: 0;
+}
+.compact .context {
+  padding: 14px 16px;
+}
+.compact .context div {
+  display: grid;
+  gap: 2px;
+}
+.compact .metrics {
+  padding: 16px 10px;
+}
+.compact .metrics article {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 8px;
+}
+.compact .metrics svg {
+  display: none;
+}
+.compact .metrics strong {
+  font-size: 26px;
+}
+.compact .metrics span {
+  font-size: 11px;
+}
+.compact p {
+  padding: 12px 16px;
+}
+@media (max-width: 760px) {
+  .context {
+    padding: 16px;
+  }
+  .metrics {
+    padding: 18px 16px;
+  }
+  .metrics article {
+    display: flex;
+    flex-direction: column;
+    padding: 0 10px;
+  }
+  .metrics svg {
+    display: none;
+  }
+  .metrics strong {
+    font-size: 26px;
+  }
+  .overview p {
+    padding: 12px 16px;
+  }
+}

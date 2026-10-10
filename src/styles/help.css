@@ -28,9 +28,9 @@
   color: var(--muted);
 }
 .guidance-choices button.selected {
-  border-color: #64af81;
-  background: var(--surface);
-  box-shadow: inset 0 -3px #64af81;
+  border-color: var(--border-hover);
+  background: var(--accent-soft);
+  box-shadow: none;
 }
 .guidance-detail {
   display: grid;

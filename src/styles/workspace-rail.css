@@ -4,14 +4,14 @@
 }
 .map-workspace {
   display: grid;
-  grid-template-columns: 320px minmax(0, 1fr);
+  grid-template-columns: 350px minmax(0, 1fr);
   min-height: 100dvh;
   height: 100dvh;
 }
 .explore-rail {
   background: var(--surface);
   border-right: 1px solid var(--border);
-  padding: 30px 22px 18px;
+  padding: 30px 24px 18px;
   overflow: auto;
   display: flex;
   flex-direction: column;
@@ -25,11 +25,15 @@
   margin-bottom: 14px;
 }
 .explore-heading p {
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.7;
   color: var(--muted);
   margin: 0;
 }
 .explore-heading .eyebrow {
   font-size: 9px;
+}
+
+.explore-rail > * {
+  flex-shrink: 0;
 }

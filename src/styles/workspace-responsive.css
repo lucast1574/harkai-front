@@ -96,6 +96,10 @@
   .location-button {
     margin-top: 9px;
   }
+  .explore-rail > section[aria-label="Resumen de la consulta"] {
+    order: 2;
+    margin: 0 22px 18px;
+  }
   .map-stage {
     order: 2;
     height: 52dvh;

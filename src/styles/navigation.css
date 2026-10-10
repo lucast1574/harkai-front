@@ -61,15 +61,18 @@
   border-radius: 10px;
   font-size: 13px;
   color: #a8b9c8;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
 }
 .nav-link:hover {
-  background: #ffffff0c;
-  color: white;
+  background: #ffffff08;
+  color: #dbe5eb;
 }
 .nav-link.active {
-  background: #57d46318;
-  color: #83e98a;
-  box-shadow: inset 3px 0 #57d463;
+  background: #203b48;
+  color: #b0efb9;
+  box-shadow: none;
 }
 .sidebar-bottom {
   margin-top: auto;

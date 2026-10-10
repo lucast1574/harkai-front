@@ -12,12 +12,14 @@ export function ReportCollection({
   feed = false,
   archive = false,
   loading = false,
+  unavailable = false,
 }: {
   incidents: Incident[];
   categories: Category[];
   feed?: boolean;
   archive?: boolean;
   loading?: boolean;
+  unavailable?: boolean;
 }): React.JSX.Element {
   const [feedView, setFeedView] = useState(feed);
   const [now] = useState(() => Date.now());
@@ -36,6 +38,29 @@ export function ReportCollection({
       className={feedView ? "community-feed" : "report-directory"}
       aria-label={feedView ? "Actividad reciente" : "Directorio de reportes"}
     >
+      <header className="collection-heading">
+        <div>
+          <h2>
+            {archive
+              ? "Reportes del historial"
+              : feedView
+                ? "Conversaciones de la zona"
+                : "Reportes de la consulta"}
+          </h2>
+          <p>
+            {archive
+              ? "Consulta lo ocurrido y continúa la conversación, incluso cuando la alerta venció."
+              : "Abre un reporte para ver el contexto, comentar o confirmar lo que conoces."}
+          </p>
+        </div>
+        <span>
+          {unavailable
+            ? "Consulta no disponible"
+            : loading
+              ? "Consultando…"
+              : `${items.length} visibles`}
+        </span>
+      </header>
       {feed && (
         <div className="collection-views" aria-label="Vista de la comunidad">
           <button
@@ -169,7 +194,7 @@ export function ReportCollection({
           </table>
         </div>
       )}
-      {!items.length && !loading && (
+      {!items.length && !loading && !unavailable && (
         <div className="collection-empty">
           <Search size={28} />
           <h2>
@@ -182,6 +207,14 @@ export function ReportCollection({
               ? "Prueba otro texto o estado de confirmación."
               : "Consulta otro lugar o revisa el historial de la ciudad."}
           </p>
+          {!incidents.length && (
+            <Link
+              className="button secondary"
+              href={archive ? "/dashboard" : "/dashboard/archive"}
+            >
+              {archive ? "Ver alertas vigentes" : "Explorar el historial"}
+            </Link>
+          )}
         </div>
       )}
     </section>

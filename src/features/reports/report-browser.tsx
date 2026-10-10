@@ -7,6 +7,7 @@ import { LIMA, type Area, type Meta } from "@/lib/contracts";
 import { ZoneControls } from "./zone-controls";
 import { AreaFilter } from "./area-filter";
 import { ReportCollection } from "./report-collection";
+import { QueryOverview } from "./query-overview";
 import { ReportCard } from "./report-card";
 import { useReports } from "./use-reports";
 import ZoneMap from "../map/map-loader";
@@ -144,31 +145,44 @@ function Browser({
       {(metaError || reports.error) && (
         <Notice error>{metaError || reports.error}</Notice>
       )}
+      {!stats && !institutional && (
+        <QueryOverview
+          area={area}
+          incidents={reports.items}
+          loading={reports.loading}
+          partial={!!reports.cursor}
+          unavailable={!!reports.error}
+          archive={history}
+        />
+      )}
       {(stats || institutional) && (
         <Summary
           incidents={reports.items}
           categories={categories}
           partial={!!reports.cursor}
           loading={reports.loading}
+          unavailable={!!reports.error}
         />
       )}
-      <div className="coverage">
-        <span>
-          {reports.items.length} reportes cargados · {area.radius / 1000} km de
-          radio{reports.cursor ? " · hay más resultados" : ""}
-          {history ? " · historial de tu cuenta" : ""}
-        </span>
-        {institutional && (
-          <label>
-            <input
-              type="checkbox"
-              checked={heat}
-              onChange={(e) => setHeat(e.target.checked)}
-            />{" "}
-            Densidad de reportes
-          </label>
-        )}
-      </div>
+      {(stats || institutional) && (
+        <div className="coverage">
+          <span>
+            {reports.items.length} reportes cargados · {area.radius / 1000} km
+            de radio{reports.cursor ? " · hay más resultados" : ""}
+            {history ? " · historial de tu cuenta" : ""}
+          </span>
+          {institutional && (
+            <label>
+              <input
+                type="checkbox"
+                checked={heat}
+                onChange={(e) => setHeat(e.target.checked)}
+              />{" "}
+              Densidad de reportes
+            </label>
+          )}
+        </div>
+      )}
       {map && (
         <section className="map-panel">
           {heat && (
@@ -191,6 +205,7 @@ function Browser({
           categories={categories}
           feed={mode === "feed"}
           loading={reports.loading}
+          unavailable={!!reports.error}
         />
       ) : (
         mode !== "analytics" && (

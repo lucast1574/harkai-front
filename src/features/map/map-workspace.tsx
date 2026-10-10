@@ -1,4 +1,5 @@
 "use client";
+import { useArea } from "@/lib/use-area";
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, MapPin, RefreshCw, ShieldCheck, X } from "lucide-react";
@@ -6,8 +7,8 @@ import {
   areaQuery,
   LIMA,
   dateLabel,
-  type Area,
   type Meta,
+  type Area,
 } from "@/lib/contracts";
 import { useResource } from "@/lib/use-resource";
 import type { SupportPlace } from "../support/contracts";
@@ -19,7 +20,7 @@ import { ZoneControls } from "../reports/zone-controls";
 import ZoneMap from "./map-loader";
 export function MapWorkspace(): React.JSX.Element {
   const [showSupport, setShowSupport] = useState(true);
-  const [area, setArea] = useState<Area>(LIMA);
+  const [area, setArea] = useArea(LIMA);
   const [selectedId, setSelected] = useState("");
   const [candidate, setCandidate] = useState<{
     latitude: number;
@@ -29,7 +30,9 @@ export function MapWorkspace(): React.JSX.Element {
   const categories = meta?.categories || [];
   const reports = useReports(area);
   const support = useResource<{ items: SupportPlace[] }>(
-    `support/places?${areaQuery(area)}`,
+    area.geoPending || area.geoError
+      ? null
+      : `support/places?${areaQuery(area)}`,
   );
   const selected = reports.items.find((i) => i.id === selectedId);
   const changeArea = (a: Area) => {
@@ -172,20 +175,14 @@ export function MapWorkspace(): React.JSX.Element {
           selectedId={selectedId}
           onSelect={setSelected}
           onMove={(latitude, longitude) =>
-            setCandidate({ latitude, longitude })
+            setCandidate(
+              Math.abs(latitude - area.latitude) < 0.0001 &&
+                Math.abs(longitude - area.longitude) < 0.0001
+                ? null
+                : { latitude, longitude },
+            )
           }
         />
-        <div className="map-context">
-          <span className="live-dot" />
-          <span>
-            Explorando un radio de{" "}
-            <strong>
-              {area.radius < 1000
-                ? `${area.radius} m`
-                : `${area.radius / 1000} km`}
-            </strong>
-          </span>
-        </div>
         {candidate && (
           <button
             className="button map-search"
@@ -195,6 +192,9 @@ export function MapWorkspace(): React.JSX.Element {
           </button>
         )}
         <div className="map-legend">
+          <span>
+            <i className="report-dot user-location" /> Tu ubicación
+          </span>
           {showSupport && (
             <span>
               <i className="report-dot support" /> Salud y ayuda

@@ -32,10 +32,14 @@ export function QueryOverview({
       <header className={styles.context}>
         <MapPin size={17} aria-hidden="true" />
         <div>
-          <strong>{area.district || "Zona seleccionada"}</strong>
+          <strong>{area.geography?.name || "Zona seleccionada"}</strong>
           <span>
-            {area.radius / 1000} km de radio ·{" "}
-            {archive ? "Historial" : "Alertas vigentes"}
+            {area.geography
+              ? area.scope === "city"
+                ? "Consulta de ciudad"
+                : "Consulta distrital"
+              : "Distrito pendiente"}{" "}
+            · {archive ? "Historial" : "Alertas vigentes"}
           </span>
         </div>
       </header>

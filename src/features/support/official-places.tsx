@@ -9,7 +9,11 @@ import type { SupportPlace } from "./contracts";
 export function OfficialPlaces({ area }: { area: Area }): React.JSX.Element {
   const { data, error, loading, reload } = useResource<{
     items: SupportPlace[];
-  }>(`support/places?${areaQuery(area)}`);
+  }>(
+    area.geoPending || area.geoError
+      ? null
+      : `support/places?${areaQuery(area)}`,
+  );
   const [selected, setSelected] = useState("");
   return (
     <section aria-label="Directorio de salud en el mapa">

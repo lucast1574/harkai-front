@@ -1,9 +1,10 @@
 "use client";
+import { useArea } from "@/lib/use-area";
 import { useState } from "react";
 import { Heading, Notice } from "@/components/ui";
 import { Access } from "@/components/access";
 import { useResource } from "@/lib/use-resource";
-import { LIMA, type Area, type Meta } from "@/lib/contracts";
+import { LIMA, type Meta } from "@/lib/contracts";
 import { ZoneControls } from "./zone-controls";
 import { AreaFilter } from "./area-filter";
 import { ReportCollection } from "./report-collection";
@@ -73,7 +74,7 @@ function Browser({
   stats: boolean;
   mode: "cards" | "directory" | "feed" | "analytics";
 }): React.JSX.Element {
-  const [area, setArea] = useState<Area>({ ...LIMA, type: fixedType || "" });
+  const [area, setArea] = useArea({ ...LIMA, type: fixedType || "" });
   const [heat, setHeat] = useState(false);
   const { data: meta, error: metaError } = useResource<Meta>("meta");
   const reports = useReports(
@@ -130,8 +131,8 @@ function Browser({
       ) : (
         <details className="collection-zone">
           <summary>
-            Zona de consulta · {area.radius / 1000} km alrededor de{" "}
-            {area.latitude.toFixed(3)}, {area.longitude.toFixed(3)}{" "}
+            Zona de consulta ·{" "}
+            {area.geography?.name || "Identificando distrito…"}{" "}
             <span>Cambiar zona o categoría ↓</span>
           </summary>
           <ZoneControls
@@ -167,8 +168,9 @@ function Browser({
       {(stats || institutional) && (
         <div className="coverage">
           <span>
-            {reports.items.length} reportes cargados · {area.radius / 1000} km
-            de radio{reports.cursor ? " · hay más resultados" : ""}
+            {reports.items.length} reportes cargados ·{" "}
+            {area.geography?.name || "Distrito pendiente"}
+            {reports.cursor ? " · hay más resultados" : ""}
             {history ? " · historial de tu cuenta" : ""}
           </span>
           {institutional && (

@@ -27,6 +27,13 @@ export function useReports(
       const current = ++version.current;
       setLoading(true);
       setError("");
+      if (area.geoPending || area.geoError) {
+        setItems([]);
+        setCursor("");
+        setError(area.geoError || "");
+        setLoading(!!area.geoPending);
+        return;
+      }
       try {
         const page = await api<Page<Incident>>(
           `${endpoint}?${query}${next ? `&cursor=${next}` : ""}`,
@@ -49,7 +56,7 @@ export function useReports(
         if (current === version.current) setLoading(false);
       }
     },
-    [endpoint, query],
+    [endpoint, query, area.geoPending, area.geoError],
   );
   useEffect(() => {
     const requestVersion = version;

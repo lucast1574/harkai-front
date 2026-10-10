@@ -55,7 +55,26 @@ export type AuthResult = {
   refresh_token: string;
   expires_in: number;
 };
+export type GeographicDistrict = {
+  id: string;
+  name: string;
+  province: string;
+  department: string;
+  geometry:
+    | { type: "Polygon"; coordinates: number[][][] }
+    | { type: "MultiPolygon"; coordinates: number[][][][] };
+  scope?: "district" | "city";
+  source_url: string;
+  reference_year: number;
+};
 export type Area = {
+  scope?: "district" | "city";
+  ubigeo?: string;
+  geography?: GeographicDistrict;
+  districts?: { id: string; name: string }[];
+  geoPending?: boolean;
+  geoError?: string;
+  geoRetry?: () => void;
   district?: string;
   before?: string;
   latitude: number;
@@ -78,6 +97,10 @@ export function areaQuery(area: Area): string {
     radius_meters: String(area.radius),
     limit: "100",
   });
+  if (area.ubigeo) {
+    q.set("ubigeo", area.ubigeo);
+    q.set("scope", area.scope || "district");
+  }
   if (area.district) q.set("district", area.district);
   if (area.before) q.set("before", new Date(area.before).toISOString());
   if (area.type) q.set("type", area.type);

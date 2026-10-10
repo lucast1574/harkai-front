@@ -22,47 +22,54 @@ export function AreaFilter({
       className="area-filter panel"
       onSubmit={(e) => {
         e.preventDefault();
-        onChange({ ...draft, type: fixedType || draft.type });
+        onChange({
+          ...draft,
+          latitude: area.latitude,
+          longitude: area.longitude,
+          ubigeo: area.ubigeo,
+          scope: area.scope,
+          type: fixedType || draft.type,
+        });
       }}
     >
       <div className="filter-heading">
         <h2>Ubicación de consulta</h2>
       </div>
       <div className="filter-fields">
-        <Field
-          label="Latitud"
-          type="number"
-          step="any"
-          min={-90}
-          max={90}
-          required
-          value={draft.latitude}
-          onChange={(e) =>
-            setDraft({ ...draft, latitude: Number(e.target.value) })
-          }
-        />
-        <Field
-          label="Longitud"
-          type="number"
-          step="any"
-          min={-180}
-          max={180}
-          required
-          value={draft.longitude}
-          onChange={(e) =>
-            setDraft({ ...draft, longitude: Number(e.target.value) })
-          }
-        />
         <Select
-          label="Radio"
-          value={draft.radius}
+          label="Alcance"
+          value={area.scope || "district"}
           onChange={(e) =>
-            setDraft({ ...draft, radius: Number(e.target.value) })
+            onChange({ ...area, scope: e.target.value as "district" | "city" })
           }
         >
-          {[500, 1000, 5000, 10000, 50000, 100000].map((r) => (
-            <option key={r} value={r}>
-              {r < 1000 ? `${r} m` : `${r / 1000} km`}
+          <option value="district">Mi distrito</option>
+          <option value="city">Toda la ciudad</option>
+        </Select>
+        <Select
+          label="Distrito"
+          value={area.ubigeo || ""}
+          disabled={area.geoPending || !!area.geoError}
+          onChange={(e) => {
+            const next = {
+              ...draft,
+              ...area,
+              ubigeo: e.target.value,
+              scope: "district" as const,
+              district: "",
+            };
+            setDraft(next);
+            onChange(next);
+          }}
+        >
+          {!area.ubigeo && (
+            <option value="">
+              {area.geoPending ? "Buscando…" : "Sin distrito"}
+            </option>
+          )}
+          {area.districts?.map((d) => (
+            <option key={d.id} value={d.id}>
+              {d.name}
             </option>
           ))}
         </Select>
@@ -92,10 +99,35 @@ export function AreaFilter({
           Consultar zona
         </button>
       </div>
+      {area.geoError && (
+        <p className="small error" role="alert">
+          {area.geoError}{" "}
+          <button type="button" className="text-button" onClick={area.geoRetry}>
+            Reintentar
+          </button>
+        </p>
+      )}
+      {area.geography && (
+        <p className="small geography-source">
+          Límites de referencia {area.geography.reference_year} ·{" "}
+          <a
+            href={area.geography.source_url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            SENACE / INEI
+          </a>
+        </p>
+      )}
       <LocationControl
-        point={draft}
+        point={area}
         onChange={(point) => {
-          const next = { ...draft, ...point, type: fixedType || draft.type };
+          const next = {
+            ...draft,
+            ...area,
+            ...point,
+            type: fixedType || draft.type,
+          };
           setDraft(next);
           onChange(next);
         }}

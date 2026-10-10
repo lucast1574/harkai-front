@@ -19,21 +19,40 @@ export function ZoneControls({
         <span>
           <span className="live-dot" /> Zona de consulta
         </span>
-        <strong>
-          {area.latitude.toFixed(3)}, {area.longitude.toFixed(3)}
-        </strong>
+        <strong>{area.geography?.province || "Selecciona un punto"}</strong>
       </div>
       <div className="zone-options">
         <Select
           label="Alcance"
-          value={area.radius}
+          value={area.scope || "district"}
           onChange={(e) =>
-            onChange({ ...area, radius: Number(e.target.value) })
+            onChange({ ...area, scope: e.target.value as "district" | "city" })
           }
         >
-          {[500, 1000, 5000, 10000, 50000, 100000].map((r) => (
-            <option key={r} value={r}>
-              {r < 1000 ? `${r} m` : `${r / 1000} km`}
+          <option value="district">Mi distrito</option>
+          <option value="city">Toda la ciudad</option>
+        </Select>
+        <Select
+          label="Distrito"
+          value={area.ubigeo || ""}
+          disabled={area.geoPending || !!area.geoError}
+          onChange={(e) =>
+            onChange({
+              ...area,
+              ubigeo: e.target.value,
+              scope: "district",
+              district: "",
+            })
+          }
+        >
+          {!area.ubigeo && (
+            <option value="">
+              {area.geoPending ? "Buscando…" : "Sin distrito"}
+            </option>
+          )}
+          {area.districts?.map((d) => (
+            <option key={d.id} value={d.id}>
+              {d.name}
             </option>
           ))}
         </Select>
@@ -52,6 +71,26 @@ export function ZoneControls({
           </Select>
         )}
       </div>
+      {area.geoError && (
+        <p className="small error" role="alert">
+          {area.geoError}
+          <button type="button" className="text-button" onClick={area.geoRetry}>
+            Reintentar
+          </button>
+        </p>
+      )}
+      {area.geography && (
+        <p className="small geography-source">
+          Límites de referencia {area.geography.reference_year} ·{" "}
+          <a
+            href={area.geography.source_url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            SENACE / INEI
+          </a>
+        </p>
+      )}
       <LocationControl
         point={area}
         onChange={(point) => onChange({ ...area, ...point })}

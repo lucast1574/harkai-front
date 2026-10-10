@@ -1,16 +1,17 @@
 "use client";
+import { useArea } from "@/lib/use-area";
 import { useState } from "react";
 import { Layers3, CalendarDays } from "lucide-react";
-import { Heading, Notice, Field, Select } from "@/components/ui";
+import { Heading, Notice, Field } from "@/components/ui";
 import { useResource } from "@/lib/use-resource";
-import { areaQuery, LIMA, type Area, type Meta } from "@/lib/contracts";
+import { LIMA, type Meta } from "@/lib/contracts";
 import { useReports } from "../reports/use-reports";
 import { ZoneControls } from "../reports/zone-controls";
 import { Summary } from "../stats/summary";
 import { ReportCollection } from "../reports/report-collection";
 import ZoneMap from "../map/map-loader";
 export function ArchiveExplorer(): React.JSX.Element {
-  const [area, setArea] = useState<Area>({
+  const [area, setArea] = useArea({
     ...LIMA,
     radius: 50000,
     district: "",
@@ -20,9 +21,6 @@ export function ArchiveExplorer(): React.JSX.Element {
   const { data: meta, error: metaError } = useResource<Meta>("meta");
   const categories = meta?.categories || [];
   const reports = useReports(area, "archive/incidents");
-  const { data: districts, error: districtError } = useResource<{
-    items: string[];
-  }>(`archive/districts?${areaQuery({ ...area, district: "" })}`);
   return (
     <>
       <Heading
@@ -44,22 +42,6 @@ export function ArchiveExplorer(): React.JSX.Element {
             categories={categories}
             onChange={(next) => setArea({ ...next, district: "" })}
           />
-          <Select
-            label="Distrito reportado"
-            value={area.district || ""}
-            onChange={(e) => setArea({ ...area, district: e.target.value })}
-          >
-            <option value="">Todos los distritos</option>
-            {districts?.items.map((d) => (
-              <option key={d} value={d}>
-                {d}
-              </option>
-            ))}
-          </Select>
-          <small className="muted">
-            Distritos escritos en los reportes de esta consulta; no son límites
-            geográficos oficiales.
-          </small>
           <div className="archive-filter-title">
             <CalendarDays size={17} />
             <h2>Periodo</h2>
@@ -86,8 +68,8 @@ export function ArchiveExplorer(): React.JSX.Element {
           </button>
         </aside>
         <div className="archive-overview">
-          {(metaError || reports.error || districtError) && (
-            <Notice error>{metaError || reports.error || districtError}</Notice>
+          {(metaError || reports.error) && (
+            <Notice error>{metaError || reports.error}</Notice>
           )}
           <Summary
             incidents={reports.items}

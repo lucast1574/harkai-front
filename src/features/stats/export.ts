@@ -17,7 +17,9 @@ export function reportCSV(
         ? "Parcial: quedan páginas por cargar"
         : "Páginas de consulta cargadas",
       `Centro ${area.latitude},${area.longitude}`,
-      `Radio ${area.radius} m`,
+      area.geography
+        ? `Distrito ${area.geography.name} · UBIGEO ${area.ubigeo}`
+        : `Radio ${area.radius} m`,
       area.after || "Sin filtro de fecha",
     ],
     [

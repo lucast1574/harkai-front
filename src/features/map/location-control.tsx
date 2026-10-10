@@ -1,14 +1,10 @@
 "use client";
-import dynamic from "next/dynamic";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { LocateFixed, MapPin, X } from "lucide-react";
-import { Notice } from "@/components/ui";
-import { PointCoordinates } from "./point-coordinates";
-import { locate, type Point } from "@/lib/location";
-const PointMap = dynamic(() => import("./point-map"), {
-  ssr: false,
-  loading: () => <Notice>Cargando mapa…</Notice>,
-});
+import { LocationDialog } from "./location-dialog";
+import { useLocationRequest } from "./use-location-request";
+import { rememberUserLocation } from "@/lib/use-area";
+import type { Point } from "@/lib/location";
 export function LocationControl({
   point,
   onChange,
@@ -17,35 +13,33 @@ export function LocationControl({
   onChange: (point: Point) => void;
 }): React.JSX.Element {
   const dialog = useRef<HTMLDialogElement>(null);
-  const generation = useRef(0);
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [draft, setDraft] = useState(point);
+  const [accuracy, setAccuracy] = useState<number>();
   const [open, setOpen] = useState(false);
-  useEffect(
-    () => () => {
-      ++generation.current;
-    },
-    [],
-  );
-  async function find(): Promise<void> {
-    const request = ++generation.current;
-    setBusy(true);
-    setError("");
-    setMessage("");
-    try {
-      const next = await locate();
-      if (request !== generation.current) return;
+  const request = useLocationRequest((next) => {
+    rememberUserLocation(next);
+    if (next.accuracy > 2000) {
+      setDraft({ latitude: next.latitude, longitude: next.longitude });
+      setAccuracy(next.accuracy);
+      setOpen(true);
+      dialog.current?.showModal();
+      setMessage("Confirma o ajusta la ubicación aproximada en el mapa.");
+    } else {
       onChange({ latitude: next.latitude, longitude: next.longitude });
       setMessage(
-        `Ubicación aproximada${Number.isFinite(next.accuracy) ? ` · precisión de ${Math.round(next.accuracy)} m` : ""}. Puedes ajustarla en el mapa.`,
+        `Zona actualizada · precisión aproximada de ${Math.round(next.accuracy)} m. Puedes ajustarla en el mapa.`,
       );
-    } catch (e) {
-      if (request === generation.current) setError((e as Error).message);
-    } finally {
-      if (request === generation.current) setBusy(false);
     }
+  });
+  function chooseManually(): void {
+    request.cancel();
+    request.clearError();
+    setMessage("");
+    setDraft(point);
+    setAccuracy(undefined);
+    setOpen(true);
+    dialog.current?.showModal();
   }
   return (
     <div className="location-control">
@@ -53,90 +47,76 @@ export function LocationControl({
         <button
           type="button"
           className="location-button"
-          disabled={busy}
-          onClick={() => void find()}
+          disabled={request.busy}
+          onClick={() => {
+            setMessage("");
+            void request.find();
+          }}
         >
           <LocateFixed size={16} />
-          {busy ? "Buscando ubicación…" : "Usar mi ubicación"}
+          {request.busy ? "Buscando tu ubicación…" : "Usar mi ubicación"}
         </button>
+        {request.busy && (
+          <button
+            type="button"
+            className="text-button"
+            onClick={request.cancel}
+          >
+            <X size={14} />
+            Cancelar búsqueda
+          </button>
+        )}
         <button
           type="button"
           className="location-button"
-          onClick={() => {
-            ++generation.current;
-            setBusy(false);
-            setDraft(point);
-            setOpen(true);
-            dialog.current?.showModal();
-          }}
+          onClick={chooseManually}
         >
           <MapPin size={16} />
-          Elegir zona en mapa
+          Elegir ciudad o zona
         </button>
       </div>
-      {error && (
-        <p className="error small" role="alert">
-          {error}
+      {request.busy && (
+        <p className="small muted" role="status">
+          Acepta el permiso del navegador. Si no consigue ubicarte, puedes
+          elegir tu zona sin esperar.
         </p>
+      )}
+      {request.error && (
+        <div className="location-recovery" role="alert">
+          <p>{request.error}</p>
+          <button
+            type="button"
+            className="text-button"
+            onClick={chooseManually}
+          >
+            Elegir mi zona ahora →
+          </button>
+        </div>
       )}
       {message && (
         <p className="small muted" role="status">
           {message}
         </p>
       )}
-      <dialog
-        ref={dialog}
-        className="location-dialog"
-        aria-label="Elegir zona de consulta"
+      <LocationDialog
+        dialog={dialog}
+        open={open}
+        draft={draft}
+        accuracy={accuracy}
         onClose={() => setOpen(false)}
-        onClick={(e) => {
-          if (e.target === dialog.current) dialog.current.close();
+        onDraft={(next) => {
+          setDraft(next);
+          setAccuracy(undefined);
         }}
-      >
-        <div className="location-dialog-heading">
-          <div>
-            <h2>Elige tu zona</h2>
-            <p>Mueve el mapa y selecciona un punto. No requiere GPS.</p>
-          </div>
-          <button
-            type="button"
-            className="icon-button"
-            aria-label="Cerrar selector de zona"
-            onClick={() => dialog.current?.close()}
-          >
-            <X size={20} />
-          </button>
-        </div>
-        {open && <PointMap point={draft} onChange={setDraft} />}
-        <PointCoordinates
-          key={`${draft.latitude}:${draft.longitude}`}
-          point={draft}
-          onChange={setDraft}
-        />
-        <div className="location-dialog-footer">
-          <span className="small muted">
-            {draft.latitude.toFixed(4)}, {draft.longitude.toFixed(4)}
-          </span>
-          <button
-            type="button"
-            className="button"
-            disabled={
-              !Number.isFinite(draft.latitude) ||
-              !Number.isFinite(draft.longitude) ||
-              Math.abs(draft.latitude) > 90 ||
-              Math.abs(draft.longitude) > 180
-            }
-            onClick={() => {
-              onChange(draft);
-              setError("");
-              setMessage("Zona elegida en el mapa.");
-              dialog.current?.close();
-            }}
-          >
-            Usar esta zona
-          </button>
-        </div>
-      </dialog>
+        onConfirm={() => {
+          onChange(draft);
+          request.clearError();
+          setMessage(
+            "Zona actualizada. Se conserva al cambiar de sección en esta pestaña.",
+          );
+          dialog.current?.close();
+        }}
+      />
     </div>
   );
 }

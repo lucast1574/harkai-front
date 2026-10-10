@@ -1,8 +1,7 @@
 "use client";
-import { useEffect, useRef } from "react";
-import { DomEvent } from "leaflet";
+import { useEffect } from "react";
 import {
-  CircleMarker,
+  Circle,
   MapContainer,
   TileLayer,
   useMap,
@@ -20,87 +19,87 @@ function PointEvents({
   const map = useMap();
   useMapEvents({
     click: (event) => {
-      const selected = map.wrapLatLng(event.latlng);
-      onChange({
-        latitude: Math.max(-85, Math.min(85, selected.lat)),
-        longitude: selected.lng,
-      });
+      const p = map.wrapLatLng(event.latlng);
+      map.panTo([Math.max(-85, Math.min(85, p.lat)), p.lng]);
+    },
+    moveend: () => {
+      const p = map.wrapLatLng(map.getCenter());
+      const next = {
+        latitude: Math.max(-85, Math.min(85, p.lat)),
+        longitude: p.lng,
+      };
+      if (
+        Math.abs(next.latitude - point.latitude) > 0.000001 ||
+        Math.abs(next.longitude - point.longitude) > 0.000001
+      )
+        onChange(next);
     },
   });
   useEffect(() => {
-    if (!map.getBounds().contains([point.latitude, point.longitude]))
-      map.panTo([point.latitude, point.longitude]);
+    const center = map.wrapLatLng(map.getCenter());
+    if (
+      Math.abs(center.lat - point.latitude) > 0.000001 ||
+      Math.abs(center.lng - point.longitude) > 0.000001
+    )
+      map.setView([point.latitude, point.longitude], map.getZoom(), {
+        animate: false,
+      });
   }, [point.latitude, point.longitude, map]);
   useEffect(() => {
-    const observer = new ResizeObserver(() => map.invalidateSize());
+    const update = (): void => {
+      map.invalidateSize({ pan: false });
+    };
+    const frame = requestAnimationFrame(update);
+    const observer = new ResizeObserver(update);
     observer.observe(map.getContainer());
-    return () => observer.disconnect();
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
   }, [map]);
   return null;
-}
-function SelectCenter({
-  onChange,
-}: {
-  onChange: (point: Point) => void;
-}): React.JSX.Element {
-  const map = useMap();
-  const control = useRef<HTMLButtonElement>(null);
-  useEffect(() => {
-    const node = control.current;
-    if (!node) return;
-    DomEvent.disableClickPropagation(node);
-    DomEvent.disableScrollPropagation(node);
-    return () => {
-      DomEvent.off(node);
-    };
-  }, []);
-  return (
-    <button
-      ref={control}
-      className="button secondary point-center"
-      type="button"
-      onClick={() => {
-        const center = map.wrapLatLng(map.getCenter());
-        onChange({
-          latitude: Math.max(-85, Math.min(85, center.lat)),
-          longitude: center.lng,
-        });
-      }}
-    >
-      Elegir centro del mapa
-    </button>
-  );
 }
 export default function PointMap({
   point,
   onChange,
+  accuracy,
 }: {
   point: Point;
   onChange: (point: Point) => void;
+  accuracy?: number;
 }): React.JSX.Element {
   return (
-    <MapContainer
-      className="point-map"
-      center={[point.latitude, point.longitude]}
-      zoom={13}
-      scrollWheelZoom
-    >
-      <TileLayer
-        url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      />
-      <PointEvents point={point} onChange={onChange} />
-      <SelectCenter onChange={onChange} />
-      <CircleMarker
+    <div className="point-map-frame">
+      <MapContainer
+        className="point-map"
         center={[point.latitude, point.longitude]}
-        radius={10}
-        pathOptions={{
-          color: "#fff",
-          fillColor: "#247751",
-          fillOpacity: 1,
-          weight: 3,
-        }}
-      />
-    </MapContainer>
+        zoom={accuracy && accuracy > 10000 ? 10 : 13}
+        scrollWheelZoom
+        worldCopyJump
+        maxBounds={[
+          [-85, -180],
+          [85, 180],
+        ]}
+      >
+        <TileLayer
+          url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
+        <PointEvents point={point} onChange={onChange} />
+        {accuracy !== undefined && (
+          <Circle
+            center={[point.latitude, point.longitude]}
+            radius={accuracy}
+            pathOptions={{ color: "#398363", fillOpacity: 0.08, weight: 1 }}
+          />
+        )}
+      </MapContainer>
+      <div className="point-pin" aria-hidden="true">
+        <span />
+      </div>
+      <span className="point-map-hint">
+        Mueve el mapa para ajustar el punto
+      </span>
+    </div>
   );
 }

@@ -1,17 +1,17 @@
 "use client";
+import { useArea } from "@/lib/use-area";
 import { DistrictDirectory } from "./district-directory";
 import { OfficialPlaces } from "./official-places";
 import { SUPPORT_CITIES } from "./contracts";
-import { useState } from "react";
 import { PawPrint, HeartHandshake, RefreshCw } from "lucide-react";
 import { Heading, Notice } from "@/components/ui";
-import { LIMA, type Area, type Meta } from "@/lib/contracts";
+import { LIMA, type Meta } from "@/lib/contracts";
 import { useResource } from "@/lib/use-resource";
 import { ZoneControls } from "../reports/zone-controls";
 import { useReports } from "../reports/use-reports";
 import { ReportCard } from "../reports/report-card";
 export function SupportNetwork(): React.JSX.Element {
-  const [area, setArea] = useState<Area>({ ...LIMA, type: "place" });
+  const [area, setArea] = useArea({ ...LIMA, type: "place" });
   const { data: meta, error } = useResource<Meta>("meta");
   const reports = useReports(area);
   return (

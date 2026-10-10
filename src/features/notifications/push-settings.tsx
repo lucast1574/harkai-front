@@ -4,7 +4,7 @@ import { useAuth } from "@/lib/auth";
 import { useResource } from "@/lib/use-resource";
 import { LocationControl } from "../map/location-control";
 import { type Point } from "@/lib/location";
-import { LIMA } from "@/lib/contracts";
+import { useQueryPoint } from "@/lib/use-area";
 import type { Meta } from "@/lib/contracts";
 import {
   clearPush,
@@ -15,6 +15,7 @@ import {
 import { Notice } from "@/components/ui";
 export function PushSettings(): React.JSX.Element {
   const { user } = useAuth();
+  const queryPoint = useQueryPoint();
   const { data: meta } = useResource<Meta>("meta");
   const [zone, setZone] = useState<Point | null>(null);
   const [enabled, setEnabled] = useState(false);
@@ -85,7 +86,9 @@ export function PushSettings(): React.JSX.Element {
           Este navegador está registrado. Actualiza la zona si cambias de lugar.
         </Notice>
       )}
-      {ready && <LocationControl point={zone || LIMA} onChange={setZone} />}
+      {ready && (
+        <LocationControl point={zone || queryPoint} onChange={setZone} />
+      )}
       {zone && (
         <p className="small muted">
           Zona elegida: {zone.latitude.toFixed(4)}, {zone.longitude.toFixed(4)}.

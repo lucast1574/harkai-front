@@ -42,3 +42,9 @@ El mapa principal admite zoom con la rueda. LocationControl comparte selección 
 Ayuda y Red de apoyo consultan `support/directory` por ciudad y distrito. Los recursos permanentes de `support/places` aparecen como marcadores azules, separados de las alertas y sus estadísticas. Cada ficha conserva fuentes y fecha de consulta; si falta contraste institucional del número municipal se indica y se ofrecen las líneas nacionales. La carga inicial es una selección de centros, no una cobertura completa de establecimientos.
 
 `components/select.tsx` comparte desplegables propios con opciones redondeadas, navegación por flechas, búsqueda al escribir, Escape y cierre exterior. El control nativo oculto conserva FormData y reinicio del formulario. El menú se monta fuera de paneles con overflow y ajusta su posición a la pantalla. Los estados de foco no usan outline, ring ni glow: solo cambios discretos de fondo o subrayado.
+
+## Ubicación y consulta territorial
+
+El panel resuelve coordenadas mediante `GET geo/district` del backend Go, sin llamadas a geocoders externos. La vista inicial consulta un distrito; `Toda la ciudad` utiliza todos los distritos de la provincia. Reportes activos, archivo, exportaciones y centros de ayuda comparten `ubigeo` y `scope`, filtrados por polígonos en MongoDB. Los límites visibles son referencia SENACE/INEI de junio de 2020; distritos posteriores necesitan cartografía oficial actualizada.
+
+La zona elegida se conserva en `sessionStorage` durante la pestaña. La ubicación real del navegador se muestra con un punto azul y precisión, se mantiene únicamente en memoria y se solicita al pulsar `Usar mi ubicación`. La búsqueda completa tiene un límite de 12 segundos y puede cancelarse. Una precisión peor que 2 km requiere confirmar o ajustar el punto; siempre existe selección manual de ciudad y mapa. No se infiere ubicación por IP. La caché de hasta 64 resoluciones evita repetir descargas al volver a zonas consultadas.

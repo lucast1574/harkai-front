@@ -91,7 +91,7 @@
     margin-top: 10px;
   }
   .zone-options {
-    grid-template-columns: 105px minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
   .location-button {
     margin-top: 9px;

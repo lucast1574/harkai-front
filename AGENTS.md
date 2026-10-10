@@ -11,3 +11,5 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 ## Preferencias de interfaz de Lucas
 
 No añadir focus rings, outlines ni glow. Los estados `:focus` y `:focus-visible` deben tener outline 0 y ninguna sombra de foco. Mantener el teclado operativo con indicación discreta de fondo o subrayado. Usar el componente Select compartido: menú propio redondeado y suave, sin mostrar el desplegable nativo del navegador.
+
+Los desplegables deben ocultar siempre la barra de desplazamiento, conservando el scroll con rueda, táctil y teclado.

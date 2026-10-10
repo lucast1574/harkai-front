@@ -60,7 +60,13 @@
   box-shadow: 0 12px 30px rgb(1 25 53 / 12%);
   font-size: 13px;
   line-height: 1.5;
-  scrollbar-width: thin;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.menu::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 .option {
   display: flex;

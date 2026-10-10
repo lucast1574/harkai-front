@@ -3,9 +3,9 @@ import Link from "next/link";
 import { QuickGuidance } from "./quick-guidance";
 import { useState } from "react";
 import { api } from "@/lib/api";
-import { useResource } from "@/lib/use-resource";
+import { DistrictDirectory } from "../support/district-directory";
 import type { Analysis } from "@/lib/contracts";
-import { Heading, Notice, TextArea, Field } from "@/components/ui";
+import { Heading, Notice, TextArea } from "@/components/ui";
 import { useAuth } from "@/lib/auth";
 export function Help(): React.JSX.Element {
   const { user } = useAuth();
@@ -13,11 +13,6 @@ export function Help(): React.JSX.Element {
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const [city, setCity] = useState("lima");
-  const [queryCity, setQueryCity] = useState("lima");
-  const contacts = useResource<{ numbers: Record<string, string> }>(
-    `emergency-contacts?country=PE&city=${encodeURIComponent(queryCity)}`,
-  );
   async function ask(): Promise<void> {
     setBusy(true);
     setError("");
@@ -90,60 +85,7 @@ export function Help(): React.JSX.Element {
             </>
           )}
         </section>
-        <section className="panel">
-          <span className="eyebrow">CANALES DE ATENCIÓN</span>
-          <h2>Contactos de ayuda</h2>
-          <p className="muted small">
-            Directorio publicado por la administración para la ciudad que
-            consultes.
-          </p>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              setQueryCity(city);
-            }}
-          >
-            <Field
-              label="Ciudad"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-              required
-              minLength={2}
-            />
-            <button className="button secondary">Consultar contactos</button>
-          </form>
-          {contacts.loading ? (
-            <Notice>Consultando contactos…</Notice>
-          ) : contacts.error ? (
-            <Notice>
-              No pudimos cargar un directorio para esta ciudad. Prueba otra
-              ciudad o consulta los canales oficiales de tu localidad.
-            </Notice>
-          ) : contacts.data && Object.keys(contacts.data.numbers).length > 0 ? (
-            Object.entries(contacts.data.numbers).map(([name, number]) => (
-              <a
-                key={name}
-                className="contact-link"
-                href={`tel:${number.replace(/[^+0-9]/g, "")}`}
-              >
-                <span>
-                  {{
-                    police: "Policía",
-                    medical: "Emergencias médicas",
-                    firefighters: "Bomberos",
-                    municipal: "Municipalidad",
-                  }[name] || name}
-                </span>
-                <strong>{number}</strong>
-              </a>
-            ))
-          ) : (
-            <p className="muted">
-              No hay un directorio disponible para esta ciudad. Si hay peligro
-              inmediato, busca el canal oficial de emergencias de tu zona.
-            </p>
-          )}
-        </section>
+        <DistrictDirectory />
       </div>
       <section className="panel help-faq">
         <h2>Usa Harkai con claridad</h2>

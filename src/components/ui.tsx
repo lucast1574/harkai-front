@@ -2,7 +2,6 @@
 import {
   useId,
   type InputHTMLAttributes,
-  type SelectHTMLAttributes,
   type TextareaHTMLAttributes,
 } from "react";
 export function Field({
@@ -33,23 +32,7 @@ export function Field({
     </label>
   );
 }
-export function Select({
-  label,
-  children,
-  ...props
-}: SelectHTMLAttributes<HTMLSelectElement> & {
-  label: string;
-}): React.JSX.Element {
-  const id = useId();
-  return (
-    <label className="field" htmlFor={id}>
-      <span>{label}</span>
-      <select id={id} {...props}>
-        {children}
-      </select>
-    </label>
-  );
-}
+export { Select } from "./select";
 export function TextArea({
   label,
   ...props

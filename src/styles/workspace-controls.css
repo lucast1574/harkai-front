@@ -29,18 +29,16 @@
 }
 .zone-options {
   display: grid;
-  grid-template-columns: 85px 1fr;
+  grid-template-columns: 105px minmax(0, 1fr);
   gap: 10px;
 }
 .zone-options .field {
   font-size: 12px;
   gap: 5px;
 }
-.zone-options .field select {
-  font-size: 13px;
-  min-height: 38px;
-  padding: 8px 6px;
-  background: var(--surface);
+.zone-options .field [role="combobox"] {
+  gap: 6px;
+  padding: 10px;
 }
 .location-button {
   display: flex;

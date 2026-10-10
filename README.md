@@ -36,3 +36,9 @@ El service worker se empaqueta localmente con el SDK modular en `npm run build` 
 ## Ubicación en desktop
 
 El mapa principal admite zoom con la rueda. LocationControl comparte selección manual y geolocalización entre mapa, historial, filtros y notificaciones. La búsqueda usa precisión normal y una posición reciente de hasta dos minutos, con un límite de veinte segundos; distingue permisos bloqueados, equipo sin ubicación y timeout. La consulta no depende de GPS: se puede elegir un punto en un diálogo Leaflet, con controles de teclado y coordenadas. No se calcula una ubicación personal a partir de la IP. La orientación por categoría es pública; la consulta por texto sigue autenticada.
+
+## Directorio y controles
+
+Ayuda y Red de apoyo consultan `support/directory` por ciudad y distrito. Los recursos permanentes de `support/places` aparecen como marcadores azules, separados de las alertas y sus estadísticas. Cada ficha conserva fuentes y fecha de consulta; si falta contraste institucional del número municipal se indica y se ofrecen las líneas nacionales. La carga inicial es una selección de centros, no una cobertura completa de establecimientos.
+
+`components/select.tsx` comparte desplegables propios con opciones redondeadas, navegación por flechas, búsqueda al escribir, Escape y cierre exterior. El control nativo oculto conserva FormData y reinicio del formulario. El menú se monta fuera de paneles con overflow y ajusta su posición a la pantalla. Los estados de foco no usan outline, ring ni glow: solo cambios discretos de fondo o subrayado.

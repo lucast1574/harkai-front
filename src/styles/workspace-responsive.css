@@ -91,10 +91,18 @@
     margin-top: 10px;
   }
   .zone-options {
-    grid-template-columns: 100px 1fr;
+    grid-template-columns: 105px minmax(0, 1fr);
   }
   .location-button {
     margin-top: 9px;
+  }
+  .explore-rail > .checkbox {
+    order: 1;
+    margin: 0 22px 18px;
+  }
+  .explore-rail > .notice {
+    order: 1;
+    margin: 0 22px 18px;
   }
   .explore-rail > section[aria-label="Resumen de la consulta"] {
     order: 2;

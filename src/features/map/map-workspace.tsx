@@ -2,8 +2,15 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, MapPin, RefreshCw, ShieldCheck, X } from "lucide-react";
-import { LIMA, dateLabel, type Area, type Meta } from "@/lib/contracts";
+import {
+  areaQuery,
+  LIMA,
+  dateLabel,
+  type Area,
+  type Meta,
+} from "@/lib/contracts";
 import { useResource } from "@/lib/use-resource";
+import type { SupportPlace } from "../support/contracts";
 import { Notice } from "@/components/ui";
 import { QueryOverview } from "../reports/query-overview";
 import { useReports } from "../reports/use-reports";
@@ -11,6 +18,7 @@ import { Verification } from "../reports/report-card";
 import { ZoneControls } from "../reports/zone-controls";
 import ZoneMap from "./map-loader";
 export function MapWorkspace(): React.JSX.Element {
+  const [showSupport, setShowSupport] = useState(true);
   const [area, setArea] = useState<Area>(LIMA);
   const [selectedId, setSelected] = useState("");
   const [candidate, setCandidate] = useState<{
@@ -20,6 +28,9 @@ export function MapWorkspace(): React.JSX.Element {
   const { data: meta, error: metaError } = useResource<Meta>("meta");
   const categories = meta?.categories || [];
   const reports = useReports(area);
+  const support = useResource<{ items: SupportPlace[] }>(
+    `support/places?${areaQuery(area)}`,
+  );
   const selected = reports.items.find((i) => i.id === selectedId);
   const changeArea = (a: Area) => {
     setArea(a);
@@ -45,6 +56,20 @@ export function MapWorkspace(): React.JSX.Element {
           categories={categories}
           onChange={changeArea}
         />
+        <label className="checkbox">
+          <input
+            type="checkbox"
+            checked={showSupport}
+            onChange={(e) => setShowSupport(e.target.checked)}
+          />{" "}
+          Mostrar centros de salud y ayuda
+        </label>
+        {showSupport && support.error && (
+          <Notice error>
+            No se pudo cargar el directorio de salud. Las alertas siguen
+            disponibles.
+          </Notice>
+        )}
         <QueryOverview
           compact
           area={area}
@@ -139,6 +164,7 @@ export function MapWorkspace(): React.JSX.Element {
       </aside>
       <div className="map-stage">
         <ZoneMap
+          supportPlaces={showSupport ? support.data?.items || [] : []}
           scrollWheelZoom
           area={area}
           incidents={reports.items}
@@ -169,6 +195,11 @@ export function MapWorkspace(): React.JSX.Element {
           </button>
         )}
         <div className="map-legend">
+          {showSupport && (
+            <span>
+              <i className="report-dot support" /> Salud y ayuda
+            </span>
+          )}
           <span>
             <i className="report-dot confirmed" /> Confirmado
           </span>

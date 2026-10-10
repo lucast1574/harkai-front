@@ -195,3 +195,12 @@
   font-size: 12px;
   font-weight: 700;
 }
+
+.report-dot.support {
+  border-color: #245b9b;
+  background: #73a9e4;
+}
+.map-legend {
+  flex-wrap: wrap;
+  max-width: calc(100% - 100px);
+}

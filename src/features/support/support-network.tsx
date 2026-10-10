@@ -1,4 +1,7 @@
 "use client";
+import { DistrictDirectory } from "./district-directory";
+import { OfficialPlaces } from "./official-places";
+import { SUPPORT_CITIES } from "./contracts";
 import { useState } from "react";
 import { PawPrint, HeartHandshake, RefreshCw } from "lucide-react";
 import { Heading, Notice } from "@/components/ui";
@@ -8,7 +11,7 @@ import { ZoneControls } from "../reports/zone-controls";
 import { useReports } from "../reports/use-reports";
 import { ReportCard } from "../reports/report-card";
 export function SupportNetwork(): React.JSX.Element {
-  const [area, setArea] = useState<Area>({ ...LIMA, type: "pet" });
+  const [area, setArea] = useState<Area>({ ...LIMA, type: "place" });
   const { data: meta, error } = useResource<Meta>("meta");
   const reports = useReports(area);
   return (
@@ -47,6 +50,18 @@ export function SupportNetwork(): React.JSX.Element {
           </button>
         ))}
       </div>
+      {area.type === "place" && (
+        <DistrictDirectory
+          onCityChange={(city) =>
+            setArea({
+              ...area,
+              latitude: SUPPORT_CITIES[city].latitude,
+              longitude: SUPPORT_CITIES[city].longitude,
+              radius: 50000,
+            })
+          }
+        />
+      )}
       <section className="panel support-zone">
         <ZoneControls
           area={area}
@@ -55,11 +70,12 @@ export function SupportNetwork(): React.JSX.Element {
           onChange={setArea}
         />
       </section>
+      {area.type === "place" && <OfficialPlaces area={area} />}
       <div className="support-results-heading">
         <h2>
           {area.type === "pet"
             ? "Mascotas en esta zona"
-            : "Lugares de ayuda en esta zona"}
+            : "Lugares compartidos por la comunidad"}
         </h2>
         <button
           className="text-button"

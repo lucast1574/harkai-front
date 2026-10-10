@@ -28,11 +28,17 @@ textarea,
 select {
   font: inherit;
 }
-button,
-a,
-input,
-select,
-textarea {
+:focus,
+:focus-visible {
+  outline: 0 !important;
+  outline-offset: 0;
+  box-shadow: none !important;
+}
+input:focus-visible,
+textarea:focus-visible {
+  background-color: var(--surface-soft);
+}
+a {
   outline-offset: 4px;
 }
 button:focus-visible,
@@ -89,4 +95,12 @@ small,
   font-weight: 700;
   display: block;
   margin-bottom: 16px;
+}
+
+button:focus-visible {
+  filter: brightness(0.94);
+}
+a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }

@@ -63,3 +63,18 @@
     padding: 20px;
   }
 }
+
+.support-place {
+  margin-bottom: 0;
+}
+.support-place .eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.support-place .button {
+  gap: 7px;
+}
+.support-place h3 {
+  font-size: 18px;
+}

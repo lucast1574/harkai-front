@@ -7,3 +7,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Preferencias de interfaz de Lucas
+
+No añadir focus rings, outlines ni glow. Los estados `:focus` y `:focus-visible` deben tener outline 0 y ninguna sombra de foco. Mantener el teclado operativo con indicación discreta de fondo o subrayado. Usar el componente Select compartido: menú propio redondeado y suave, sin mostrar el desplegable nativo del navegador.

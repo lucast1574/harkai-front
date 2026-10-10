@@ -10,9 +10,11 @@ import {
   useMap,
   useMapEvents,
 } from "react-leaflet";
+import type { SupportPlace } from "../support/contracts";
 import type { Area, Incident, Category } from "@/lib/contracts";
 import "leaflet/dist/leaflet.css";
 type Props = {
+  supportPlaces?: SupportPlace[];
   area: Area;
   incidents: Incident[];
   categories: Category[];
@@ -28,7 +30,7 @@ function View({
   onMove,
 }: {
   area: Area;
-  selected?: Incident;
+  selected?: { latitude: number; longitude: number };
   onMove?: Props["onMove"];
 }): null {
   const map = useMap();
@@ -77,6 +79,7 @@ function View({
 export default function ZoneMap({
   area,
   incidents,
+  supportPlaces = [],
   categories,
   heat = false,
   scrollWheelZoom = false,
@@ -94,7 +97,10 @@ export default function ZoneMap({
     >
       <View
         area={area}
-        selected={incidents.find((i) => i.id === selectedId)}
+        selected={
+          incidents.find((i) => i.id === selectedId) ||
+          supportPlaces.find((p) => p.id === selectedId)
+        }
         onMove={onMove}
       />
       <TileLayer
@@ -112,6 +118,39 @@ export default function ZoneMap({
           fillOpacity: 0.035,
         }}
       />
+      {supportPlaces.map((place) => (
+        <CircleMarker
+          key={`support:${place.id}`}
+          center={[place.latitude, place.longitude]}
+          radius={8}
+          pathOptions={{
+            color: "#245b9b",
+            fillColor: "#73a9e4",
+            weight: 3,
+            fillOpacity: 0.95,
+          }}
+        >
+          <Popup>
+            <strong>{place.name}</strong>
+            <p>Centro de salud / ayuda · Directorio institucional</p>
+            <p>
+              {place.address} · {place.district}
+            </p>
+            {place.phone && (
+              <p>
+                <a href={`tel:${place.phone}`}>Contacto: {place.phone}</a>
+              </p>
+            )}
+            <a
+              href={place.source_url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Consultar fuente institucional
+            </a>
+          </Popup>
+        </CircleMarker>
+      ))}
       {incidents.map((i) => (
         <CircleMarker
           key={i.id}

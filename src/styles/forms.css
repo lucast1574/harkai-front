@@ -41,6 +41,7 @@
   width: 18px;
   height: 18px;
   flex-shrink: 0;
+  accent-color: var(--accent-ink);
 }
 .advice {
   padding-left: 20px;

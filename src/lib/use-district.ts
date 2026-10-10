@@ -47,7 +47,11 @@ export function useDistrict(
     )
       .then((data) => {
         cache.set(path, data);
-        if (cache.size > 64) cache.delete(cache.keys().next().value!);
+        cache.set(
+          `geo/district?ubigeo=${data.district.id}&scope=${scope}`,
+          data,
+        );
+        while (cache.size > 64) cache.delete(cache.keys().next().value!);
         if (!controller.signal.aborted) setResult({ path, ...data, error: "" });
       })
       .catch(() => {
@@ -60,8 +64,12 @@ export function useDistrict(
           });
       });
     return () => controller.abort();
-  }, [path, attempt]);
-  if (result.path !== path)
-    return { districts: [], loading: true, error: "", retry };
+  }, [path, attempt, scope]);
+  if (result.path !== path) {
+    const cached = cache.get(path);
+    return cached
+      ? { ...cached, loading: false, error: "", retry }
+      : { districts: [], loading: true, error: "", retry };
+  }
   return { ...result, loading: false, retry };
 }

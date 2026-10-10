@@ -30,10 +30,17 @@ export function ZoneMapView({
       ? geoJSON(area.geography.geometry).getBounds()
       : latLng(area.latitude, area.longitude).toBounds(area.radius * 2);
     map.setMinZoom(2);
-    map.setMaxBounds(bounds.pad(0.45));
+    map.setMaxBounds(bounds.pad(area.scope === "city" ? 0.2 : 0.08));
     map.fitBounds(bounds, { padding: [28, 80], maxZoom: 15, animate: false });
     map.setMinZoom(Math.max(2, map.getBoundsZoom(bounds) - 1));
-  }, [area.latitude, area.longitude, area.radius, area.geography, map]);
+  }, [
+    area.latitude,
+    area.longitude,
+    area.radius,
+    area.scope,
+    area.geography,
+    map,
+  ]);
   const selectedLatitude = selected?.latitude,
     selectedLongitude = selected?.longitude;
   useEffect(() => {

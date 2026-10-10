@@ -2,6 +2,7 @@
 import type { Area, Category } from "@/lib/contracts";
 import { Field, Select } from "@/components/ui";
 import { useState } from "react";
+import { ScopeToggle } from "../map/scope-toggle";
 import { LocationControl } from "../map/location-control";
 export function AreaFilter({
   area,
@@ -35,17 +36,8 @@ export function AreaFilter({
       <div className="filter-heading">
         <h2>Ubicación de consulta</h2>
       </div>
+      <ScopeToggle area={area} onChange={onChange} />
       <div className="filter-fields">
-        <Select
-          label="Alcance"
-          value={area.scope || "district"}
-          onChange={(e) =>
-            onChange({ ...area, scope: e.target.value as "district" | "city" })
-          }
-        >
-          <option value="district">Mi distrito</option>
-          <option value="city">Toda la ciudad</option>
-        </Select>
         <Select
           label="Distrito"
           value={area.ubigeo || ""}

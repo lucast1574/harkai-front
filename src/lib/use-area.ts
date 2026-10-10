@@ -1,8 +1,11 @@
 "use client";
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { LIMA, type Area } from "./contracts";
 import { useDistrict } from "./use-district";
-import { validPoint, type LocatedPoint, type Point } from "./location";
+import { validPoint, type Point } from "./location";
+import { startAutoLocation } from "./user-location";
+export { rememberUserLocation, useUserLocation } from "./user-location";
+let manualRevision = 0;
 const KEY = "harkai:query-zone:v1";
 const EVENT = "harkai:query-zone";
 type QueryPoint = Point & { ubigeo?: string; scope?: "district" | "city" };
@@ -61,6 +64,13 @@ function save(point: QueryPoint): void {
 }
 export function useArea(defaults: Area = LIMA): [Area, (next: Area) => void] {
   const point = useSyncExternalStore(subscribe, snapshot, () => initial);
+  useEffect(() => {
+    const revision = manualRevision;
+    void startAutoLocation((next) => {
+      if (manualRevision === revision)
+        save({ ...next, scope: snapshot().scope || "district" });
+    });
+  }, []);
   const [filters, setFilters] = useState(defaults);
   const region = useDistrict(point, point.ubigeo, point.scope || "district");
   const area = {
@@ -80,6 +90,7 @@ export function useArea(defaults: Area = LIMA): [Area, (next: Area) => void] {
       setFilters(next);
       const moved =
         next.latitude !== point.latitude || next.longitude !== point.longitude;
+      if (moved || next.ubigeo !== area.ubigeo) manualRevision++;
       save({ ...next, ubigeo: moved ? undefined : next.ubigeo });
     },
   ];
@@ -88,19 +99,7 @@ export function useQueryPoint(): Point {
   return useSyncExternalStore(subscribe, snapshot, () => initial);
 }
 
-let userLocation: LocatedPoint | null = null;
-const USER_EVENT = "harkai:user-location";
-export function rememberUserLocation(point: LocatedPoint): void {
-  userLocation = point;
-  window.dispatchEvent(new Event(USER_EVENT));
-}
-export function useUserLocation(): LocatedPoint | null {
-  return useSyncExternalStore(
-    (listener) => {
-      window.addEventListener(USER_EVENT, listener);
-      return () => window.removeEventListener(USER_EVENT, listener);
-    },
-    () => userLocation,
-    () => null,
-  );
+export function queryUserLocation(point: Point): void {
+  manualRevision++;
+  save({ ...point, scope: "district" });
 }

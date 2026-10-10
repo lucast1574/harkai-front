@@ -4,7 +4,11 @@ type LocationServices = {
   secure: boolean;
   geolocation?: Pick<Geolocation, "getCurrentPosition">;
 };
-type LocateOptions = { signal?: AbortSignal; timeoutMs?: number };
+type LocateOptions = {
+  signal?: AbortSignal;
+  timeoutMs?: number;
+  highAccuracy?: boolean;
+};
 export function validPoint(point: Point): boolean {
   return (
     Number.isFinite(point.latitude) &&
@@ -25,7 +29,7 @@ export async function locate(
     secure: window.isSecureContext,
     geolocation: navigator.geolocation,
   },
-  { signal, timeoutMs = 12000 }: LocateOptions = {},
+  { signal, timeoutMs = 12000, highAccuracy = false }: LocateOptions = {},
 ): Promise<LocatedPoint> {
   if (!services.secure)
     throw new Error(
@@ -73,9 +77,9 @@ export async function locate(
         },
         (error) => finish(undefined, new Error(locationError(error.code))),
         {
-          enableHighAccuracy: false,
+          enableHighAccuracy: highAccuracy,
           timeout: Math.min(10000, timeoutMs),
-          maximumAge: 30000,
+          maximumAge: highAccuracy ? 0 : 30000,
         },
       );
     } catch {

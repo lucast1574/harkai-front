@@ -32,8 +32,9 @@ export function DistrictMask({
       interactive={false}
       pathOptions={{
         stroke: false,
-        fillColor: "#e6eceb",
-        fillOpacity: 0.68,
+        className: "district-outside",
+        fillColor: "var(--map-outside, #f1f4f3)",
+        fillOpacity: 1,
         fillRule: "evenodd",
       }}
     />

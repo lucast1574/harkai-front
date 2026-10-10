@@ -82,6 +82,8 @@ export default function PointMap({
         ]}
       >
         <TileLayer
+          className="harkai-basemap"
+          updateWhenIdle
           url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />

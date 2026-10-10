@@ -1,5 +1,8 @@
 "use client";
 import Link from "next/link";
+import { geoJSON } from "leaflet";
+import { LocateFixed } from "lucide-react";
+import { useUserLocation, queryUserLocation } from "@/lib/use-area";
 import {
   Circle,
   GeoJSON,
@@ -9,13 +12,14 @@ import {
   Popup,
   useMap,
 } from "react-leaflet";
+import { SupportPlaceMarker } from "./support-place-marker";
 import { DistrictMask } from "./district-mask";
 import { UserLocationMarker } from "./user-location-marker";
 import { ZoneMapView } from "./zone-map-view";
 import type { SupportPlace } from "../support/contracts";
 import type { Area, Incident, Category } from "@/lib/contracts";
 import "leaflet/dist/leaflet.css";
-type Props = {
+export type ZoneMapProps = {
   supportPlaces?: SupportPlace[];
   area: Area;
   incidents: Incident[];
@@ -36,12 +40,19 @@ export default function ZoneMap({
   selectedId,
   onSelect,
   onMove,
-}: Props): React.JSX.Element {
+}: ZoneMapProps): React.JSX.Element {
   return (
     <MapContainer
       className="zone-map"
-      center={[area.latitude, area.longitude]}
-      zoom={13}
+      center={area.geography ? undefined : [area.latitude, area.longitude]}
+      zoom={area.geography ? undefined : 13}
+      bounds={
+        area.geography
+          ? geoJSON(area.geography.geometry).getBounds()
+          : undefined
+      }
+      boundsOptions={{ padding: [28, 80], maxZoom: 15 }}
+      fadeAnimation={false}
       scrollWheelZoom={scrollWheelZoom}
       zoomControl={false}
       worldCopyJump
@@ -59,6 +70,10 @@ export default function ZoneMap({
         onMove={onMove}
       />
       <TileLayer
+        className="harkai-basemap"
+        keepBuffer={2}
+        updateWhenIdle
+        updateWhenZooming={false}
         url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
@@ -107,37 +122,7 @@ export default function ZoneMap({
         </span>
       </div>
       {supportPlaces.map((place) => (
-        <CircleMarker
-          key={`support:${place.id}`}
-          center={[place.latitude, place.longitude]}
-          radius={8}
-          pathOptions={{
-            color: "#245b9b",
-            fillColor: "#73a9e4",
-            weight: 3,
-            fillOpacity: 0.95,
-          }}
-        >
-          <Popup>
-            <strong>{place.name}</strong>
-            <p>Centro de salud / ayuda · Directorio institucional</p>
-            <p>
-              {place.address} · {place.district}
-            </p>
-            {place.phone && (
-              <p>
-                <a href={`tel:${place.phone}`}>Contacto: {place.phone}</a>
-              </p>
-            )}
-            <a
-              href={place.source_url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Consultar fuente institucional
-            </a>
-          </Popup>
-        </CircleMarker>
+        <SupportPlaceMarker key={place.id} place={place} />
       ))}
       {incidents.map((i) => (
         <CircleMarker
@@ -171,12 +156,29 @@ export default function ZoneMap({
 }
 function MapControls(): React.JSX.Element {
   const map = useMap();
+  const point = useUserLocation();
   return (
     <div
       className="map-zoom"
       onMouseDown={(e) => e.stopPropagation()}
       onDoubleClick={(e) => e.stopPropagation()}
     >
+      {point && (
+        <button
+          aria-label="Centrar en mi ubicación"
+          title="Centrar en mi ubicación"
+          onClick={() => {
+            queryUserLocation(point);
+            map.flyTo(
+              [point.latitude, point.longitude],
+              Math.max(15, map.getZoom()),
+              { duration: 0.3 },
+            );
+          }}
+        >
+          <LocateFixed size={18} />
+        </button>
+      )}
       <button aria-label="Acercar mapa" onClick={() => map.zoomIn()}>
         +
       </button>

@@ -1,4 +1,5 @@
 "use client";
+import { ScopeToggle } from "../map/scope-toggle";
 import { LocationControl } from "../map/location-control";
 import type { Area, Category } from "@/lib/contracts";
 import { Select } from "@/components/ui";
@@ -21,17 +22,8 @@ export function ZoneControls({
         </span>
         <strong>{area.geography?.province || "Selecciona un punto"}</strong>
       </div>
+      <ScopeToggle area={area} onChange={onChange} />
       <div className="zone-options">
-        <Select
-          label="Alcance"
-          value={area.scope || "district"}
-          onChange={(e) =>
-            onChange({ ...area, scope: e.target.value as "district" | "city" })
-          }
-        >
-          <option value="district">Mi distrito</option>
-          <option value="city">Toda la ciudad</option>
-        </Select>
         <Select
           label="Distrito"
           value={area.ubigeo || ""}

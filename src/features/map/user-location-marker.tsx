@@ -1,5 +1,6 @@
 "use client";
-import { Circle, CircleMarker, Popup } from "react-leaflet";
+import { Circle, Marker, Popup, Tooltip } from "react-leaflet";
+import { userIcon } from "./map-icons";
 import { useUserLocation } from "@/lib/use-area";
 export function UserLocationMarker(): React.JSX.Element | null {
   const point = useUserLocation();
@@ -17,24 +18,29 @@ export function UserLocationMarker(): React.JSX.Element | null {
           weight: 1,
         }}
       />
-      <CircleMarker
-        center={[point.latitude, point.longitude]}
-        radius={9}
-        pathOptions={{
-          color: "#fff",
-          fillColor: "#287ee6",
-          fillOpacity: 1,
-          weight: 3,
-        }}
+      <Marker
+        position={[point.latitude, point.longitude]}
+        icon={userIcon}
+        alt="Tu ubicación"
+        title="Tu ubicación"
+        zIndexOffset={5000}
       >
+        <Tooltip
+          permanent
+          direction="top"
+          offset={[0, -14]}
+          className="user-location-label"
+        >
+          Tu ubicación
+        </Tooltip>
         <Popup>
           <strong>Tu ubicación</strong>
           <p>
-            Precisión aproximada: {Math.round(point.accuracy)} m. Solo se
-            actualiza cuando lo solicitas.
+            Precisión aproximada: {Math.round(point.accuracy)} m. Detectada al
+            entrar al panel.
           </p>
         </Popup>
-      </CircleMarker>
+      </Marker>
     </>
   );
 }

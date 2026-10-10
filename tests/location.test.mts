@@ -76,20 +76,70 @@ test("invalid provider coordinates cannot become a query zone", async () => {
   }
 });
 
-
 test("the full request is bounded even when the permission prompt never resolves", async () => {
- await assert.rejects(locate({secure:true, geolocation:{getCurrentPosition(){}}}, {timeoutMs:20}), /demasiado/);
+  await assert.rejects(
+    locate(
+      { secure: true, geolocation: { getCurrentPosition() {} } },
+      { timeoutMs: 20 },
+    ),
+    /demasiado/,
+  );
 });
 test("cancellation rejects and ignores a provider callback that arrives later", async () => {
- const controller = new AbortController();
- let callback: PositionCallback | undefined;
- const promise = locate({secure:true, geolocation:{getCurrentPosition(success){callback=success;}}}, {signal:controller.signal});
- controller.abort();
- await assert.rejects(promise, {name:"AbortError"});
- callback!({coords:{latitude:-12,longitude:-77,accuracy:10}} as GeolocationPosition);
+  const controller = new AbortController();
+  let callback: PositionCallback | undefined;
+  const promise = locate(
+    {
+      secure: true,
+      geolocation: {
+        getCurrentPosition(success) {
+          callback = success;
+        },
+      },
+    },
+    { signal: controller.signal },
+  );
+  controller.abort();
+  await assert.rejects(promise, { name: "AbortError" });
+  callback!({
+    coords: { latitude: -12, longitude: -77, accuracy: 10 },
+  } as GeolocationPosition);
 });
 test("invalid accuracy cannot silently replace the query zone", async () => {
- for (const accuracy of [NaN,Infinity,-1]) {
- await assert.rejects(locate({secure:true, geolocation:{getCurrentPosition(success){success({coords:{latitude:-12,longitude:-77,accuracy}} as GeolocationPosition)}}}), /equipo/);
- }
+  for (const accuracy of [NaN, Infinity, -1]) {
+    await assert.rejects(
+      locate({
+        secure: true,
+        geolocation: {
+          getCurrentPosition(success) {
+            success({
+              coords: { latitude: -12, longitude: -77, accuracy },
+            } as GeolocationPosition);
+          },
+        },
+      }),
+      /equipo/,
+    );
+  }
+});
+
+test("accuracy refinement requests a fresh high-accuracy position", async () => {
+  let options: PositionOptions | undefined;
+  await locate(
+    {
+      secure: true,
+      geolocation: {
+        getCurrentPosition(success, _error, input) {
+          options = input;
+          success({
+            coords: { latitude: -12.083, longitude: -76.992, accuracy: 15 },
+          } as GeolocationPosition);
+        },
+      },
+    },
+    { highAccuracy: true, timeoutMs: 4000 },
+  );
+  assert.equal(options?.enableHighAccuracy, true);
+  assert.equal(options?.maximumAge, 0);
+  assert.equal(options?.timeout, 4000);
 });

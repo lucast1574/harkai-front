@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { LocateFixed, MapPin, X } from "lucide-react";
 import { LocationDialog } from "./location-dialog";
 import { useLocationRequest } from "./use-location-request";
+import { useLocationState } from "@/lib/user-location";
 import { rememberUserLocation } from "@/lib/use-area";
 import type { Point } from "@/lib/location";
 export function LocationControl({
@@ -12,6 +13,7 @@ export function LocationControl({
   point: Point;
   onChange: (point: Point) => void;
 }): React.JSX.Element {
+  const automatic = useLocationState();
   const dialog = useRef<HTMLDialogElement>(null);
   const [message, setMessage] = useState("");
   const [draft, setDraft] = useState(point);
@@ -47,14 +49,18 @@ export function LocationControl({
         <button
           type="button"
           className="location-button"
-          disabled={request.busy}
+          disabled={request.busy || automatic.busy}
           onClick={() => {
             setMessage("");
             void request.find();
           }}
         >
           <LocateFixed size={16} />
-          {request.busy ? "Buscando tu ubicación…" : "Usar mi ubicación"}
+          {request.busy || automatic.busy
+            ? "Localizando…"
+            : automatic.point
+              ? "Volver a mi ubicación"
+              : "Reintentar ubicación"}
         </button>
         {request.busy && (
           <button
@@ -75,15 +81,15 @@ export function LocationControl({
           Elegir ciudad o zona
         </button>
       </div>
-      {request.busy && (
+      {(request.busy || automatic.busy) && (
         <p className="small muted" role="status">
           Acepta el permiso del navegador. Si no consigue ubicarte, puedes
           elegir tu zona sin esperar.
         </p>
       )}
-      {request.error && (
+      {(request.error || automatic.error) && (
         <div className="location-recovery" role="alert">
-          <p>{request.error}</p>
+          <p>{request.error || automatic.error}</p>
           <button
             type="button"
             className="text-button"
@@ -92,6 +98,12 @@ export function LocationControl({
             Elegir mi zona ahora →
           </button>
         </div>
+      )}
+      {!message && automatic.point && !automatic.busy && !automatic.error && (
+        <p className="small location-detected">
+          Ubicación detectada · precisión {Math.round(automatic.point.accuracy)}{" "}
+          m
+        </p>
       )}
       {message && (
         <p className="small muted" role="status">

@@ -3,7 +3,7 @@ import { useAuth } from "@/lib/auth";
 import { useArea } from "@/lib/use-area";
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight, MapPin, RefreshCw, ShieldCheck, X } from "lucide-react";
+import { ArrowUpRight, X } from "lucide-react";
 import {
   areaQuery,
   LIMA,
@@ -13,11 +13,9 @@ import {
 } from "@/lib/contracts";
 import { useResource } from "@/lib/use-resource";
 import type { SupportPlace } from "../support/contracts";
-import { Notice } from "@/components/ui";
-import { QueryOverview } from "../reports/query-overview";
 import { useReports } from "../reports/use-reports";
 import { Verification } from "../reports/report-card";
-import { ZoneControls } from "../reports/zone-controls";
+import { NeighborhoodRail } from "./neighborhood-rail";
 import ZoneMap from "./map-loader";
 export function MapWorkspace(): React.JSX.Element {
   const [showSupport, setShowSupport] = useState(true);
@@ -35,7 +33,7 @@ export function MapWorkspace(): React.JSX.Element {
   );
   const selected = reports.items.find((i) => i.id === selectedId);
   const changeArea = (a: Area) => {
-    setArea(a);
+    setArea({ ...a, type: "" });
     setSelected("");
   };
   return (
@@ -43,148 +41,19 @@ export function MapWorkspace(): React.JSX.Element {
       className="map-workspace"
       aria-label="Explora los reportes en el mapa"
     >
-      <aside className="explore-rail">
-        <header className="explore-heading">
-          <span className="eyebrow">
-            {institutional ? "VISTA TERRITORIAL" : "CERCA DE TI"}
-          </span>
-          <h1>
-            {institutional
-              ? "Tu territorio, de un vistazo."
-              : "Tu barrio en el mapa."}
-          </h1>
-          <p>
-            {institutional
-              ? "Consulta los reportes vigentes y accede al análisis de tu municipio."
-              : "Alertas de tu comunidad y lugares donde encontrar ayuda."}
-          </p>
-        </header>
-        <ZoneControls
-          compact
-          area={area}
-          categories={categories}
-          onChange={changeArea}
-        />
-        <div className="scope-toggle support-toggle">
-          <div>
-            <strong>Salud y ayuda</strong>
-            <span>Hospitales, postas y puntos de apoyo</span>
-          </div>
-          <button
-            type="button"
-            role="switch"
-            aria-label="Mostrar centros de salud y ayuda"
-            aria-checked={showSupport}
-            onClick={() => setShowSupport(!showSupport)}
-          >
-            <span />
-          </button>
-        </div>
-        {showSupport && support.error && (
-          <Notice error>
-            No se pudo cargar el directorio de salud. Las alertas siguen
-            disponibles.
-          </Notice>
-        )}
-        {institutional && (
-          <QueryOverview
-            compact
-            area={area}
-            incidents={reports.items}
-            loading={reports.loading}
-            partial={!!reports.cursor}
-            unavailable={!!reports.error}
-          />
-        )}
-        {institutional && (
-          <Link className="institutional-map-link" href="/dashboard/gov">
-            Análisis municipal y exportaciones <ArrowUpRight size={16} />
-          </Link>
-        )}
-        <div className="rail-results">
-          <div className="results-heading">
-            <h2>
-              Reportes cercanos{" "}
-              <span>
-                {reports.items.length}
-                {reports.cursor ? "+" : ""}
-              </span>
-            </h2>
-            <button
-              className="icon-button"
-              aria-label="Actualizar reportes"
-              disabled={reports.loading}
-              onClick={() => void reports.reload()}
-            >
-              <RefreshCw size={16} />
-            </button>
-          </div>
-          {(reports.error || metaError) && (
-            <Notice error>{reports.error || metaError}</Notice>
-          )}
-          {reports.loading && (
-            <p className="small muted" role="status">
-              Consultando esta zona…
-            </p>
-          )}
-          {!reports.loading && !reports.error && !reports.items.length && (
-            <div className="rail-empty">
-              <span className="empty-icon">
-                <MapPin size={25} />
-              </span>
-              <h3>Esta zona aún no tiene reportes</h3>
-              <p>
-                Aquí aparecerán los reportes vigentes. Puedes consultar lo que
-                ocurrió antes en el historial.
-              </p>
-              <Link href="/dashboard/archive">
-                Explorar el historial <ArrowUpRight size={14} />
-              </Link>
-            </div>
-          )}
-          <div className="map-report-list">
-            {reports.items.map((i) => (
-              <button
-                key={i.id}
-                className={`map-report-item ${i.id === selectedId ? "selected" : ""}`}
-                aria-pressed={i.id === selectedId}
-                onClick={() => setSelected(i.id)}
-              >
-                <span
-                  className={`report-dot ${i.verified ? "confirmed" : ""}`}
-                />
-                <span>
-                  <strong>
-                    {categories.find((c) => c.id === i.type)?.label || i.type}
-                  </strong>
-                  <span className="report-snippet">{i.description}</span>
-                  <small>
-                    {dateLabel(i.created_at)} ·{" "}
-                    {i.verified ? "Confirmado" : "No verificado"}
-                  </small>
-                </span>
-                <ArrowUpRight size={16} />
-              </button>
-            ))}
-          </div>
-          {reports.cursor && (
-            <button
-              className="button secondary"
-              disabled={reports.loading}
-              onClick={() => void reports.more()}
-            >
-              Cargar más reportes
-            </button>
-          )}
-        </div>
-        <div className="rail-footnote">
-          <ShieldCheck size={16} />
-          <span>
-            La comunidad confirma los reportes. La ausencia de alertas no
-            garantiza seguridad.
-          </span>
-        </div>
-      </aside>
+      <NeighborhoodRail
+        area={area}
+        categories={categories}
+        reports={reports}
+        institutional={institutional}
+        selectedId={selectedId}
+        onSelect={setSelected}
+        onArea={changeArea}
+        showSupport={showSupport}
+        onSupport={setShowSupport}
+        supportError={support.error}
+        metadataError={metaError}
+      />
       <div className="map-stage">
         <ZoneMap
           supportPlaces={showSupport ? support.data?.items || [] : []}

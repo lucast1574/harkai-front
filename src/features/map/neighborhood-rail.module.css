@@ -67,40 +67,66 @@
   color: var(--accent-ink);
 }
 .settings {
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 14px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface-soft);
+  padding: 10px 14px;
 }
 .settings > summary {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
   list-style: none;
   cursor: pointer;
-  color: var(--muted);
+  color: var(--ink);
   font-size: 12px;
   min-height: 30px;
 }
 .settings > summary::-webkit-details-marker {
   display: none;
 }
-.settings > summary:focus-visible {
-  background: var(--surface-soft);
-  border-radius: 8px;
+.settings > summary > svg:first-child {
+  color: var(--accent-ink);
 }
-.settings > summary > span:first-of-type {
+.settings > summary > span {
   flex: 1;
 }
-.settingsHint {
-  color: var(--accent-ink);
-  font-size: 11px;
+.settings > summary:focus-visible {
+  background: var(--bg);
+  border-radius: 8px;
+}
+.chevron {
+  color: var(--muted);
+  transition: transform 160ms ease;
+}
+.settings[open] .chevron {
+  transform: rotate(180deg);
 }
 .settings[open] > summary {
-  color: var(--ink);
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 .settings :global(.zone-controls) {
   border: 0;
   padding: 0;
+  gap: 12px;
+}
+.settings :global(.location-control) {
+  margin-top: 0;
+}
+.settings :global(.location-button) {
+  border-radius: 12px;
+  font-size: 12px;
+  min-height: 42px;
+  background: var(--surface);
+}
+.settings :global(.geography-source) {
+  font-size: 10px;
+  margin: 0;
+}
+.settings :global(.scope-toggle) {
+  border-bottom: 0;
+  margin-top: 14px;
+  padding-bottom: 4px;
 }
 .feed {
   flex: 1;

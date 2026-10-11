@@ -17,6 +17,7 @@ import { useReports } from "../reports/use-reports";
 import { Verification } from "../reports/report-card";
 import { NeighborhoodRail } from "./neighborhood-rail";
 import ZoneMap from "./map-loader";
+import { MapCityControl } from "./map-city-control";
 export function MapWorkspace(): React.JSX.Element {
   const [showSupport, setShowSupport] = useState(true);
   const [area, setArea] = useArea(LIMA);
@@ -64,6 +65,7 @@ export function MapWorkspace(): React.JSX.Element {
           selectedId={selectedId}
           onSelect={setSelected}
         />
+        <MapCityControl area={area} onChange={changeArea} />
         <div className="map-legend">
           <span>
             <i className="report-dot user-location" /> Tu ubicación

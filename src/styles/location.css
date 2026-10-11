@@ -252,3 +252,12 @@
     transition: none;
   }
 }
+
+@media (max-width: 760px) {
+  .map-stage .map-zone-label {
+    max-width: calc(50% - 22px);
+  }
+  .map-stage .map-zone-label strong {
+    overflow-wrap: anywhere;
+  }
+}

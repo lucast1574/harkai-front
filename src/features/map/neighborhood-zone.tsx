@@ -1,7 +1,6 @@
 "use client";
 import { Select } from "@/components/ui";
 import type { Area } from "@/lib/contracts";
-import { ScopeToggle } from "./scope-toggle";
 import { LocationControl } from "./location-control";
 
 /** Everyday location choices; detailed filters belong to the archive. */
@@ -15,7 +14,7 @@ export function NeighborhoodZone({
   return (
     <div className="zone-controls zone-controls-compact">
       <Select
-        label="Distrito"
+        label="Distrito de consulta"
         value={area.ubigeo || ""}
         disabled={area.geoPending || !!area.geoError}
         onChange={(event) =>
@@ -38,7 +37,6 @@ export function NeighborhoodZone({
           </option>
         ))}
       </Select>
-      <ScopeToggle area={area} onChange={onChange} />
       <LocationControl
         point={area}
         onChange={(point) => onChange({ ...area, ...point })}

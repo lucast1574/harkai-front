@@ -1,6 +1,12 @@
 "use client";
 import Link from "next/link";
-import { MapPin, HeartHandshake, History, ArrowUpRight } from "lucide-react";
+import {
+  MapPin,
+  HeartHandshake,
+  History,
+  ArrowUpRight,
+  ChevronDown,
+} from "lucide-react";
 import { useLocationState } from "@/lib/user-location";
 import { Notice } from "@/components/ui";
 import type { Area, Category } from "@/lib/contracts";
@@ -89,6 +95,7 @@ export function NeighborhoodRail({
         <summary>
           <MapPin size={14} />
           <span>Cambiar zona</span>
+          <ChevronDown size={14} className={styles.chevron} />
         </summary>
         <NeighborhoodZone area={area} onChange={onArea} />
         <div className="scope-toggle">

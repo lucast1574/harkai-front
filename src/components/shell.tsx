@@ -13,7 +13,6 @@ import {
   MessageCircle,
   History,
   LifeBuoy,
-  HeartHandshake,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { Notice } from "./ui";
@@ -31,7 +30,6 @@ const navigation = [
     label: "Historial de la ciudad",
     icon: History,
   },
-  { href: "/dashboard/support", label: "Red de apoyo", icon: HeartHandshake },
   {
     href: "/dashboard/gov",
     label: "Gestión municipal",
@@ -81,8 +79,8 @@ export function Shell({
           .map((n) => {
             const active =
               path === n.href ||
-              (n.href === "/dashboard/support" &&
-                ["/dashboard/pets", "/dashboard/places"].includes(path));
+              (n.href === "/dashboard/incidents" &&
+                path.startsWith("/dashboard/incidents/"));
             return (
               <Link
                 key={n.href}

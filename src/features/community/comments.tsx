@@ -16,18 +16,27 @@ type Comment = {
 };
 export function Comments({
   incidentId,
+  namespace = "incidents",
 }: {
   incidentId: string;
+  namespace?: "incidents" | "forum";
 }): React.JSX.Element {
   const { user } = useAuth();
   return (
     <Thread
       key={`${incidentId}:${user?.id || "guest"}:${user?.role || ""}`}
       incidentId={incidentId}
+      namespace={namespace}
     />
   );
 }
-function Thread({ incidentId }: { incidentId: string }): React.JSX.Element {
+function Thread({
+  incidentId,
+  namespace,
+}: {
+  incidentId: string;
+  namespace: "incidents" | "forum";
+}): React.JSX.Element {
   const { user } = useAuth();
   const [items, setItems] = useState<Comment[]>([]);
   const [cursor, setCursor] = useState("");
@@ -37,7 +46,7 @@ function Thread({ incidentId }: { incidentId: string }): React.JSX.Element {
   const [error, setError] = useState("");
   const [removing, setRemoving] = useState("");
   const generation = useRef(0);
-  const path = `incidents/${incidentId}/comments`;
+  const path = `${namespace}/${incidentId}/comments`;
   const load = useCallback(
     async (next = ""): Promise<void> => {
       const version = ++generation.current;
@@ -81,20 +90,25 @@ function Thread({ incidentId }: { incidentId: string }): React.JSX.Element {
           <MessageCircle size={22} />
         </span>
         <div>
-          <h2>La conversación de este reporte</h2>
-          <p>Aporta contexto, pregunta o comparte una actualización.</p>
+          <h2>
+            {namespace === "forum"
+              ? "Respuestas de la comunidad"
+              : "La conversación de este reporte"}
+          </h2>
+          <p>
+            Participa como vecino anónimo. Aporta contexto o comparte una
+            actualización.
+          </p>
         </div>
       </div>
       <div className="comments-list">
         {items.map((c) => (
           <article key={c.id} className="comment">
-            <span className="comment-avatar">
-              {c.author_name?.slice(0, 1).toUpperCase() || "·"}
-            </span>
+            <span className="comment-avatar">V</span>
             <div>
               <header>
                 <strong>
-                  {c.deleted_at ? "Comentario retirado" : c.author_name}
+                  {c.deleted_at ? "Comentario retirado" : "Vecino anónimo"}
                 </strong>
                 <time dateTime={c.created_at}>{dateLabel(c.created_at)}</time>
               </header>

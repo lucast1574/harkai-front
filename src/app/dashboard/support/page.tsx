@@ -1,4 +1,4 @@
-import { SupportNetwork } from "@/features/support/support-network";
-export default function Page(): React.JSX.Element {
-  return <SupportNetwork />;
+import { redirect } from "next/navigation";
+export default function Page(): never {
+  return redirect("/dashboard/help");
 }

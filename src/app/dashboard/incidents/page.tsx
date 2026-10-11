@@ -1,4 +1,4 @@
-import { ReportBrowser } from "@/features/reports/report-browser";
+import { CommunityForum } from "@/features/community/community-forum";
 export default function Page(): React.JSX.Element {
-  return <ReportBrowser title="Lo que compartimos" mode="feed" map={false} />;
+  return <CommunityForum />;
 }

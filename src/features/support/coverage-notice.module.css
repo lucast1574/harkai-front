@@ -1,0 +1,28 @@
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 12px 0;
+  padding: 18px;
+  border-radius: 18px;
+  background: color-mix(in srgb, #d5a84a 10%, var(--surface));
+  border: 1px solid color-mix(in srgb, #d5a84a 25%, transparent);
+}
+.notice > svg {
+  color: #cda457;
+  flex-shrink: 0;
+}
+.notice strong {
+  font-size: 14px;
+}
+.notice p {
+  margin: 8px 0;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.notice small {
+  display: block;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--muted);
+}

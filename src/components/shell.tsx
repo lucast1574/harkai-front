@@ -1,4 +1,5 @@
 "use client";
+import { CoverageNotice } from "@/features/support/coverage-notice";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -160,6 +161,7 @@ export function Shell({
         }
       >
         {error && <Notice error>{error}</Notice>}
+        {path !== "/dashboard" && <CoverageNotice />}
         {children}
       </main>
     </>

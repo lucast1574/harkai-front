@@ -14,6 +14,7 @@ import type { useReports } from "../reports/use-reports";
 import { NeighborhoodZone } from "./neighborhood-zone";
 import { NeighborhoodFeed } from "./neighborhood-feed";
 import type { SupportPlace } from "../support/contracts";
+import { CoverageNotice } from "../support/coverage-notice";
 import { NearbySupport } from "../support/nearby-support";
 import styles from "./neighborhood-rail.module.css";
 
@@ -64,6 +65,7 @@ export function NeighborhoodRail({
           {area.geography?.province && ` · ${area.geography.province}`}
         </p>
       </header>
+      <CoverageNotice />
       <section
         className={`${styles.summary} ${count ? styles.active : ""}`}
         aria-label="Tu zona ahora"

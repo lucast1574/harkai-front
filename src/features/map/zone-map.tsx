@@ -28,7 +28,6 @@ export type ZoneMapProps = {
   scrollWheelZoom?: boolean;
   selectedId?: string;
   onSelect?: (id: string) => void;
-  onMove?: (latitude: number, longitude: number) => void;
 };
 export default function ZoneMap({
   area,
@@ -39,18 +38,29 @@ export default function ZoneMap({
   scrollWheelZoom = true,
   selectedId,
   onSelect,
-  onMove,
 }: ZoneMapProps): React.JSX.Element {
+  const point = useUserLocation();
+  const bounds = area.geography
+    ? geoJSON(area.geography.geometry).getBounds()
+    : undefined;
+  const personal =
+    point &&
+    area.scope !== "city" &&
+    bounds?.contains([point.latitude, point.longitude]) &&
+    Math.abs(point.latitude - area.latitude) < 0.001 &&
+    Math.abs(point.longitude - area.longitude) < 0.001;
   return (
     <MapContainer
       className="zone-map"
-      center={area.geography ? undefined : [area.latitude, area.longitude]}
-      zoom={area.geography ? undefined : 13}
-      bounds={
-        area.geography
-          ? geoJSON(area.geography.geometry).getBounds()
-          : undefined
+      center={
+        personal
+          ? [point.latitude, point.longitude]
+          : bounds
+            ? undefined
+            : [area.latitude, area.longitude]
       }
+      zoom={personal ? 15 : bounds ? undefined : 13}
+      bounds={personal ? undefined : bounds}
       boundsOptions={{ padding: [28, 80], maxZoom: 15 }}
       fadeAnimation={false}
       scrollWheelZoom={scrollWheelZoom}
@@ -67,7 +77,6 @@ export default function ZoneMap({
           incidents.find((i) => i.id === selectedId) ||
           supportPlaces.find((p) => p.id === selectedId)
         }
-        onMove={onMove}
       />
       <TileLayer
         className="harkai-basemap"

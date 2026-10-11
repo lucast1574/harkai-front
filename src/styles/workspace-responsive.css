@@ -156,10 +156,6 @@
     max-width: none;
     padding: 18px;
   }
-  .map-search {
-    top: 65px;
-    font-size: 11px;
-  }
   .collection-tools {
     gap: 10px;
     flex-wrap: wrap;

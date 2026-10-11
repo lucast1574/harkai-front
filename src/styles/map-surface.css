@@ -4,15 +4,57 @@
   background: var(--map-outside);
 }
 .harkai-basemap {
-  filter: grayscale(0.82) saturate(0.4) contrast(0.95);
+  filter: grayscale(0.65) saturate(0.55) brightness(1.04) contrast(0.9);
 }
 html[data-theme="dark"] .zone-map,
 html[data-theme="dark"] .point-map {
-  --map-outside: #29434b;
+  --map-outside: #dce5e2;
 }
-html[data-theme="dark"] .harkai-basemap {
-  filter: grayscale(0.9) invert(0.7) hue-rotate(170deg) brightness(1.35)
-    contrast(0.85);
+.district-surroundings {
+  position: absolute;
+  inset: 0;
+  z-index: 450;
+  pointer-events: none;
+  background: #e5eeea35;
+  backdrop-filter: blur(2.5px);
+}
+.zone-controls-compact {
+  display: grid;
+  gap: 14px;
+}
+.zone-controls-compact .scope-toggle {
+  padding: 12px 0 0;
+}
+.zone-advanced {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+.zone-advanced summary {
+  color: var(--muted);
+  font-size: 12px;
+  cursor: pointer;
+}
+.zone-advanced[open] summary {
+  margin-bottom: 12px;
+  color: var(--ink);
+}
+.institutional-map-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink);
+  font-size: 12px;
+}
+.explore-heading h1 {
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+.explore-heading p {
+  font-size: 13px;
+}
+.support-toggle {
+  margin: 0;
+  padding: 0;
 }
 .medical-symbol {
   display: flex;

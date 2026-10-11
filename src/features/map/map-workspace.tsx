@@ -1,4 +1,5 @@
 "use client";
+import { useAuth } from "@/lib/auth";
 import { useArea } from "@/lib/use-area";
 import { useState } from "react";
 import Link from "next/link";
@@ -22,10 +23,8 @@ export function MapWorkspace(): React.JSX.Element {
   const [showSupport, setShowSupport] = useState(true);
   const [area, setArea] = useArea(LIMA);
   const [selectedId, setSelected] = useState("");
-  const [candidate, setCandidate] = useState<{
-    latitude: number;
-    longitude: number;
-  } | null>(null);
+  const { user } = useAuth();
+  const institutional = user?.role === "gov" || user?.role === "admin";
   const { data: meta, error: metaError } = useResource<Meta>("meta");
   const categories = meta?.categories || [];
   const reports = useReports(area);
@@ -38,7 +37,6 @@ export function MapWorkspace(): React.JSX.Element {
   const changeArea = (a: Area) => {
     setArea(a);
     setSelected("");
-    setCandidate(null);
   };
   return (
     <section
@@ -47,40 +45,62 @@ export function MapWorkspace(): React.JSX.Element {
     >
       <aside className="explore-rail">
         <header className="explore-heading">
-          <span className="eyebrow">MAPA DE MI ZONA</span>
-          <h1>Qué pasa cerca de ti.</h1>
+          <span className="eyebrow">
+            {institutional ? "VISTA TERRITORIAL" : "CERCA DE TI"}
+          </span>
+          <h1>
+            {institutional
+              ? "Tu territorio, de un vistazo."
+              : "Tu barrio en el mapa."}
+          </h1>
           <p>
-            Consulta las alertas vigentes, abre un reporte y conversa con tu
-            comunidad.
+            {institutional
+              ? "Consulta los reportes vigentes y accede al análisis de tu municipio."
+              : "Alertas de tu comunidad y lugares donde encontrar ayuda."}
           </p>
         </header>
         <ZoneControls
+          compact
           area={area}
           categories={categories}
           onChange={changeArea}
         />
-        <label className="checkbox">
-          <input
-            type="checkbox"
-            checked={showSupport}
-            onChange={(e) => setShowSupport(e.target.checked)}
-          />{" "}
-          Mostrar centros de salud y ayuda
-        </label>
+        <div className="scope-toggle support-toggle">
+          <div>
+            <strong>Salud y ayuda</strong>
+            <span>Hospitales, postas y puntos de apoyo</span>
+          </div>
+          <button
+            type="button"
+            role="switch"
+            aria-label="Mostrar centros de salud y ayuda"
+            aria-checked={showSupport}
+            onClick={() => setShowSupport(!showSupport)}
+          >
+            <span />
+          </button>
+        </div>
         {showSupport && support.error && (
           <Notice error>
             No se pudo cargar el directorio de salud. Las alertas siguen
             disponibles.
           </Notice>
         )}
-        <QueryOverview
-          compact
-          area={area}
-          incidents={reports.items}
-          loading={reports.loading}
-          partial={!!reports.cursor}
-          unavailable={!!reports.error}
-        />
+        {institutional && (
+          <QueryOverview
+            compact
+            area={area}
+            incidents={reports.items}
+            loading={reports.loading}
+            partial={!!reports.cursor}
+            unavailable={!!reports.error}
+          />
+        )}
+        {institutional && (
+          <Link className="institutional-map-link" href="/dashboard/gov">
+            Análisis municipal y exportaciones <ArrowUpRight size={16} />
+          </Link>
+        )}
         <div className="rail-results">
           <div className="results-heading">
             <h2>
@@ -114,8 +134,8 @@ export function MapWorkspace(): React.JSX.Element {
               </span>
               <h3>Esta zona aún no tiene reportes</h3>
               <p>
-                Mueve el mapa o elige otra zona para explorar los aportes de la
-                comunidad.
+                Aquí aparecerán los reportes vigentes. Puedes consultar lo que
+                ocurrió antes en el historial.
               </p>
               <Link href="/dashboard/archive">
                 Explorar el historial <ArrowUpRight size={14} />
@@ -174,23 +194,7 @@ export function MapWorkspace(): React.JSX.Element {
           categories={categories}
           selectedId={selectedId}
           onSelect={setSelected}
-          onMove={(latitude, longitude) =>
-            setCandidate(
-              Math.abs(latitude - area.latitude) < 0.0001 &&
-                Math.abs(longitude - area.longitude) < 0.0001
-                ? null
-                : { latitude, longitude },
-            )
-          }
         />
-        {candidate && (
-          <button
-            className="button map-search"
-            onClick={() => changeArea({ ...area, ...candidate })}
-          >
-            <MapPin size={15} /> Buscar en esta zona
-          </button>
-        )}
         <div className="map-legend">
           <span>
             <i className="report-dot user-location" /> Tu ubicación

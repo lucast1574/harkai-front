@@ -87,18 +87,6 @@
 .map-zoom button + button {
   border-top: 1px solid #e4e7df;
 }
-.map-search {
-  position: absolute;
-  z-index: 5;
-  top: 88px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--navy);
-  color: #fff;
-  gap: 7px;
-  box-shadow: 0 4px 20px #00193530;
-  white-space: nowrap;
-}
 .map-report-item {
   display: flex;
   align-items: start;

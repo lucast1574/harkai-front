@@ -82,12 +82,16 @@ export default function ZoneMap({
         className="harkai-basemap"
         keepBuffer={2}
         updateWhenIdle
-        updateWhenZooming={false}
+        updateWhenZooming
+        maxNativeZoom={19}
+        maxZoom={19}
         url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
       <MapControls />
-      {area.geography && <DistrictMask geography={area.geography} />}
+      {area.scope !== "city" && area.geography && (
+        <DistrictMask geography={area.geography} />
+      )}
       {area.geography && (
         <GeoJSON
           key={`${area.ubigeo}:${area.scope}`}

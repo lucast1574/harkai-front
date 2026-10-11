@@ -12,7 +12,7 @@ import {
   Popup,
   useMap,
 } from "react-leaflet";
-import { SupportPlaceMarker } from "./support-place-marker";
+import { SupportPlaceLayer } from "./support-place-layer";
 import { DistrictMask } from "./district-mask";
 import { UserLocationMarker } from "./user-location-marker";
 import { ZoneMapView } from "./zone-map-view";
@@ -130,9 +130,7 @@ export default function ZoneMap({
             : "Distrito de consulta"}
         </span>
       </div>
-      {supportPlaces.map((place) => (
-        <SupportPlaceMarker key={place.id} place={place} />
-      ))}
+      <SupportPlaceLayer places={supportPlaces} />
       {incidents.map((i) => (
         <CircleMarker
           key={i.id}

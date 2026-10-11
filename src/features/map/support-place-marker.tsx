@@ -17,7 +17,14 @@ export function SupportPlaceMarker({
     >
       <Popup>
         <strong>{place.name}</strong>
-        <p>Centro de salud / ayuda · Directorio institucional</p>
+        <p>{place.classification || "Salud y ayuda"} · Lugar permanente</p>
+        {place.institution && (
+          <p>
+            {place.institution}
+            {place.category && ` · Categoría ${place.category}`}
+          </p>
+        )}
+        <p>No es una alerta. Consulta disponibilidad antes de acudir.</p>
         <p>
           {place.address} · {place.district}
         </p>

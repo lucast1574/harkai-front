@@ -21,11 +21,16 @@ export type SupportPlace = {
   latitude: number;
   longitude: number;
   phone?: string;
+  institution?: string;
+  classification?: string;
+  category?: string;
+  registry_id?: string;
+  source_updated_at?: string;
   source_url: string;
   location_source_url: string;
   reviewed_at: string;
 };
 export const SUPPORT_CITIES = {
-  lima: { label: "Lima", latitude: -12.0464, longitude: -77.0428 },
+  lima: { label: "Lima y Callao", latitude: -12.0464, longitude: -77.0428 },
   trujillo: { label: "Trujillo", latitude: -8.1116, longitude: -79.0287 },
 };

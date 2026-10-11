@@ -38,3 +38,31 @@
   scrollbar-width: thin;
   scrollbar-color: #58716655 transparent;
 }
+
+.medical-group {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.medical-group > span {
+  font-size: 28px;
+  font-weight: 800;
+  color: white;
+  line-height: 1;
+}
+.medical-group b {
+  position: absolute;
+  right: -10px;
+  top: -8px;
+  min-width: 22px;
+  padding: 3px 5px;
+  border-radius: 20px;
+  background: #fff;
+  color: #9c2632;
+  border: 1px solid #f2b7bc;
+  font-size: 11px;
+  text-align: center;
+}

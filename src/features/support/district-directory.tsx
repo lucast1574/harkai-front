@@ -35,7 +35,7 @@ export function DistrictDirectory({
           onChange={(e) => {
             const next = e.target.value as keyof typeof SUPPORT_CITIES;
             setCity(next);
-            setDistrict(SUPPORT_CITIES[next].label);
+            setDistrict(next === "lima" ? "Lima" : SUPPORT_CITIES[next].label);
             onCityChange?.(next);
           }}
         >

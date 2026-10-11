@@ -13,6 +13,8 @@ import type { Area, Category } from "@/lib/contracts";
 import type { useReports } from "../reports/use-reports";
 import { NeighborhoodZone } from "./neighborhood-zone";
 import { NeighborhoodFeed } from "./neighborhood-feed";
+import type { SupportPlace } from "../support/contracts";
+import { NearbySupport } from "../support/nearby-support";
 import styles from "./neighborhood-rail.module.css";
 
 export function NeighborhoodRail({
@@ -26,6 +28,7 @@ export function NeighborhoodRail({
   showSupport,
   onSupport,
   supportError,
+  supportPlaces,
   metadataError,
 }: {
   area: Area;
@@ -38,6 +41,7 @@ export function NeighborhoodRail({
   showSupport: boolean;
   onSupport: (show: boolean) => void;
   supportError: string;
+  supportPlaces: SupportPlace[];
   metadataError: string;
 }): React.JSX.Element {
   const location = useLocationState();
@@ -119,6 +123,7 @@ export function NeighborhoodRail({
           Detectando tu ubicación. Puedes explorar esta zona mientras tanto.
         </p>
       )}
+      <NearbySupport places={supportPlaces} />
       <NeighborhoodFeed
         reports={reports}
         categories={categories}

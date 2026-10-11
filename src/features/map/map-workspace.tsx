@@ -53,6 +53,7 @@ export function MapWorkspace(): React.JSX.Element {
         showSupport={showSupport}
         onSupport={setShowSupport}
         supportError={support.error}
+        supportPlaces={showSupport ? support.data?.items || [] : []}
         metadataError={metaError}
       />
       <div className="map-stage">

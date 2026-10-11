@@ -1,59 +1,68 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 142 76% 36%; 
-    --primary-foreground: 355.7 100% 97.3%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 142 76% 36%;
-    --radius: 0.75rem;
-  }
-
-  .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 6%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 142 70% 50%;
-    --primary-foreground: 144.9 80.4% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 142 70% 50%;
-  }
+@import "../styles/notifications.css";
+@import "../styles/base.css";
+@import "../styles/navigation.css";
+@import "../styles/controls.css";
+@import "../styles/reports.css";
+@import "../styles/forms.css";
+@import "../styles/navigation-mobile.css";
+@import "../styles/theme.css";
+@import "../styles/responsive.css";
+@import "../styles/workspace-layout.css";
+@import "../styles/workspace-rail.css";
+@import "../styles/workspace-controls.css";
+@import "../styles/workspace-results.css";
+@import "../styles/workspace-map.css";
+@import "../styles/workspace-collections.css";
+@import "../styles/workspace-responsive.css";
+@import "../styles/community.css";
+@import "../styles/archive.css";
+@import "../styles/account.css";
+@import "../styles/help.css";
+@import "../styles/support.css";
+@import "../styles/location.css";
+@import "../styles/map-surface.css";
+.brand-icon {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.brand {
+  gap: 3px;
+}
+.brand small {
+  font-size: 9px;
+}
+.sidebar,
+.explore-rail {
+  scrollbar-width: thin;
+  scrollbar-color: #58716655 transparent;
 }
 
-@layer base {
-  * {
-    @applyzb border-border;
-  }
-  body {
-    @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary;
-  }
+.medical-group {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.medical-group > span {
+  font-size: 28px;
+  font-weight: 800;
+  color: white;
+  line-height: 1;
+}
+.medical-group b {
+  position: absolute;
+  right: -10px;
+  top: -8px;
+  min-width: 22px;
+  padding: 3px 5px;
+  border-radius: 20px;
+  background: #fff;
+  color: #9c2632;
+  border: 1px solid #f2b7bc;
+  font-size: 11px;
+  text-align: center;
 }

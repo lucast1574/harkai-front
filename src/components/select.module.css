@@ -1,0 +1,95 @@
+.native {
+  position: absolute;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px;
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 13px;
+  text-align: left;
+  line-height: 1.5;
+  transition: background 150ms ease;
+  outline: 0;
+  box-shadow: none;
+}
+.trigger > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.trigger svg {
+  flex-shrink: 0;
+  color: var(--muted);
+  transition: transform 150ms ease;
+}
+.rotated {
+  transform: rotate(180deg);
+}
+.trigger:hover,
+.trigger:focus-visible,
+.trigger[aria-expanded="true"] {
+  background: var(--surface-soft);
+}
+.menu {
+  position: fixed;
+  z-index: 1200;
+  padding: 7px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 12px 30px rgb(1 25 53 / 12%);
+  font-size: 13px;
+  line-height: 1.5;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.menu::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 40px;
+  padding: 10px 12px;
+  margin: 2px 0;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.active {
+  background: var(--surface-soft);
+}
+.option[aria-selected="true"] {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+.option[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.check {
+  font-size: 14px;
+}

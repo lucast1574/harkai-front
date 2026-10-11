@@ -1,0 +1,350 @@
+.rail {
+  gap: 18px;
+  padding: 28px 22px 20px;
+}
+.heading h1 {
+  font-size: 26px;
+  line-height: 1.2;
+  letter-spacing: -0.8px;
+  margin: 10px 0 12px;
+}
+.heading h1 span {
+  display: block;
+}
+.eyebrow {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  color: var(--accent-ink);
+}
+.heading p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+.summary {
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
+  padding: 17px;
+  border-radius: 18px;
+}
+.summaryLabel {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.summaryLabel > span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--muted);
+}
+.active .summaryLabel > span {
+  background: #e4a349;
+}
+.summary > strong {
+  font-size: 19px;
+  line-height: 1.3;
+  display: block;
+  letter-spacing: -0.4px;
+}
+.summary p {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--muted);
+  margin: 9px 0 0;
+}
+.filterNote {
+  display: block;
+  font-size: 11px;
+  margin-top: 10px;
+  color: var(--accent-ink);
+}
+.settings {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface-soft);
+  padding: 10px 14px;
+}
+.settings > summary {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  list-style: none;
+  cursor: pointer;
+  color: var(--ink);
+  font-size: 12px;
+  min-height: 30px;
+}
+.settings > summary::-webkit-details-marker {
+  display: none;
+}
+.settings > summary > svg:first-child {
+  color: var(--accent-ink);
+}
+.settings > summary > span {
+  flex: 1;
+}
+.settings > summary:focus-visible {
+  background: var(--bg);
+  border-radius: 8px;
+}
+.chevron {
+  color: var(--muted);
+  transition: transform 160ms ease;
+}
+.settings[open] .chevron {
+  transform: rotate(180deg);
+}
+.settings[open] > summary {
+  margin-bottom: 15px;
+}
+.settings :global(.zone-controls) {
+  border: 0;
+  padding: 0;
+  gap: 12px;
+}
+.settings :global(.location-control) {
+  margin-top: 0;
+}
+.settings :global(.location-button) {
+  border-radius: 12px;
+  font-size: 12px;
+  min-height: 42px;
+  background: var(--surface);
+}
+.settings :global(.geography-source) {
+  font-size: 10px;
+  margin: 0;
+}
+.settings :global(.scope-toggle) {
+  border-bottom: 0;
+  margin-top: 14px;
+  padding-bottom: 4px;
+}
+.feed {
+  flex: 1;
+}
+.feedHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.feedHeading h2 {
+  font-size: 13px;
+  margin: 0;
+}
+.cards {
+  display: grid;
+  gap: 10px;
+  margin: 12px 0;
+}
+.report {
+  display: grid;
+  gap: 9px;
+  text-align: left;
+  width: 100%;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 15px;
+  cursor: pointer;
+}
+.report:hover,
+.report:focus-visible {
+  background: var(--surface-soft);
+}
+.selected {
+  border-color: var(--accent-ink);
+  background: var(--surface-soft);
+}
+.reportTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+}
+.reportTop svg {
+  flex-shrink: 0;
+  color: var(--muted);
+}
+.description {
+  font-size: 13px;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.reportMeta {
+  font-size: 10px;
+}
+.confirmed,
+.pending {
+  display: inline-block;
+  padding: 4px 7px;
+  border-radius: 7px;
+  background: var(--surface-soft);
+  color: var(--muted);
+}
+.confirmed {
+  color: var(--accent-ink);
+}
+.pending {
+  border: 1px solid var(--border);
+}
+.reportTime {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  color: var(--muted);
+}
+.empty {
+  padding: 14px 2px 10px;
+}
+.emptyIcon {
+  color: var(--accent-ink);
+  display: inline-flex;
+  background: var(--surface-soft);
+  border-radius: 12px;
+  padding: 10px;
+  margin-bottom: 12px;
+}
+.empty h3 {
+  font-size: 14px;
+  line-height: 1.4;
+  margin: 0 0 8px;
+}
+.empty p,
+.state {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+.empty a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--accent-ink);
+  font-size: 12px;
+  margin-top: 8px;
+}
+.shortcuts {
+  display: grid;
+  gap: 8px;
+}
+.shortcuts a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px;
+  border-radius: 14px;
+  background: var(--surface-soft);
+  color: var(--ink);
+}
+.shortcuts a > span {
+  flex: 1;
+  display: grid;
+  gap: 4px;
+}
+.shortcuts strong {
+  font-size: 12px;
+}
+.shortcuts small {
+  font-size: 10px;
+  color: var(--muted);
+}
+.shortcuts a > svg {
+  color: var(--accent-ink);
+  flex-shrink: 0;
+}
+.shortcuts a:hover,
+.shortcuts a:focus-visible {
+  background: var(--bg);
+}
+.institutional {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--accent-ink);
+}
+.footnote {
+  margin: 0;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.7;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+@media (max-width: 760px) {
+  .rail {
+    display: flex;
+    flex-direction: column;
+    padding: 22px 18px;
+    gap: 16px;
+    border-right: 0;
+    overflow: visible;
+  }
+  .heading h1 span {
+    display: inline;
+  }
+  .feed {
+    flex: none;
+  }
+  .settings :global(.zone-options) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 760px) {
+  .rail {
+    display: contents;
+  }
+  .rail .heading {
+    order: 0;
+    padding: 24px 18px 16px;
+  }
+  .rail .summary {
+    order: 1;
+    margin: 0 18px 14px;
+  }
+  .rail .settings {
+    order: 2;
+    margin: 0 18px 16px;
+  }
+  .rail + :global(.map-stage) {
+    order: 3;
+  }
+  .rail .feed {
+    order: 4;
+    padding: 22px 18px;
+  }
+  .rail .shortcuts {
+    order: 5;
+    margin: 0 18px 18px;
+  }
+  .rail .footnote {
+    order: 6;
+    margin: 0 18px 18px;
+  }
+  .rail .state {
+    order: 2;
+    margin: 0 18px 14px;
+  }
+  .rail > :global(section[aria-label="Resumen de la consulta"]),
+  .rail .institutional,
+  .rail > :global(.notice) {
+    order: 5;
+    margin: 0 18px 18px;
+  }
+}

@@ -1,0 +1,16 @@
+.push-notice {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1200;
+  width: min(360px, calc(100vw - 48px));
+  padding: 20px;
+  border-radius: 20px;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--border);
+  box-shadow: 0 12px 40px #001a3140;
+}
+.push-notice .text-button {
+  margin-left: 12px;
+}

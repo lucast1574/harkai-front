@@ -1,0 +1,139 @@
+.page-heading {
+  max-width: 780px;
+  margin-bottom: 30px;
+}
+.page-heading p {
+  font-size: 14px;
+}
+.page-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0;
+}
+.button {
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: var(--green);
+  color: #092f1f;
+  padding: 11px 18px;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  min-height: 44px;
+}
+.button {
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease;
+}
+.button:hover:not(:disabled) {
+  background: #68d679;
+}
+.button.secondary:hover:not(:disabled) {
+  background: var(--surface-soft);
+  border-color: var(--border-hover);
+}
+.button.secondary {
+  background: var(--surface);
+  color: var(--ink);
+  border-color: var(--border);
+}
+.text-button {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  padding: 4px 0;
+  background: transparent;
+  color: inherit;
+  font-size: 12px;
+}
+.text-button:hover:not(:disabled) {
+  color: var(--accent-ink);
+}
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 26px;
+  margin-bottom: 22px;
+  box-shadow: 0 2px 3px #102a3003;
+}
+.area-filter {
+  padding: 20px 24px;
+}
+.filter-heading {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  align-items: center;
+}
+.filter-heading h2 {
+  margin: 0;
+  font-size: 14px;
+}
+.filter-fields {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(110px, 1fr)) auto;
+  gap: 12px;
+  align-items: end;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  min-width: 0;
+}
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
+  color: var(--ink);
+  padding: 11px 12px;
+  border-radius: 9px;
+  font-weight: 400;
+  min-height: 44px;
+}
+.field input[type="file"] {
+  font-size: 11px;
+}
+.field small {
+  font-weight: 400;
+}
+.field textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+.field input[aria-invalid="true"] {
+  border-color: #be3333;
+}
+form {
+  display: grid;
+  gap: 19px;
+}
+.notice {
+  background: #e9f7ee;
+  border: 1px solid #cce7d3;
+  padding: 14px 18px;
+  border-radius: 11px;
+  margin: 16px 0;
+  font-size: 13px;
+  color: #225339;
+}
+.notice.error {
+  background: #fff1ee;
+  border-color: #f1d4cb;
+  color: #91392a;
+}
+.error {
+  color: #a63329;
+}

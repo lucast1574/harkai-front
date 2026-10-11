@@ -1,56 +1,34 @@
 import type { Metadata } from "next";
+import { AuthProvider } from "@/lib/auth";
+import { PushInbox } from "@/features/notifications/push-inbox";
+import { Shell } from "@/components/shell";
 import "./globals.css";
-// import { Header } from "@/components/header";
-import { ThemeProvider } from "@/components/theme-provider";
-import { AuthProvider } from "@/lib/auth/auth-context";
-import { ConfigProvider } from "@/lib/config/config-context";
-
 export const metadata: Metadata = {
-  title: "Harkai — Panel de la comunidad",
-  description:
-    "Reportes comunitarios, mapas e información útil sobre tu zona.",
-  authors: [
-    {
-      name: "Lucas Santillán",
-      url: "https://github.com/Luc4st1574",
-    },
-  ],
-  keywords: [
-    "Harkai",
-    "Seguridad Urbana",
-    "Incidentes",
-    "Verificación",
-    "Plataforma",
-    "Ciudadana",
-    "Hackathon",
-    "Security",
-    "Experience",
-  ],
+  title: { default: "Harkai · Tu comunidad", template: "%s · Harkai" },
+  description: "Reportes comunitarios, mapas e información útil sobre tu zona.",
+  metadataBase: new URL("https://panel.harkai.lat"),
+  icons: {
+    icon: [
+      { url: "/icon.png?v=harkai-1", type: "image/png", sizes: "512x512" },
+    ],
+    shortcut: "/icon.png?v=harkai-1",
+    apple: [
+      { url: "/icon.png?v=harkai-1", type: "image/png", sizes: "512x512" },
+    ],
+  },
 };
-
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}): React.JSX.Element {
   return (
-    <html lang="es" suppressHydrationWarning>
-      <body
-        className="antialiased bg-background text-foreground"
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <AuthProvider>
-            <ConfigProvider>
-              {/* <Header /> */}
-              {children}
-            </ConfigProvider>
-          </AuthProvider>
-        </ThemeProvider>
+    <html lang="es">
+      <body>
+        <AuthProvider>
+          <Shell>{children}</Shell>
+          <PushInbox />
+        </AuthProvider>
       </body>
     </html>
   );

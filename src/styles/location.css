@@ -1,0 +1,263 @@
+.location-control {
+  margin-top: 12px;
+}
+.location-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+.location-actions .location-button {
+  margin-top: 0;
+}
+.location-dialog {
+  width: min(760px, calc(100vw - 28px));
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: var(--surface);
+  color: var(--ink);
+  padding: 24px;
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+}
+.location-dialog::backdrop {
+  background: #00152299;
+  backdrop-filter: blur(4px);
+}
+.location-dialog-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.location-dialog-heading h2 {
+  margin: 0 0 8px;
+  font-size: 24px;
+}
+.location-dialog-heading p {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0;
+}
+.point-map {
+  height: 360px;
+  border-radius: 14px;
+  z-index: 0;
+}
+.point-center {
+  position: absolute;
+  z-index: 1000;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  box-shadow: 0 4px 16px #0002;
+}
+.location-dialog-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 22px;
+}
+.location-dialog .coordinate-options .two-columns {
+  margin-top: 16px;
+}
+.location-control .small {
+  line-height: 1.6;
+}
+@media (min-width: 761px) {
+  .support-zone .location-actions,
+  .account-privacy .location-actions {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 760px) {
+  .location-dialog {
+    padding: 18px;
+  }
+  .point-map {
+    height: 320px;
+  }
+  .location-dialog-footer {
+    flex-wrap: wrap;
+  }
+  .location-dialog-footer .button {
+    width: 100%;
+  }
+}
+
+.location-dialog .coordinate-options > .button {
+  margin-top: 12px;
+}
+.location-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.location-presets .button {
+  min-height: 36px;
+  padding: 8px 12px;
+  font-size: 12px;
+  border-radius: 12px;
+}
+.location-recovery {
+  padding: 14px;
+  margin-top: 12px;
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  font-size: 12px;
+}
+.location-recovery p {
+  margin: 0 0 6px;
+}
+.point-map-frame {
+  position: relative;
+}
+.point-pin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 3px solid white;
+  background: #247751;
+  pointer-events: none;
+  z-index: 500;
+  box-shadow: 0 2px 8px #01193530;
+  display: grid;
+  place-items: center;
+}
+.point-pin span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: white;
+}
+.point-map-hint {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 500;
+  background: var(--surface);
+  color: var(--ink);
+  border-radius: 10px;
+  padding: 7px 12px;
+  font-size: 11px;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.map-zone-label {
+  position: absolute;
+  z-index: 800;
+  top: 16px;
+  left: 16px;
+  max-width: calc(100% - 90px);
+  padding: 12px 18px;
+  border-radius: 18px;
+  background: var(--surface, #fff);
+  box-shadow: 0 4px 20px #00000014;
+  pointer-events: none;
+  display: grid;
+  gap: 3px;
+}
+.map-zone-label strong {
+  font-size: 1rem;
+}
+.map-zone-label span {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.geography-source {
+  margin: 8px 0;
+  font-size: 0.7rem;
+}
+.zone-options > :last-child:nth-child(3) {
+  grid-column: 1 / -1;
+}
+
+.report-dot.user-location {
+  background: #287ee6;
+  border-color: #fff;
+  box-shadow: 0 0 0 1px #287ee6;
+}
+@media (max-width: 760px) {
+  .map-legend {
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    max-width: calc(100% - 65px);
+  }
+}
+
+.scope-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.scope-toggle > div {
+  display: grid;
+  gap: 4px;
+}
+.scope-toggle strong {
+  font-size: 12px;
+}
+.scope-toggle div > span {
+  font-size: 11px;
+  color: var(--muted);
+}
+.scope-toggle button {
+  width: 44px;
+  height: 26px;
+  min-width: 44px;
+  padding: 3px;
+  background: var(--border);
+  border: 0;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.scope-toggle button > span {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--surface);
+  transition: transform 0.18s;
+}
+.scope-toggle button[aria-checked="true"] {
+  background: #328264;
+}
+.scope-toggle button[aria-checked="true"] > span {
+  transform: translateX(18px);
+  background: white;
+}
+.scope-toggle button:focus-visible {
+  background: #647f91;
+}
+.zone-options {
+  grid-template-columns: 1fr !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .scope-toggle button > span {
+    transition: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .map-stage .map-zone-label {
+    max-width: calc(50% - 22px);
+  }
+  .map-stage .map-zone-label strong {
+    overflow-wrap: anywhere;
+  }
+}

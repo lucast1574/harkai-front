@@ -1,0 +1,53 @@
+.directory header {
+  margin-bottom: 22px;
+}
+.directory h2 {
+  margin-bottom: 8px;
+}
+.contacts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 22px 0;
+}
+.contacts article {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  display: grid;
+  gap: 12px;
+}
+.scope {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+.contacts h3 {
+  font-size: 14px;
+  margin: 0;
+}
+.phone {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 19px;
+  font-weight: 650;
+  color: var(--accent-ink);
+  font-variant-numeric: tabular-nums;
+}
+.source {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.directory > p:last-child {
+  margin-bottom: 0;
+}
+@media (max-width: 760px) {
+  .contacts {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,238 @@
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+.toolbar > a {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 12px;
+  color: var(--accent-ink);
+}
+.tabs {
+  display: flex;
+  gap: 5px;
+  padding: 5px;
+  background: var(--surface-soft);
+  border-radius: 14px;
+  max-width: 100%;
+}
+.tabs button {
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--muted);
+  padding: 12px 16px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.tabs button[aria-selected="true"] {
+  background: var(--surface);
+  color: var(--ink);
+}
+.tabs button:focus-visible {
+  background: var(--bg);
+}
+.zone {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.zone > p {
+  flex: 1;
+  margin: 0;
+}
+.zone > :global(.field) {
+  min-width: 240px;
+}
+.zone details {
+  width: 100%;
+}
+.zone summary {
+  cursor: pointer;
+}
+.zone :global(.location-control) {
+  max-width: 460px;
+}
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(270px, 330px);
+  gap: 24px;
+  align-items: start;
+}
+.feed {
+  grid-column: 1;
+  grid-row: 1;
+  display: grid;
+  gap: 16px;
+}
+.feedHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.feedHeading h2 {
+  font-size: 16px;
+  margin: 0;
+}
+.compose {
+  grid-column: 2;
+  grid-row: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 22px;
+}
+.compose header {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.compose header > svg {
+  color: var(--accent-ink);
+  flex-shrink: 0;
+}
+.compose header strong {
+  font-size: 13px;
+}
+.compose header p,
+.login p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+  margin: 7px 0 0;
+}
+.compose footer {
+  display: grid;
+  gap: 14px;
+  margin-top: 16px;
+}
+.compose small {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.login a {
+  margin-top: 16px;
+  font-size: 12px;
+}
+.card {
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  padding: 23px;
+}
+.card > header {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 37px;
+  height: 37px;
+  background: var(--surface-soft);
+  color: var(--accent-ink);
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+.card > header > div {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+.card header strong {
+  font-size: 13px;
+}
+.card header span:not(.avatar) {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 10px;
+  color: var(--muted);
+}
+.body {
+  font-size: 14px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: 20px 0;
+}
+.card > footer {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.confirm {
+  padding-top: 14px;
+  display: grid;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.card :global(.discussion) {
+  margin-top: 20px;
+  padding: 18px;
+  box-shadow: none;
+}
+.empty {
+  padding: 40px 24px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  text-align: center;
+  color: var(--muted);
+}
+.empty svg {
+  color: var(--accent-ink);
+}
+.empty h3 {
+  color: var(--ink);
+  font-size: 17px;
+  margin: 14px 0 8px;
+}
+.empty p {
+  font-size: 13px;
+  line-height: 1.7;
+}
+@media (max-width: 1000px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  .compose {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .feed {
+    grid-row: 2;
+  }
+}
+@media (max-width: 760px) {
+  .tabs {
+    width: 100%;
+  }
+  .tabs button {
+    flex: 1;
+    padding: 10px;
+    font-size: 12px;
+  }
+  .zone > :global(.field) {
+    width: 100%;
+  }
+  .card,
+  .compose {
+    padding: 18px;
+  }
+}

@@ -1,0 +1,142 @@
+.zone-map,
+.point-map {
+  --map-outside: #edf2f0;
+  background: var(--map-outside);
+}
+.harkai-basemap {
+  filter: saturate(1.18) brightness(1.02) contrast(0.94);
+}
+html[data-theme="dark"] .zone-map,
+html[data-theme="dark"] .point-map {
+  --map-outside: #dce5e2;
+}
+.district-surroundings {
+  position: absolute;
+  inset: 0;
+  z-index: 450;
+  pointer-events: none;
+  background: #e5eeea35;
+  backdrop-filter: blur(2.5px);
+}
+.zone-controls-compact {
+  display: grid;
+  gap: 14px;
+}
+.zone-controls-compact .scope-toggle {
+  padding: 12px 0 0;
+}
+.zone-advanced {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+.zone-advanced summary {
+  color: var(--muted);
+  font-size: 12px;
+  cursor: pointer;
+}
+.zone-advanced[open] summary {
+  margin-bottom: 12px;
+  color: var(--ink);
+}
+.institutional-map-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink);
+  font-size: 12px;
+}
+.explore-heading h1 {
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+.explore-heading p {
+  font-size: 13px;
+}
+.support-toggle {
+  margin: 0;
+  padding: 0;
+}
+.medical-symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 2px solid white;
+  border-radius: 50%;
+  background: #df3546;
+}
+.medical-symbol svg {
+  width: 18px;
+  height: 18px;
+}
+.user-location-symbol {
+  display: block;
+  width: 32px;
+  height: 32px;
+}
+.user-location-symbol svg {
+  width: 100%;
+  height: 100%;
+}
+.leaflet-tooltip.user-location-label {
+  background: #267eff;
+  border: 0;
+  color: white;
+  border-radius: 12px;
+  padding: 5px 10px;
+  font-weight: 700;
+  font-size: 11px;
+  box-shadow: none;
+}
+.leaflet-tooltip-top.user-location-label:before {
+  border-top-color: #267eff;
+}
+.location-detected {
+  color: var(--muted);
+  font-size: 11px;
+  margin: 8px 0;
+}
+.report-dot.support {
+  background: #df3546 !important;
+  border: 0 !important;
+  width: 15px;
+  height: 15px;
+  position: relative;
+}
+.report-dot.support:before,
+.report-dot.support:after {
+  content: "";
+  position: absolute;
+  background: white;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 1px;
+}
+.report-dot.support:before {
+  width: 9px;
+  height: 3px;
+}
+.report-dot.support:after {
+  width: 3px;
+  height: 9px;
+}
+
+.map-preparing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 440px;
+  height: 100%;
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-size: 13px;
+}
+.map-zoom button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  color: var(--ink);
+}

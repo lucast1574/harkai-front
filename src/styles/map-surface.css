@@ -4,7 +4,7 @@
   background: var(--map-outside);
 }
 .harkai-basemap {
-  filter: grayscale(0.65) saturate(0.55) brightness(1.04) contrast(0.9);
+  filter: saturate(1.18) brightness(1.02) contrast(0.94);
 }
 html[data-theme="dark"] .zone-map,
 html[data-theme="dark"] .point-map {

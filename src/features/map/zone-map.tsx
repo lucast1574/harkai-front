@@ -13,7 +13,6 @@ import {
   useMap,
 } from "react-leaflet";
 import { SupportPlaceLayer } from "./support-place-layer";
-import { DistrictMask } from "./district-mask";
 import { UserLocationMarker } from "./user-location-marker";
 import { ZoneMapView } from "./zone-map-view";
 import type { SupportPlace } from "../support/contracts";
@@ -89,9 +88,6 @@ export default function ZoneMap({
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
       <MapControls />
-      {area.scope !== "city" && area.geography && (
-        <DistrictMask geography={area.geography} />
-      )}
       {area.geography && (
         <GeoJSON
           key={`${area.ubigeo}:${area.scope}`}

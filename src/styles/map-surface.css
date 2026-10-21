@@ -11,12 +11,7 @@ html[data-theme="dark"] .point-map {
   --map-outside: #dce5e2;
 }
 .district-surroundings {
-  position: absolute;
-  inset: 0;
-  z-index: 450;
-  pointer-events: none;
-  background: #e5eeea35;
-  backdrop-filter: blur(2.5px);
+  display: none;
 }
 .zone-controls-compact {
   display: grid;

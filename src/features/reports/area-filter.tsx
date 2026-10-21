@@ -1,9 +1,7 @@
 "use client";
 import type { Area, Category } from "@/lib/contracts";
 import { Field, Select } from "@/components/ui";
-import { useState } from "react";
-import { ScopeToggle } from "../map/scope-toggle";
-import { LocationControl } from "../map/location-control";
+
 export function AreaFilter({
   area,
   categories,
@@ -17,42 +15,52 @@ export function AreaFilter({
   fixedType?: string;
   dates?: boolean;
 }): React.JSX.Element {
-  const [draft, setDraft] = useState(area);
+  const province = area.geography?.province || "la ciudad";
+
   return (
-    <form
-      className="area-filter panel"
-      onSubmit={(e) => {
-        e.preventDefault();
-        onChange({
-          ...draft,
-          latitude: area.latitude,
-          longitude: area.longitude,
-          ubigeo: area.ubigeo,
-          scope: area.scope,
-          type: fixedType || draft.type,
-        });
-      }}
-    >
+    <section className="area-filter panel" aria-label="Filtros de consulta">
       <div className="filter-heading">
-        <h2>Ubicación de consulta</h2>
+        <div>
+          <span className="eyebrow">FILTROS DE CONSULTA</span>
+          <h2>Alcance y categoría</h2>
+        </div>
+        <div
+          className="archive-scope-pills"
+          role="group"
+          aria-label="Alcance territorial"
+        >
+          <button
+            type="button"
+            className={area.scope !== "city" ? "active" : ""}
+            onClick={() =>
+              onChange({ ...area, scope: "district", district: "" })
+            }
+          >
+            Por distrito
+          </button>
+          <button
+            type="button"
+            className={area.scope === "city" ? "active" : ""}
+            onClick={() => onChange({ ...area, scope: "city", district: "" })}
+          >
+            Toda {province}
+          </button>
+        </div>
       </div>
-      <ScopeToggle area={area} onChange={onChange} />
+
       <div className="filter-fields">
         <Select
           label="Distrito"
           value={area.ubigeo || ""}
           disabled={area.geoPending || !!area.geoError}
-          onChange={(e) => {
-            const next = {
-              ...draft,
+          onChange={(e) =>
+            onChange({
               ...area,
               ubigeo: e.target.value,
-              scope: "district" as const,
+              scope: "district",
               district: "",
-            };
-            setDraft(next);
-            onChange(next);
-          }}
+            })
+          }
         >
           {!area.ubigeo && (
             <option value="">
@@ -68,10 +76,10 @@ export function AreaFilter({
         {!fixedType && (
           <Select
             label="Categoría"
-            value={draft.type}
-            onChange={(e) => setDraft({ ...draft, type: e.target.value })}
+            value={area.type}
+            onChange={(e) => onChange({ ...area, type: e.target.value })}
           >
-            <option value="">Todas</option>
+            <option value="">Todas las categorías</option>
             {categories.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.label}
@@ -81,16 +89,14 @@ export function AreaFilter({
         )}
         {dates && (
           <Field
-            label="Desde (hora de tu dispositivo)"
+            label="Desde"
             type="datetime-local"
-            value={draft.after}
-            onChange={(e) => setDraft({ ...draft, after: e.target.value })}
+            value={area.after}
+            onChange={(e) => onChange({ ...area, after: e.target.value })}
           />
         )}
-        <button className="button" type="submit">
-          Consultar zona
-        </button>
       </div>
+
       {area.geoError && (
         <p className="small error" role="alert">
           {area.geoError}{" "}
@@ -99,31 +105,6 @@ export function AreaFilter({
           </button>
         </p>
       )}
-      {area.geography && (
-        <p className="small geography-source">
-          Límites de referencia {area.geography.reference_year} ·{" "}
-          <a
-            href={area.geography.source_url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            SENACE / INEI
-          </a>
-        </p>
-      )}
-      <LocationControl
-        point={area}
-        onChange={(point) => {
-          const next = {
-            ...draft,
-            ...area,
-            ...point,
-            type: fixedType || draft.type,
-          };
-          setDraft(next);
-          onChange(next);
-        }}
-      />
-    </form>
+    </section>
   );
 }

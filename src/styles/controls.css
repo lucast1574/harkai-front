@@ -57,30 +57,36 @@
 .panel {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 18px;
   padding: 26px;
   margin-bottom: 22px;
   box-shadow: 0 2px 3px #102a3003;
 }
 .area-filter {
-  padding: 20px 24px;
+  padding: 22px 26px;
+  border-radius: 20px;
 }
 .filter-heading {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 14px;
+  gap: 14px;
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
   align-items: center;
+}
+.filter-heading .eyebrow {
+  margin-bottom: 3px;
 }
 .filter-heading h2 {
   margin: 0;
-  font-size: 14px;
+  font-size: 17px;
 }
 .filter-fields {
   display: grid;
-  grid-template-columns: repeat(4, minmax(110px, 1fr)) auto;
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
   align-items: end;
 }
 .field {

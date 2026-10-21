@@ -1,12 +1,19 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { MessageCircle, RefreshCw, ArrowUpRight } from "lucide-react";
-import { useArea } from "@/lib/use-area";
+import {
+  MessageCircle,
+  RefreshCw,
+  ArrowUpRight,
+  LocateFixed,
+  MapPin,
+} from "lucide-react";
+import { useArea, rememberUserLocation } from "@/lib/use-area";
 import { useAuth } from "@/lib/auth";
 import { LIMA } from "@/lib/contracts";
-import { Heading, Notice, Select } from "@/components/ui";
-import { LocationControl } from "../map/location-control";
+import { Notice } from "@/components/ui";
+import { SUPPORT_CITIES } from "../support/contracts";
+import { useLocationRequest } from "../map/use-location-request";
 import { ForumCompose } from "./forum-compose";
 import { ForumCard } from "./forum-card";
 import { useForum } from "./use-forum";
@@ -17,11 +24,26 @@ export function CommunityForum(): React.JSX.Element {
   const [city, setCity] = useState(false);
   const [districtFilter, setDistrictFilter] = useState("");
   const { user } = useAuth();
+
+  const locate = useLocationRequest((next) => {
+    rememberUserLocation(next);
+    setDistrictFilter("");
+    setArea({
+      ...area,
+      latitude: next.latitude,
+      longitude: next.longitude,
+      ubigeo: "",
+      scope: "district",
+    });
+  });
+
   const district =
     area.districts?.find((item) => item.id === area.ubigeo)?.name ||
     area.geography?.name ||
     "tu distrito";
-  const province = area.geography?.province || "tu ciudad";
+  const province = area.geography?.province || "Lima";
+  const isTrujillo = province.toLowerCase().includes("trujillo");
+
   const selectedFilter = area.districts?.some(
     (item) => item.id === districtFilter,
   )
@@ -32,12 +54,66 @@ export function CommunityForum(): React.JSX.Element {
     area.geoPending || area.geoError || !id
       ? null
       : `forum?ubigeo=${id}&scope=${city && !selectedFilter ? "city" : "district"}`;
+
+  function selectCity(target: "lima" | "trujillo"): void {
+    const coords = SUPPORT_CITIES[target];
+    setDistrictFilter("");
+    setArea({
+      ...area,
+      latitude: coords.latitude,
+      longitude: coords.longitude,
+      ubigeo: "",
+      scope: "district",
+    });
+  }
+
   return (
-    <>
-      <Heading eyebrow="COMUNIDAD" title="Conversa con tus vecinos.">
-        Preguntas, novedades y conversaciones de tu zona. Todos participamos
-        como vecinos anónimos.
-      </Heading>
+    <div className={styles.shell}>
+      <header className="account-hero">
+        <div className="account-hero-copy">
+          <div className="account-badge">
+            <MessageCircle size={14} />
+            <span>COMUNIDAD VECINAL</span>
+          </div>
+          <h1>Conversa con tus vecinos</h1>
+          <p>
+            Preguntas, avisos y novedades útiles de tu zona. Todos participamos
+            de forma anónima para cuidar la privacidad del barrio.
+          </p>
+        </div>
+        <div className={styles.heroActions}>
+          <div className="city-switcher" role="group" aria-label="Ciudad activa">
+            <button
+              type="button"
+              className={`city-pill ${!isTrujillo ? "active" : ""}`}
+              onClick={() => selectCity("lima")}
+            >
+              Lima
+            </button>
+            <button
+              type="button"
+              className={`city-pill ${isTrujillo ? "active" : ""}`}
+              onClick={() => selectCity("trujillo")}
+            >
+              Trujillo
+            </button>
+          </div>
+          <button
+            type="button"
+            className="account-map-pill"
+            disabled={locate.busy || area.geoPending}
+            onClick={() => void locate.find()}
+          >
+            <LocateFixed size={15} />
+            <span>{locate.busy ? "Ubicando…" : "Mi ubicación"}</span>
+          </button>
+          <Link href="/dashboard/incidents/reports" className="account-map-pill">
+            <span>Alertas vecinales</span>
+            <ArrowUpRight size={15} />
+          </Link>
+        </div>
+      </header>
+
       <div className={styles.toolbar}>
         <div
           className={styles.tabs}
@@ -57,6 +133,7 @@ export function CommunityForum(): React.JSX.Element {
         >
           <button
             id="forum-district-tab"
+            type="button"
             role="tab"
             aria-selected={!city}
             tabIndex={city ? -1 : 0}
@@ -67,55 +144,52 @@ export function CommunityForum(): React.JSX.Element {
           </button>
           <button
             id="forum-city-tab"
+            type="button"
             role="tab"
             aria-selected={city}
             tabIndex={city ? 0 : -1}
             aria-controls="forum-panel"
             onClick={() => setCity(true)}
           >
-            Mi ciudad · {province}
+            Toda la ciudad · {province}
           </button>
         </div>
-        <Link href="/dashboard/incidents/reports">
-          Ver alertas vecinales <ArrowUpRight size={14} />
-        </Link>
+
+        <div className={styles.districtPicker}>
+          <MapPin size={15} />
+          <select
+            aria-label={city ? "Filtrar por distrito" : "Cambiar distrito"}
+            value={city ? selectedFilter : area.ubigeo || ""}
+            disabled={area.geoPending || !area.districts?.length}
+            onChange={(event) => {
+              const nextId = event.target.value;
+              if (city) {
+                setDistrictFilter(nextId);
+              } else {
+                setArea({ ...area, ubigeo: nextId, scope: "district" });
+              }
+            }}
+          >
+            {city && (
+              <option value="">Todos los distritos de {province}</option>
+            )}
+            {area.districts?.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.name}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
+
       <section
         id="forum-panel"
         role="tabpanel"
         aria-labelledby={city ? "forum-city-tab" : "forum-district-tab"}
       >
-        <div className={styles.zone}>
-          <p>
-            {city
-              ? "Conoce lo que conversan otros distritos de tu ciudad."
-              : `Esta es la conversación de ${district}.`}
-          </p>
-          {city && (
-            <Select
-              label="Filtrar por distrito"
-              value={selectedFilter}
-              onChange={(event) => setDistrictFilter(event.target.value)}
-            >
-              <option value="">Todos los distritos de {province}</option>
-              {area.districts?.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </Select>
-          )}
-          <details>
-            <summary>Cambiar mi zona</summary>
-            <LocationControl
-              point={area}
-              onChange={(point) =>
-                setArea({ ...area, ...point, scope: "district" })
-              }
-            />
-          </details>
-        </div>
-        {area.geoError && <Notice error>{area.geoError}</Notice>}
+        {(area.geoError || locate.error) && (
+          <Notice error>{area.geoError || locate.error}</Notice>
+        )}
         {area.geoPending ? (
           <Notice>Identificando tu distrito…</Notice>
         ) : (
@@ -129,9 +203,10 @@ export function CommunityForum(): React.JSX.Element {
           />
         )}
       </section>
-    </>
+    </div>
   );
 }
+
 function ForumContent({
   path,
   districtId,
@@ -151,8 +226,14 @@ function ForumContent({
       />
       <div className={styles.feed}>
         <div className={styles.feedHeading}>
-          <h2>Conversaciones de esta zona</h2>
+          <div>
+            <h2>Conversaciones en {district}</h2>
+            <p className="muted small">
+              Participa con respeto y sin compartir datos privados.
+            </p>
+          </div>
           <button
+            type="button"
             className="icon-button"
             aria-label="Actualizar conversaciones"
             disabled={feed.loading}
@@ -165,9 +246,12 @@ function ForumContent({
         {feed.loading && <Notice>Cargando conversaciones…</Notice>}
         {!feed.loading && !feed.error && !feed.items.length && (
           <div className={styles.empty}>
-            <MessageCircle size={26} />
+            <MessageCircle size={28} />
             <h3>La conversación empieza contigo</h3>
-            <p>Comparte algo útil o plantea una pregunta a tus vecinos.</p>
+            <p>
+              Comparte una novedad útil o plantea una pregunta a tus vecinos de{" "}
+              {district}.
+            </p>
           </div>
         )}
         {feed.items.map((thread) => (
@@ -179,6 +263,7 @@ function ForumContent({
         ))}
         {feed.cursor && (
           <button
+            type="button"
             className="button secondary"
             disabled={feed.loading}
             onClick={() => void feed.reload(feed.cursor)}

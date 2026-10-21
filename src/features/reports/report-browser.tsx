@@ -1,10 +1,13 @@
 "use client";
-import { useArea } from "@/lib/use-area";
 import { useState } from "react";
-import { Heading, Notice } from "@/components/ui";
+import { Radio, LocateFixed, RefreshCw, Download } from "lucide-react";
+import { useArea, rememberUserLocation } from "@/lib/use-area";
+import { Notice } from "@/components/ui";
 import { Access } from "@/components/access";
 import { useResource } from "@/lib/use-resource";
 import { LIMA, type Meta } from "@/lib/contracts";
+import { SUPPORT_CITIES } from "../support/contracts";
+import { useLocationRequest } from "../map/use-location-request";
 import { ZoneControls } from "./zone-controls";
 import { AreaFilter } from "./area-filter";
 import { ReportCollection } from "./report-collection";
@@ -14,6 +17,7 @@ import { useReports } from "./use-reports";
 import ZoneMap from "../map/map-loader";
 import { Summary } from "../stats/summary";
 import { exportReports } from "../stats/export";
+
 export function ReportBrowser({
   title = "El pulso de tu zona",
   fixedType,
@@ -57,6 +61,7 @@ export function ReportBrowser({
     />
   );
 }
+
 function Browser({
   title,
   fixedType,
@@ -82,44 +87,111 @@ function Browser({
     history ? "me/incidents" : institutional ? "gov/incidents" : "incidents",
   );
   const categories = meta?.categories || [];
+
+  const locate = useLocationRequest((next) => {
+    rememberUserLocation(next);
+    setArea({
+      ...area,
+      latitude: next.latitude,
+      longitude: next.longitude,
+      ubigeo: "",
+    });
+  });
+
+  const province = area.geography?.province || "Lima";
+  const isTrujillo = province.toLowerCase().includes("trujillo");
+
+  function selectCity(target: "lima" | "trujillo"): void {
+    const coords = SUPPORT_CITIES[target];
+    setArea({
+      ...area,
+      latitude: coords.latitude,
+      longitude: coords.longitude,
+      ubigeo: "",
+    });
+  }
+
   return (
-    <>
-      <Heading
-        eyebrow={
-          institutional ? "Información para gobiernos locales" : undefined
-        }
-        title={title}
-      >
-        {mode === "directory"
-          ? "Busca un reporte, revisa su estado y abre el detalle para ver su ubicación o confirmar lo ocurrido."
-          : mode === "feed"
-            ? "Una cronología de lo que comparte la comunidad en tu zona. Los reportes se muestran como fueron publicados; no son noticias verificadas por una redacción."
-            : mode === "analytics"
-              ? "Entiende la muestra de reportes de tu consulta: qué se reporta y cuántos cuentan con una confirmación comunitaria."
-              : "Explora aportes de la comunidad en la zona que elijas."}
-      </Heading>
-      <div className="page-actions">
-        <button
-          className="button secondary"
-          disabled={reports.loading}
-          onClick={() => {
-            void reports.reload();
-          }}
-        >
-          Actualizar
-        </button>
-        {institutional && (
+    <div className="archive-shell">
+      <header className="account-hero">
+        <div className="account-hero-copy">
+          <div className="account-badge">
+            <Radio size={14} />
+            <span>
+              {institutional
+                ? "PANEL INSTITUCIONAL"
+                : history
+                  ? "TU ACTIVIDAD"
+                  : "ALERTAS DE LA COMUNIDAD"}
+            </span>
+          </div>
+          <h1>{title}</h1>
+          <p>
+            {mode === "directory"
+              ? "Busca un reporte, revisa su estado y abre el detalle para ver su ubicación o confirmar lo ocurrido."
+              : mode === "feed"
+                ? "Cronología de lo que comparte la comunidad en tu zona."
+                : mode === "analytics"
+                  ? "Muestra de reportes de tu consulta: qué se reporta y cuántos cuentan con confirmación comunitaria."
+                  : "Explora los aportes de la comunidad en la zona que elijas."}
+          </p>
+        </div>
+        <div className="archive-hero-actions">
+          <div className="city-switcher" role="group" aria-label="Ciudad activa">
+            <button
+              type="button"
+              className={`city-pill ${!isTrujillo ? "active" : ""}`}
+              onClick={() => selectCity("lima")}
+            >
+              Lima
+            </button>
+            <button
+              type="button"
+              className={`city-pill ${isTrujillo ? "active" : ""}`}
+              onClick={() => selectCity("trujillo")}
+            >
+              Trujillo
+            </button>
+          </div>
           <button
-            className="button secondary"
-            disabled={!reports.items.length}
-            onClick={() =>
-              exportReports(reports.items, categories, !!reports.cursor, area)
-            }
+            type="button"
+            className="account-map-pill"
+            disabled={locate.busy || area.geoPending}
+            onClick={() => void locate.find()}
           >
-            Descargar CSV de esta consulta
+            <LocateFixed size={15} />
+            <span>{locate.busy ? "Ubicando…" : "Mi ubicación"}</span>
           </button>
-        )}
-      </div>
+          <button
+            type="button"
+            className="account-map-pill"
+            disabled={reports.loading}
+            onClick={() => void reports.reload()}
+          >
+            <RefreshCw size={15} />
+            <span>Actualizar</span>
+          </button>
+          {institutional && (
+            <button
+              type="button"
+              className="account-map-pill"
+              disabled={!reports.items.length}
+              onClick={() =>
+                exportReports(
+                  reports.items,
+                  categories,
+                  !!reports.cursor,
+                  area,
+                )
+              }
+            >
+              <Download size={15} />
+              <span>Exportar CSV</span>
+            </button>
+          )}
+        </div>
+      </header>
+
       {institutional || history ? (
         <AreaFilter
           area={area}
@@ -133,7 +205,7 @@ function Browser({
           <summary>
             Zona de consulta ·{" "}
             {area.geography?.name || "Identificando distrito…"}{" "}
-            <span>Cambiar zona o categoría ↓</span>
+            <span>Cambiar distrito o categoría ↓</span>
           </summary>
           <ZoneControls
             area={area}
@@ -143,8 +215,8 @@ function Browser({
           />
         </details>
       )}
-      {(metaError || reports.error) && (
-        <Notice error>{metaError || reports.error}</Notice>
+      {(metaError || reports.error || locate.error) && (
+        <Notice error>{metaError || reports.error || locate.error}</Notice>
       )}
       {!stats && !institutional && (
         <QueryOverview
@@ -245,6 +317,6 @@ function Browser({
           Cargar más reportes
         </button>
       )}
-    </>
+    </div>
   );
 }

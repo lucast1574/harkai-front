@@ -4,6 +4,8 @@ import {
   type InputHTMLAttributes,
   type TextareaHTMLAttributes,
 } from "react";
+import { NumberField } from "./number-field";
+export { NumberField } from "./number-field";
 export function Field({
   label,
   hint,
@@ -15,6 +17,9 @@ export function Field({
   error?: string;
 }): React.JSX.Element {
   const id = useId();
+  if (props.type === "number") {
+    return <NumberField label={label} hint={hint} error={error} {...props} />;
+  }
   return (
     <label className="field" htmlFor={id}>
       <span>{label}</span>

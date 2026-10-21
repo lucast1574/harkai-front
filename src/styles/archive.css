@@ -1,58 +1,154 @@
+.archive-shell {
+  width: 100%;
+  max-width: none;
+}
+.archive-hero-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex-shrink: 0;
+}
 .archive-layout {
   display: grid;
-  grid-template-columns: 260px minmax(0, 1fr);
+  grid-template-columns: 300px minmax(0, 1fr);
   gap: 24px;
   align-items: start;
 }
 .archive-filters {
-  padding: 22px;
+  position: sticky;
+  top: 24px;
+  padding: 24px;
+  border-radius: 20px;
+  margin-bottom: 0;
   display: grid;
-  gap: 16px;
+  gap: 22px;
+}
+.archive-filter-section {
+  display: grid;
+  gap: 14px;
+}
+.archive-filter-section + .archive-filter-section {
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
 }
 .archive-filter-title {
   display: flex;
   align-items: center;
   gap: 9px;
-  color: #5a9c76;
+  color: var(--green);
 }
 .archive-filter-title h2 {
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 700;
   margin: 0;
   color: var(--ink);
 }
-.archive-filters .zone-controls {
-  border: 0;
-  padding: 0;
+.archive-scope-pills {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 11px;
+  background: var(--bg);
+  border: 1px solid var(--border);
 }
-.archive-filters .zone-caption {
-  display: none;
+.archive-scope-pills button {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  background: transparent;
+  color: var(--muted);
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
 }
-.archive-filters > .muted {
-  font-size: 12px;
-  line-height: 1.7;
-  margin-top: -8px;
+.archive-scope-pills button:hover {
+  color: var(--ink);
 }
-.archive-filters .field {
-  font-size: 13px;
+.archive-scope-pills button.active {
+  background: var(--surface-soft);
+  border-color: var(--border);
+  color: var(--ink);
 }
-.archive-filters .field input,
-.archive-filters .field select {
-  font-size: 13px;
+.archive-preset-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
 }
+.archive-preset-btn {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 9px 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  background: var(--surface-soft);
+  color: var(--muted);
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    color 150ms ease;
+}
+.archive-preset-btn:hover {
+  color: var(--ink);
+  border-color: var(--border-hover);
+}
+.archive-preset-btn.active {
+  background: rgba(87, 212, 99, 0.14);
+  border-color: rgba(87, 212, 99, 0.36);
+  color: var(--accent-ink);
+}
+.archive-custom-dates {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+.archive-custom-dates summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 4px 0;
+}
+.archive-custom-dates summary:hover {
+  color: var(--ink);
+}
+.archive-date-fields {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
 .archive-overview {
   min-width: 0;
 }
 .archive-overview .metrics {
-  gap: 10px;
+  gap: 14px;
+  margin-bottom: 18px;
 }
 .archive-overview .metrics article {
-  padding: 18px;
+  padding: 20px 22px;
+  border-radius: 18px;
 }
 .archive-overview .metrics strong {
-  font-size: 30px;
+  font-size: 32px;
+  margin: 4px 0;
 }
 .archive-overview .metrics span {
-  font-size: 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+.archive-overview .distribution {
+  padding: 22px 24px;
+  border-radius: 18px;
+  margin-bottom: 18px;
+}
+.archive-overview .distribution h2 {
+  font-size: 17px;
+  margin: 0 0 4px;
+}
+.archive-map {
+  border-radius: 20px;
+  margin-bottom: 24px;
 }
 .archive-map-heading {
   display: flex;
@@ -60,56 +156,66 @@
   gap: 15px;
   align-items: center;
   justify-content: space-between;
-  padding: 20px;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border);
 }
 .archive-map-heading h2 {
-  font-size: 15px;
-  margin-bottom: 4px;
+  font-size: 16px;
+  margin: 0 0 3px;
 }
 .archive-map-heading p {
-  font-size: 12px;
+  font-size: 12.5px;
   color: var(--muted);
   margin: 0;
 }
-.archive-map-heading .checkbox {
+.archive-heat-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
+  color: var(--muted);
   font-size: 12px;
+  font-weight: 600;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    color 150ms ease;
+}
+.archive-heat-toggle.active {
+  background: rgba(87, 212, 99, 0.14);
+  border-color: rgba(87, 212, 99, 0.36);
+  color: var(--accent-ink);
 }
 .archive-map .zone-map {
-  height: 370px;
+  height: 390px;
 }
 .archive-overview .chart-row {
-  grid-template-columns: 130px 1fr 25px;
-  font-size: 12px;
-  gap: 8px;
+  grid-template-columns: 150px 1fr 32px;
+  font-size: 12.5px;
+  gap: 12px;
 }
-.archive-overview .distribution {
-  padding: 20px;
+.archive-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
-.archive-overview .distribution h2 {
-  font-size: 16px;
-}
+
 @media (max-width: 1100px) {
   .archive-layout {
     grid-template-columns: 1fr;
   }
   .archive-filters {
+    position: static;
     grid-template-columns: 1fr 1fr;
-    gap: 14px 20px;
   }
-  .archive-filters .zone-controls {
-    grid-column: 1/-1;
-  }
-  .archive-filters .archive-filter-title:first-child {
-    grid-column: 1/-1;
-  }
-  .archive-filters > .muted {
-    grid-column: 1/-1;
-  }
-  .archive-filters .archive-filter-title:not(:first-child) {
-    grid-column: 1/-1;
-  }
-  .archive-filters .coordinate-options .two-columns {
-    max-width: 450px;
+  .archive-filter-section + .archive-filter-section {
+    padding-top: 0;
+    border-top: 0;
+    padding-left: 20px;
+    border-left: 1px solid var(--border);
   }
 }
 @media (max-width: 760px) {
@@ -129,15 +235,18 @@
     align-items: start;
     flex-direction: column;
   }
-  .archive-layout {
-    gap: 12px;
-  }
   .archive-filters {
-    padding: 18px;
-    gap: 12px;
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+  .archive-filter-section + .archive-filter-section {
+    padding-left: 0;
+    border-left: 0;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
   }
   .archive-overview .metrics article {
-    padding: 13px;
+    padding: 16px;
   }
   .archive-overview .metrics strong {
     font-size: 26px;

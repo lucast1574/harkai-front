@@ -1,0 +1,59 @@
+.wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.input {
+  width: 100%;
+  padding-right: 44px !important;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.input::-webkit-inner-spin-button,
+.input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.stepper {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  width: 28px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  overflow: hidden;
+}
+.stepButton {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background-color 140ms ease,
+    color 140ms ease;
+}
+.stepButton + .stepButton {
+  border-top: 1px solid var(--border);
+}
+.stepButton:hover:not(:disabled) {
+  background: rgba(87, 212, 99, 0.14);
+  color: var(--green);
+}
+.stepButton:active:not(:disabled) {
+  background: rgba(87, 212, 99, 0.24);
+}
+.stepButton:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}

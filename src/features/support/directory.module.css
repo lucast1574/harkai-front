@@ -1,47 +1,93 @@
-.directory header {
-  margin-bottom: 22px;
+.directory {
+  margin-bottom: 0;
+  border-radius: 20px;
+  padding: 26px 28px;
 }
-.directory h2 {
-  margin-bottom: 8px;
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.header h2 {
+  margin: 0 0 4px;
+  font-size: 20px;
+}
+.header p {
+  margin: 0;
+}
+.selectorRow {
+  margin-bottom: 18px;
 }
 .contacts {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
-  margin: 22px 0;
+  margin: 18px 0;
 }
 .contacts article {
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 18px;
+  background: var(--surface-soft);
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+}
+.contactMeta {
   display: grid;
-  gap: 12px;
+  gap: 6px;
 }
 .scope {
-  display: block;
-  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  width: fit-content;
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
   color: var(--muted);
-  margin-bottom: 5px;
+}
+.scopeDistrict {
+  background: rgba(87, 212, 99, 0.14);
+  color: var(--accent-ink);
 }
 .contacts h3 {
   font-size: 14px;
   margin: 0;
+  line-height: 1.35;
 }
-.phone {
+.contactActions {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 19px;
-  font-weight: 650;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+.phone {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 17px;
+  font-weight: 700;
   color: var(--accent-ink);
   font-variant-numeric: tabular-nums;
 }
 .source {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   font-size: 11px;
   color: var(--muted);
+}
+.source:hover {
+  color: var(--ink);
 }
 .directory > p:last-child {
   margin-bottom: 0;

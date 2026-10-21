@@ -109,6 +109,7 @@ export function Profile(): React.JSX.Element {
             name="radius"
             min={100}
             max={10000}
+            step={100}
             defaultValue={user.preferences.radius_meters}
             required
           />

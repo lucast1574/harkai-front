@@ -8,6 +8,7 @@ import { useAuth } from "@/lib/auth";
 import { api } from "@/lib/api";
 import type { Preferences } from "@/lib/contracts";
 import { Field, Select, Heading, Notice } from "@/components/ui";
+
 export function Profile(): React.JSX.Element {
   const { user, reload } = useAuth();
   const [busy, setBusy] = useState(false);
@@ -41,20 +42,28 @@ export function Profile(): React.JSX.Element {
     return;
   }
   if (!user) return <></>;
+  const roleLabel =
+    user.role === "gov"
+      ? "Gobierno local"
+      : user.role === "admin"
+        ? "Administrador"
+        : "Comunidad";
   return (
-    <>
+    <div className="account-shell">
       <Heading
         eyebrow="TU ESPACIO EN HARKAI"
         title={`Hola, ${user.name.split(" ")[0]}.`}
       >
-        Preferencias compartidas entre la web y la app móvil.
+        Preferencias sincronizadas entre el panel web y la app móvil.
       </Heading>
       <section className="panel account-overview">
         <span className="account-large-avatar">{user.name.slice(0, 1)}</span>
-        <div>
-          <h2>{user.name}</h2>
+        <div className="account-overview-meta">
+          <div className="account-name-row">
+            <h2>{user.name}</h2>
+            <span className="account-role-badge">{roleLabel}</span>
+          </div>
           <p className="muted">{user.email}</p>
-          <span className="small muted">Una cuenta para web y móvil</span>
         </div>
         <Link className="button secondary" href="/dashboard/history">
           Mis reportes
@@ -73,7 +82,7 @@ export function Profile(): React.JSX.Element {
             <span className="eyebrow">PERSONALIZA TU EXPERIENCIA</span>
             <h2>Perfil y preferencias</h2>
             <p className="muted small">
-              Estos ajustes se comparten con tu app móvil.
+              Estos ajustes se comparten automáticamente con tu app móvil.
             </p>
           </header>
           <Field
@@ -85,14 +94,6 @@ export function Profile(): React.JSX.Element {
             required
           />
           <Field label="Correo electrónico" value={user.email} readOnly />
-          <p className="muted">
-            Rol:{" "}
-            {user.role === "gov"
-              ? "Gobierno local"
-              : user.role === "admin"
-                ? "Administrador"
-                : "Usuario de la comunidad"}
-          </p>
           <Select
             label="Qué alertas consultar"
             name="notifications"
@@ -128,10 +129,6 @@ export function Profile(): React.JSX.Element {
             <option value="light">Claro</option>
             <option value="dark">Oscuro</option>
           </Select>
-          <p className="muted small">
-            Estas preferencias se guardan en tu cuenta. Los permisos de
-            notificación se administran por dispositivo.
-          </p>
           {error && <Notice error>{error}</Notice>}
           {message && <Notice>{message}</Notice>}
           <button className="button" disabled={busy}>
@@ -144,7 +141,7 @@ export function Profile(): React.JSX.Element {
           <section className="panel account-privacy">
             <h2>Tu actividad y privacidad</h2>
             <p className="muted small">
-              Consulta cómo se usan tus datos o solicita la eliminación de tu
+              Consulta cómo se protegen tus datos o solicita la eliminación de tu
               cuenta.
             </p>
             <div className="page-actions">
@@ -165,6 +162,6 @@ export function Profile(): React.JSX.Element {
         </div>
       </div>
       <MobileReporting />
-    </>
+    </div>
   );
 }

@@ -68,14 +68,24 @@ export function useArea(defaults: Area = LIMA): [Area, (next: Area) => void] {
     const revision = manualRevision;
     void startAutoLocation((next) => {
       if (manualRevision === revision)
-        save({ ...next, scope: snapshot().scope || "district" });
+        save({
+          latitude: next.latitude,
+          longitude: next.longitude,
+          scope: snapshot().scope || "district",
+        });
     });
   }, []);
   const [filters, setFilters] = useState(defaults);
   const region = useDistrict(point, point.ubigeo, point.scope || "district");
-  const area = {
+  const resolvedPoint =
+    point.ubigeo && region.center && validPoint(region.center)
+      ? region.center
+      : point;
+  const area: Area = {
     ...filters,
     ...point,
+    latitude: resolvedPoint.latitude,
+    longitude: resolvedPoint.longitude,
     ubigeo: region.district?.id,
     geography: region.area,
     districts: region.districts,
@@ -88,10 +98,17 @@ export function useArea(defaults: Area = LIMA): [Area, (next: Area) => void] {
     (next) => {
       if (!validPoint(next)) return;
       setFilters(next);
+      const ubigeoChanged =
+        Boolean(next.ubigeo) && next.ubigeo !== area.ubigeo;
       const moved =
-        next.latitude !== point.latitude || next.longitude !== point.longitude;
-      if (moved || next.ubigeo !== area.ubigeo) manualRevision++;
-      save({ ...next, ubigeo: moved ? undefined : next.ubigeo });
+        next.latitude !== area.latitude || next.longitude !== area.longitude;
+      if (moved || ubigeoChanged) manualRevision++;
+      save({
+        latitude: next.latitude,
+        longitude: next.longitude,
+        ubigeo: ubigeoChanged ? next.ubigeo : moved ? undefined : next.ubigeo,
+        scope: next.scope || "district",
+      });
     },
   ];
 }

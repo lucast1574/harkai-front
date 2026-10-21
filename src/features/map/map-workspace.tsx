@@ -18,8 +18,8 @@ import { Verification } from "../reports/report-card";
 import { NeighborhoodRail } from "./neighborhood-rail";
 import ZoneMap from "./map-loader";
 import { MapCityControl } from "./map-city-control";
+
 export function MapWorkspace(): React.JSX.Element {
-  const [showSupport, setShowSupport] = useState(true);
   const [area, setArea] = useArea(LIMA);
   const [selectedId, setSelected] = useState("");
   const { user } = useAuth();
@@ -32,6 +32,7 @@ export function MapWorkspace(): React.JSX.Element {
       ? null
       : `support/places?${areaQuery(area)}`,
   );
+  const supportPlaces = support.data?.items || [];
   const selected = reports.items.find((i) => i.id === selectedId);
   const changeArea = (a: Area) => {
     setArea({ ...a, type: "" });
@@ -50,15 +51,13 @@ export function MapWorkspace(): React.JSX.Element {
         selectedId={selectedId}
         onSelect={setSelected}
         onArea={changeArea}
-        showSupport={showSupport}
-        onSupport={setShowSupport}
         supportError={support.error}
-        supportPlaces={showSupport ? support.data?.items || [] : []}
+        supportPlaces={supportPlaces}
         metadataError={metaError}
       />
       <div className="map-stage">
         <ZoneMap
-          supportPlaces={showSupport ? support.data?.items || [] : []}
+          supportPlaces={supportPlaces}
           scrollWheelZoom
           area={area}
           incidents={reports.items}
@@ -71,11 +70,9 @@ export function MapWorkspace(): React.JSX.Element {
           <span>
             <i className="report-dot user-location" /> Tu ubicación
           </span>
-          {showSupport && (
-            <span>
-              <i className="report-dot support" /> Salud y ayuda
-            </span>
-          )}
+          <span>
+            <i className="report-dot support" /> Salud y ayuda
+          </span>
           <span>
             <i className="report-dot confirmed" /> Confirmado
           </span>

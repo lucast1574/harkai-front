@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { Notice } from "./ui";
+
 const navigation = [
   {
     href: "/dashboard",
@@ -46,6 +47,7 @@ const navigation = [
   },
   { href: "/dashboard/revenue", label: "Ganancias", icon: Wallet, admin: true },
 ];
+
 export function Shell({
   children,
 }: {
@@ -61,8 +63,8 @@ export function Shell({
         <Image
           src="/icon.png"
           alt=""
-          width="52"
-          height="52"
+          width="48"
+          height="48"
           className="brand-icon"
           unoptimized
         />
@@ -93,7 +95,9 @@ export function Shell({
                 {n.section && (
                   <span className="nav-section-label">{n.section}</span>
                 )}
-                <n.icon size={19} />
+                <span className="nav-icon">
+                  <n.icon size={20} />
+                </span>
                 <span className="nav-text">{n.label}</span>
               </Link>
             );
@@ -102,9 +106,7 @@ export function Shell({
       <div className="sidebar-purpose">
         <span className="live-dot" />
         <p>
-          Explora tu ciudad.
-          <br />
-          Conversa con tu comunidad.
+          Red vecinal activa en Lima, Callao y Trujillo.
         </p>
       </div>
       <div className="sidebar-bottom">
@@ -119,9 +121,6 @@ export function Shell({
             Mi cuenta<small>{user?.name || "Ingresar o registrarme"}</small>
           </span>
         </Link>
-        <a href="https://harkai.lat" className="small-link">
-          Conoce Harkai ↗
-        </a>
       </div>
     </>
   );

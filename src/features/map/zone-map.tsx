@@ -96,14 +96,14 @@ export default function ZoneMap({
         <GeoJSON
           key={`${area.ubigeo}:${area.scope}`}
           data={area.geography.geometry}
-          style={{ color: "#398363", weight: 2, fillOpacity: 0.04 }}
+          style={{ color: "#2b9e5a", weight: 2.2, fillOpacity: 0.04 }}
         />
       )}
       {!area.geoPending && !area.geoError && !area.geography && (
         <Circle
           center={[area.latitude, area.longitude]}
           radius={area.radius}
-          pathOptions={{ color: "#398363", weight: 1, fillOpacity: 0.035 }}
+          pathOptions={{ color: "#2b9e5a", weight: 1, fillOpacity: 0.035 }}
         />
       )}
       {!area.geography && (
@@ -111,7 +111,7 @@ export default function ZoneMap({
           center={[area.latitude, area.longitude]}
           radius={5}
           pathOptions={{
-            color: "#011935",
+            color: "#061325",
             fillColor: "#fff",
             fillOpacity: 1,
             weight: 2,
@@ -122,16 +122,13 @@ export default function ZoneMap({
       )}
       <UserLocationMarker />
       <div className="map-zone-label" aria-live="polite">
+        <i className="map-zone-dot" aria-hidden="true" />
         <strong>
           {area.geography?.name ||
-            (area.geoPending
-              ? "Identificando distrito…"
-              : "Selecciona una zona")}
+            (area.geoPending ? "Ubicando distrito…" : "Lima")}
         </strong>
         <span>
-          {area.scope === "city"
-            ? "Toda la ciudad · cobertura provincial"
-            : "Distrito de consulta"}
+          {area.scope === "city" ? "Ciudad completa" : "Distrito"}
         </span>
       </div>
       <SupportPlaceLayer places={supportPlaces} />

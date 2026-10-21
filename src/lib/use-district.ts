@@ -1,12 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
 import { api } from "./api";
-import type { GeographicDistrict } from "./contracts";
+import type { DistrictItem, GeographicDistrict } from "./contracts";
 import type { Point } from "./location";
 type Region = {
   district: GeographicDistrict;
   area: GeographicDistrict;
-  districts: { id: string; name: string }[];
+  districts: DistrictItem[];
+  center?: { latitude: number; longitude: number };
 };
 const cache = new Map<string, Region>();
 export function useDistrict(
@@ -16,7 +17,8 @@ export function useDistrict(
 ): {
   district?: GeographicDistrict;
   area?: GeographicDistrict;
-  districts: { id: string; name: string }[];
+  districts: DistrictItem[];
+  center?: { latitude: number; longitude: number };
   loading: boolean;
   error: string;
   retry: () => void;
@@ -30,7 +32,8 @@ export function useDistrict(
     path: string;
     district?: GeographicDistrict;
     area?: GeographicDistrict;
-    districts: { id: string; name: string }[];
+    districts: DistrictItem[];
+    center?: { latitude: number; longitude: number };
     error: string;
   }>({ path: "", districts: [], error: "" });
   const [attempt, setAttempt] = useState(0);

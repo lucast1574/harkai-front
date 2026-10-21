@@ -1,12 +1,13 @@
 .sidebar,
 .mobile-sidebar {
-  width: 250px;
+  width: 268px;
   background: var(--navy);
-  color: #dbe5eb;
-  padding: 28px 20px;
+  border-right: 1px solid rgba(255, 255, 255, 0.07);
+  color: #e6eef5;
+  padding: 26px 18px 22px;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 24px;
 }
 .sidebar {
   position: fixed;
@@ -17,95 +18,150 @@
 }
 .brand {
   display: flex;
-  gap: 11px;
+  gap: 12px;
   align-items: center;
-  color: white;
-  font-size: 29px;
+  color: #ffffff;
+  font-size: 27px;
   font-weight: 700;
-  letter-spacing: -1px;
-}
-.brand-symbol {
-  background: var(--green);
-  color: var(--navy);
-  border-radius: 13px 13px 13px 4px;
-  font-size: 23px;
-  width: 43px;
-  height: 46px;
-  display: grid;
-  place-items: center;
+  letter-spacing: -0.9px;
+  padding: 2px 6px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 .brand small {
-  font-size: 10px;
+  font-size: 11px;
   display: block;
-  color: #8ea5b6;
+  color: #8ea5bc;
   letter-spacing: 0;
   font-weight: 400;
-}
-.sidebar-label {
-  font-size: 9px;
-  letter-spacing: 2px;
-  color: #7d93a7;
-  margin-top: 8px;
+  margin-top: 2px;
 }
 .sidebar nav,
 .mobile-sidebar nav {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
 }
 .nav-link {
+  position: relative;
   display: flex;
-  gap: 12px;
+  gap: 13px;
   align-items: center;
-  padding: 11px 12px;
-  border-radius: 10px;
-  font-size: 13px;
-  color: #a8b9c8;
+  padding: 11px 13px;
+  min-height: 52px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: #a9bdd0;
   transition:
-    background-color 160ms ease,
-    color 160ms ease;
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
+}
+.nav-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.045);
+  color: #9cb3c9;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
 }
 .nav-link:hover {
-  background: #ffffff08;
-  color: #dbe5eb;
+  background: rgba(255, 255, 255, 0.05);
+  color: #f0f6fc;
+}
+.nav-link:hover .nav-icon {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
 }
 .nav-link.active {
-  background: #203b48;
-  color: #b0efb9;
-  box-shadow: none;
+  background: linear-gradient(
+    90deg,
+    rgba(87, 212, 99, 0.16) 0%,
+    rgba(87, 212, 99, 0.05) 100%
+  );
+  border-color: rgba(87, 212, 99, 0.3);
+  color: #ffffff;
+  font-weight: 600;
+}
+.nav-link.active .nav-icon {
+  background: rgba(87, 212, 99, 0.22);
+  color: #57d463;
+}
+.sidebar-purpose {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.sidebar-purpose p {
+  margin: 0;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: #94a9be;
+}
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #57d463;
+  box-shadow: 0 0 0 3px rgba(87, 212, 99, 0.18);
+  flex-shrink: 0;
 }
 .sidebar-bottom {
-  margin-top: auto;
-  border-top: 1px solid #ffffff13;
-  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 14px;
   display: grid;
-  gap: 16px;
 }
 .account {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 12px;
+  gap: 12px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #f0f6fc;
+  padding: 10px 12px;
+  border-radius: 13px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.035);
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease;
+}
+.account:hover,
+.account.active {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(87, 212, 99, 0.32);
 }
 .account small {
   display: block;
-  color: #8da3b6;
-  font-size: 10px;
+  color: #8ea5bc;
+  font-size: 11px;
+  font-weight: 400;
+  margin-top: 1px;
 }
 .avatar {
-  width: 34px;
-  height: 34px;
-  background: #ffffff13;
-  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  background: rgba(87, 212, 99, 0.18);
+  color: #57d463;
+  font-weight: 700;
+  border-radius: 10px;
   display: grid;
   place-items: center;
-}
-.small-link {
-  font-size: 11px;
-  color: #8da3b6;
+  flex-shrink: 0;
 }
 .main-content {
-  margin-left: 250px;
-  padding: 48px clamp(20px, 4vw, 56px) 60px;
+  margin-left: 268px;
+  padding: 40px clamp(22px, 3vw, 48px) 60px;
   max-width: 1850px;
 }

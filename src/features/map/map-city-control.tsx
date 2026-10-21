@@ -1,5 +1,5 @@
 "use client";
-import { Building2 } from "lucide-react";
+import { Globe2 } from "lucide-react";
 import type { Area } from "@/lib/contracts";
 import styles from "./map-city-control.module.css";
 
@@ -12,19 +12,20 @@ export function MapCityControl({
 }): React.JSX.Element {
   const city = area.scope === "city";
   return (
-    <div className={styles.control}>
-      <Building2 size={16} aria-hidden="true" />
-      <span>Explorar toda la ciudad</span>
-      <button
-        type="button"
-        role="switch"
-        aria-label="Explorar toda la ciudad"
-        aria-checked={city}
-        disabled={area.geoPending || !!area.geoError}
-        onClick={() => onChange({ ...area, scope: city ? "district" : "city" })}
-      >
-        <span />
-      </button>
-    </div>
+    <button
+      type="button"
+      role="switch"
+      aria-label="Explorar toda la ciudad"
+      aria-checked={city}
+      disabled={area.geoPending || !!area.geoError}
+      className={`${styles.control} ${city ? styles.active : ""}`}
+      onClick={() => onChange({ ...area, scope: city ? "district" : "city" })}
+    >
+      <Globe2 size={15} aria-hidden="true" className={styles.icon} />
+      <span className={styles.label}>Explorar toda la ciudad</span>
+      <span className={styles.track} aria-hidden="true">
+        <span className={styles.thumb} />
+      </span>
+    </button>
   );
 }

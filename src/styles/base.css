@@ -5,14 +5,28 @@
   --accent-ink: #276346;
   --border-hover: #b8c7c0;
   --surface: #fff;
-  --ink: #172c3c;
+  --ink: #0f2133;
   --muted: #617181;
   --border: #e1e7ec;
-  --green: #76df85;
-  --navy: #011935;
+  --green: #57d463;
+  --navy: #061325;
 }
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+  outline: 0 !important;
+  outline: none !important;
+}
+*:focus,
+*:focus-visible,
+*:focus-within {
+  outline: 0 !important;
+  outline: none !important;
+  outline-width: 0 !important;
+  outline-style: none !important;
+  outline-color: transparent !important;
+  box-shadow: none !important;
 }
 body {
   margin: 0;
@@ -27,26 +41,6 @@ input,
 textarea,
 select {
   font: inherit;
-}
-:focus,
-:focus-visible {
-  outline: 0 !important;
-  outline-offset: 0;
-  box-shadow: none !important;
-}
-input:focus-visible,
-textarea:focus-visible {
-  background-color: var(--surface-soft);
-}
-a {
-  outline-offset: 4px;
-}
-button:focus-visible,
-a:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
-  outline: 3px solid #369344;
 }
 a {
   color: inherit;
@@ -95,12 +89,4 @@ small,
   font-weight: 700;
   display: block;
   margin-bottom: 16px;
-}
-
-button:focus-visible {
-  filter: brightness(0.94);
-}
-a:focus-visible {
-  text-decoration: underline;
-  text-underline-offset: 4px;
 }

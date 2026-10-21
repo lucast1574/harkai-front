@@ -22,21 +22,15 @@
 @import "../styles/location.css";
 @import "../styles/map-surface.css";
 .brand-icon {
-  width: 52px;
-  height: 52px;
+  width: 46px;
+  height: 46px;
   object-fit: contain;
   flex-shrink: 0;
-}
-.brand {
-  gap: 3px;
-}
-.brand small {
-  font-size: 9px;
 }
 .sidebar,
 .explore-rail {
   scrollbar-width: thin;
-  scrollbar-color: #58716655 transparent;
+  scrollbar-color: rgba(147, 168, 190, 0.25) transparent;
 }
 
 .medical-group {

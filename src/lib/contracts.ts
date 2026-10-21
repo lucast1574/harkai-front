@@ -67,11 +67,17 @@ export type GeographicDistrict = {
   source_url: string;
   reference_year: number;
 };
+export type DistrictItem = {
+  id: string;
+  name: string;
+  lat?: string;
+  lng?: string;
+};
 export type Area = {
   scope?: "district" | "city";
   ubigeo?: string;
   geography?: GeographicDistrict;
-  districts?: { id: string; name: string }[];
+  districts?: DistrictItem[];
   geoPending?: boolean;
   geoError?: string;
   geoRetry?: () => void;

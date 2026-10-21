@@ -1,6 +1,7 @@
 "use client";
 import { useSyncExternalStore } from "react";
-import { locate, type LocatedPoint } from "./location";
+import { api } from "./api";
+import { locate, validPoint, type LocatedPoint } from "./location";
 type State = { point: LocatedPoint | null; busy: boolean; error: string };
 const initial: State = { point: null, busy: false, error: "" };
 let state = initial;
@@ -36,38 +37,39 @@ export async function startAutoLocation(
   started = true;
   publish({ ...state, busy: true, error: "" });
   try {
-    let point = await locate(undefined, { timeoutMs: 7000 });
-    publish({ point, busy: point.accuracy > 2000, error: "" });
-    if (point.accuracy > 2000) {
+    let point = await locate(undefined, { timeoutMs: 6000 });
+    publish({ point, busy: false, error: "" });
+    onFound(point);
+    if (point.accuracy > 1500) {
       try {
         const refined = await locate(undefined, {
           timeoutMs: 4000,
           highAccuracy: true,
         });
-        if (refined.accuracy < point.accuracy) point = refined;
+        if (refined.accuracy < point.accuracy) {
+          point = refined;
+          publish({ point, busy: false, error: "" });
+          onFound(point);
+        }
       } catch {
-        /* Keep the first estimate and expose manual correction. */
+        /* Keep initial browser location without nagging the user. */
       }
     }
-    if (point.accuracy > 2000) {
-      publish({
-        point,
-        busy: false,
-        error:
-          "La ubicación es demasiado aproximada para identificar tu distrito. Ajusta el punto en el mapa.",
-      });
-      return;
+  } catch {
+    try {
+      const fallback = await api<{
+        center?: { latitude: number; longitude: number };
+      }>("geo/district?auto=1");
+      if (fallback.center && validPoint(fallback.center)) {
+        onFound({
+          latitude: fallback.center.latitude,
+          longitude: fallback.center.longitude,
+          accuracy: 3000,
+        });
+      }
+    } catch {
+      /* Default city remains active silently. */
     }
-    publish({ point, busy: false, error: "" });
-    onFound(point);
-  } catch (error) {
-    publish({
-      ...state,
-      busy: false,
-      error:
-        error instanceof Error
-          ? error.message
-          : "No se pudo detectar tu ubicación.",
-    });
+    publish({ ...state, busy: false, error: "" });
   }
 }

@@ -1,29 +1,3 @@
-.sidebar-purpose {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  padding: 16px 12px;
-  border-top: 1px solid #ffffff12;
-  color: #93aabb;
-  font-size: 11px;
-  line-height: 1.8;
-  margin-top: 12px;
-}
-.sidebar-purpose p {
-  margin: 0;
-}
-.sidebar-purpose .live-dot {
-  margin-top: 6px;
-}
-.account {
-  padding: 10px;
-  border-radius: 12px;
-}
-.account:hover,
-.account.active {
-  background: #ffffff0b;
-  color: #b5ecbd;
-}
 .account-entry {
   display: grid;
   grid-template-columns: minmax(280px, 470px) minmax(280px, 1fr);
@@ -174,12 +148,18 @@
   gap: 24px;
   max-width: 1100px;
   align-items: start;
+  margin-bottom: 24px;
 }
 .account-settings .panel {
   margin-bottom: 0;
 }
 .account-settings .form-panel {
   max-width: none;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.account-settings .form-panel > :not(.field) {
+  grid-column: 1/-1;
 }
 .account-settings .form-panel header {
   padding-bottom: 12px;
@@ -212,17 +192,6 @@
   .account-settings {
     grid-template-columns: 1fr;
   }
-}
-
-.account-settings {
-  margin-bottom: 24px;
-}
-.account-settings .form-panel {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
-}
-.account-settings .form-panel > :not(.field) {
-  grid-column: 1/-1;
 }
 @media (max-width: 760px) {
   .account-settings .form-panel {

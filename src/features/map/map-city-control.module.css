@@ -3,65 +3,86 @@
   z-index: 800;
   top: 16px;
   right: 16px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 9px;
-  padding: 13px 14px;
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--ink);
-  font-size: 12px;
-}
-.control > svg {
-  color: var(--accent-ink);
-  flex-shrink: 0;
-}
-.control button {
-  display: flex;
-  align-items: center;
-  width: 36px;
-  height: 22px;
-  padding: 3px;
-  background: var(--border);
-  border: 0;
-  border-radius: 30px;
-  flex-shrink: 0;
+  gap: 10px;
+  padding: 9px 13px 9px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(6, 19, 37, 0.9);
+  backdrop-filter: blur(12px);
+  color: #f0f6fc;
+  font-size: 12.5px;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(2, 12, 24, 0.28);
   cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    transform 120ms ease;
 }
-.control button > span {
+.control:hover:not(:disabled) {
+  background: rgba(10, 27, 50, 0.96);
+  border-color: rgba(87, 212, 99, 0.45);
+}
+.active {
+  border-color: rgba(87, 212, 99, 0.65);
+  background: rgba(8, 28, 44, 0.94);
+}
+.icon {
+  color: #57d463;
+  flex-shrink: 0;
+}
+.label {
+  white-space: nowrap;
+}
+.track {
+  display: inline-flex;
+  align-items: center;
+  width: 38px;
+  height: 22px;
+  padding: 2px;
+  background: rgba(255, 255, 255, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  flex-shrink: 0;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease;
+}
+.thumb {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--surface);
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
   transition: transform 160ms ease;
 }
-.control button[aria-checked="true"] {
-  background: #27886d;
+.active .track {
+  background: #57d463;
+  border-color: #57d463;
 }
-.control button[aria-checked="true"] > span {
-  transform: translateX(14px);
-  background: white;
+.active .thumb {
+  transform: translateX(16px);
+  background: #061325;
 }
-.control button:focus-visible {
-  background: var(--muted);
-}
-.control button:disabled {
+.control:disabled {
   opacity: 0.6;
   cursor: wait;
 }
 @media (max-width: 760px) {
   .control {
-    max-width: calc(50% - 22px);
-    right: 14px;
-    padding: 10px;
+    max-width: calc(52% - 16px);
+    right: 12px;
+    top: 12px;
+    padding: 8px 11px;
     gap: 7px;
-    font-size: 10px;
+    font-size: 11px;
   }
-  .control > svg {
+  .icon {
     display: none;
   }
   .control + :global(.map-legend) {
-    max-width: calc(100% - 100px);
+    max-width: calc(100% - 90px);
   }
 }

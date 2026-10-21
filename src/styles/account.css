@@ -1,12 +1,13 @@
 .account-shell {
-  max-width: 1120px;
+  width: 100%;
+  max-width: none;
 }
 .account-hero {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   gap: 24px;
-  padding: 28px 30px;
+  padding: 28px 32px;
   margin-bottom: 24px;
   border-radius: 20px;
   border: 1px solid var(--border);
@@ -18,7 +19,7 @@
   );
 }
 .account-hero-copy {
-  max-width: 680px;
+  max-width: 820px;
 }
 .account-badge {
   display: inline-flex;
@@ -69,14 +70,16 @@
 
 .account-entry {
   display: grid;
-  grid-template-columns: minmax(340px, 460px) minmax(320px, 1fr);
+  grid-template-columns: minmax(400px, 0.92fr) minmax(420px, 1.08fr);
   gap: 24px;
   align-items: stretch;
+  width: 100%;
 }
 .auth-panel {
+  width: 100%;
   max-width: none;
   margin-bottom: 0;
-  padding: 28px;
+  padding: 30px;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
@@ -202,10 +205,11 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  min-width: 0;
 }
 .account-benefits-card {
   margin-bottom: 0;
-  padding: 28px;
+  padding: 30px;
   border-radius: 20px;
   flex: 1;
 }
@@ -222,7 +226,7 @@
   display: flex;
   align-items: flex-start;
   gap: 14px;
-  padding: 15px 16px;
+  padding: 16px 18px;
   border-radius: 14px;
   background: var(--surface-soft);
   border: 1px solid var(--border);
@@ -246,14 +250,14 @@
 }
 .account-benefit-item p {
   margin: 0;
-  font-size: 12.5px;
+  font-size: 13px;
   line-height: 1.55;
   color: var(--muted);
 }
 
 .mobile-reporting {
   margin-bottom: 0;
-  padding: 24px 28px;
+  padding: 26px 30px;
   border-radius: 20px;
   background: linear-gradient(
     125deg,
@@ -278,7 +282,7 @@
 }
 .mobile-reporting > p {
   margin: 0;
-  font-size: 13px;
+  font-size: 13.5px;
   line-height: 1.6;
   color: var(--muted);
 }

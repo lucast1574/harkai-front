@@ -86,16 +86,6 @@
 .detail-list dd {
   margin: 0;
 }
-.auth-panel {
-  max-width: 470px;
-}
-.auth-panel > .button {
-  width: 100%;
-  margin: 20px 0 10px;
-}
-.auth-panel > small {
-  display: block;
-}
 .table-wrapper {
   overflow: auto;
 }

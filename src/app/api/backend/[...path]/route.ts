@@ -5,20 +5,6 @@ export const dynamic = "force-dynamic";
 type Context = { params: Promise<{ path: string[] }> };
 const paths =
   /^(geo\/district|support\/(?:directory|places|coverage)|meta|archive\/(?:incidents|districts)|me(?:\/preferences|\/incidents|\/devices(?:\/[a-f0-9]{64})?)?|alerts|emergency-contacts|analysis\/(?:text|audio)|incidents(?:\/[a-f0-9]{24}(?:\/confirm|\/status|\/comments(?:\/[a-f0-9]{24})?)?)?|media(?:\/[a-f0-9]{24})?|gov\/incidents|admin\/(?:incidents|emergency-contacts|users(?:\/[a-f0-9]{24}\/role)?))$/;
-const GEO_HEADERS = [
-  "cf-connecting-ip",
-  "x-real-ip",
-  "x-forwarded-for",
-  "cf-iplatitude",
-  "cf-iplongitude",
-  "cf-ipcity",
-  "x-vercel-ip-latitude",
-  "x-vercel-ip-longitude",
-  "x-vercel-ip-city",
-  "x-geo-latitude",
-  "x-geo-longitude",
-  "x-geo-city",
-];
 async function proxy(
   request: NextRequest,
   context: Context,
@@ -47,10 +33,23 @@ async function proxy(
     });
   }
   const headers = new Headers(bearer(request));
-  for (const key of GEO_HEADERS) {
-    const val = request.headers.get(key);
-    if (val) headers.set(key, val);
-  }
+  const clientIp =
+    request.headers.get("cf-connecting-ip") ||
+    request.headers.get("x-real-ip") ||
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  const geoLat =
+    request.headers.get("cf-iplatitude") ||
+    request.headers.get("x-vercel-ip-latitude");
+  const geoLng =
+    request.headers.get("cf-iplongitude") ||
+    request.headers.get("x-vercel-ip-longitude");
+  const geoCity =
+    request.headers.get("cf-ipcity") ||
+    request.headers.get("x-vercel-ip-city");
+  if (clientIp) headers.set("x-harkai-client-ip", clientIp);
+  if (geoLat) headers.set("x-geo-latitude", geoLat);
+  if (geoLng) headers.set("x-geo-longitude", geoLng);
+  if (geoCity) headers.set("x-geo-city", geoCity);
   if (write)
     headers.set(
       "Content-Type",

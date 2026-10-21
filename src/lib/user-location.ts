@@ -39,7 +39,7 @@ export function rememberUserLocation(point: LocatedPoint): void {
 
 async function locateByNetwork(signal?: AbortSignal): Promise<LocatedPoint> {
   try {
-    const res = await fetch("https://freeipapi.com/api/json", {
+    const res = await fetch("https://free.freeipapi.com/api/v1/json", {
       cache: "no-store",
       signal: signal ?? AbortSignal.timeout(3000),
     });

@@ -11,7 +11,7 @@ type Region = {
 };
 const cache = new Map<string, Region>();
 export function useDistrict(
-  point: Point,
+  point: Point & { auto?: boolean },
   ubigeo?: string,
   scope: "district" | "city" = "district",
 ): {
@@ -26,7 +26,9 @@ export function useDistrict(
   const path =
     (ubigeo
       ? `geo/district?ubigeo=${encodeURIComponent(ubigeo)}`
-      : `geo/district?lat=${point.latitude}&lng=${point.longitude}`) +
+      : point.auto
+        ? `geo/district?auto=1`
+        : `geo/district?lat=${point.latitude}&lng=${point.longitude}`) +
     `&scope=${scope}`;
   const [result, setResult] = useState<{
     path: string;

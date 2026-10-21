@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { locate, type LocatedPoint } from "@/lib/location";
+import type { LocatedPoint } from "@/lib/location";
+import { locateWithFallback } from "@/lib/user-location";
+
 export function useLocationRequest(onFound: (point: LocatedPoint) => void): {
   busy: boolean;
   error: string;
@@ -28,7 +30,7 @@ export function useLocationRequest(onFound: (point: LocatedPoint) => void): {
     setBusy(true);
     setError("");
     try {
-      const point = await locate(undefined, { signal: request.signal });
+      const point = await locateWithFallback({ signal: request.signal });
       if (!request.signal.aborted) latest.current(point);
     } catch (e) {
       if (!request.signal.aborted)

@@ -34,7 +34,7 @@ export function NeighborhoodRail({
   supportPlaces: SupportPlace[];
   metadataError: string;
 }): React.JSX.Element {
-  const name = area.geography?.name || "Lima";
+  const name = area.geography?.name || "tu zona";
   const count = reports.items.length;
   const pending = reports.items.filter((report) => !report.verified).length;
   const unavailable = !!reports.error || !!area.geoError;

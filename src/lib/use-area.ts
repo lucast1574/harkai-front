@@ -5,17 +5,24 @@ import { useDistrict } from "./use-district";
 import { validPoint, type Point } from "./location";
 import { startAutoLocation } from "./user-location";
 export { rememberUserLocation, useUserLocation } from "./user-location";
+
 let manualRevision = 0;
-const KEY = "harkai:query-zone:v1";
+const KEY = "harkai:query-zone:v3";
 const EVENT = "harkai:query-zone";
-type QueryPoint = Point & { ubigeo?: string; scope?: "district" | "city" };
+type QueryPoint = Point & {
+  ubigeo?: string;
+  scope?: "district" | "city";
+  auto?: boolean;
+};
 const initial: QueryPoint = {
   latitude: LIMA.latitude,
   longitude: LIMA.longitude,
   scope: "district",
+  auto: true,
 };
 let current = initial;
 let restored = false;
+
 function snapshot(): QueryPoint {
   if (typeof window === "undefined") return initial;
   if (!restored) {
@@ -29,6 +36,7 @@ function snapshot(): QueryPoint {
           longitude: point.longitude,
           ubigeo: /^\d{6}$/.test(point.ubigeo || "") ? point.ubigeo : undefined,
           scope: point.scope === "city" ? "city" : "district",
+          auto: false,
         };
     } catch {
       /* Storage can be unavailable; in-memory selection remains usable. */
@@ -36,17 +44,20 @@ function snapshot(): QueryPoint {
   }
   return current;
 }
+
 function subscribe(listener: () => void): () => void {
   window.addEventListener(EVENT, listener);
   return () => window.removeEventListener(EVENT, listener);
 }
-function save(point: QueryPoint): void {
+
+function save(point: QueryPoint, persist = false): void {
   if (!validPoint(point)) return;
   if (
     current.latitude === point.latitude &&
     current.longitude === point.longitude &&
     current.ubigeo === point.ubigeo &&
-    current.scope === point.scope
+    current.scope === point.scope &&
+    current.auto === point.auto
   )
     return;
   current = {
@@ -54,31 +65,42 @@ function save(point: QueryPoint): void {
     longitude: point.longitude,
     ubigeo: point.ubigeo,
     scope: point.scope || "district",
+    auto: Boolean(point.auto),
   };
   try {
-    sessionStorage.setItem(KEY, JSON.stringify(current));
+    if (persist) {
+      sessionStorage.setItem(KEY, JSON.stringify(current));
+    } else {
+      sessionStorage.removeItem(KEY);
+    }
   } catch {
     /* Private mode may block persistence. */
   }
   window.dispatchEvent(new Event(EVENT));
 }
+
 export function useArea(defaults: Area = LIMA): [Area, (next: Area) => void] {
   const point = useSyncExternalStore(subscribe, snapshot, () => initial);
   useEffect(() => {
     const revision = manualRevision;
     void startAutoLocation((next) => {
       if (manualRevision === revision)
-        save({
-          latitude: next.latitude,
-          longitude: next.longitude,
-          scope: snapshot().scope || "district",
-        });
+        save(
+          {
+            latitude: next.latitude,
+            longitude: next.longitude,
+            ubigeo: undefined,
+            scope: snapshot().scope || "district",
+            auto: false,
+          },
+          false,
+        );
     });
   }, []);
   const [filters, setFilters] = useState(defaults);
   const region = useDistrict(point, point.ubigeo, point.scope || "district");
   const resolvedPoint =
-    point.ubigeo && region.center && validPoint(region.center)
+    (point.ubigeo || point.auto) && region.center && validPoint(region.center)
       ? region.center
       : point;
   const area: Area = {
@@ -103,20 +125,34 @@ export function useArea(defaults: Area = LIMA): [Area, (next: Area) => void] {
       const moved =
         next.latitude !== area.latitude || next.longitude !== area.longitude;
       if (moved || ubigeoChanged) manualRevision++;
-      save({
-        latitude: next.latitude,
-        longitude: next.longitude,
-        ubigeo: ubigeoChanged ? next.ubigeo : moved ? undefined : next.ubigeo,
-        scope: next.scope || "district",
-      });
+      save(
+        {
+          latitude: next.latitude,
+          longitude: next.longitude,
+          ubigeo: ubigeoChanged ? next.ubigeo : moved ? undefined : next.ubigeo,
+          scope: next.scope || "district",
+          auto: false,
+        },
+        true,
+      );
     },
   ];
 }
+
 export function useQueryPoint(): Point {
   return useSyncExternalStore(subscribe, snapshot, () => initial);
 }
 
 export function queryUserLocation(point: Point): void {
   manualRevision++;
-  save({ ...point, scope: "district" });
+  save(
+    {
+      latitude: point.latitude,
+      longitude: point.longitude,
+      ubigeo: undefined,
+      scope: "district",
+      auto: false,
+    },
+    false,
+  );
 }

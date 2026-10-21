@@ -6,6 +6,9 @@ type Context = { params: Promise<{ path: string[] }> };
 const paths =
   /^(geo\/district|support\/(?:directory|places|coverage)|meta|archive\/(?:incidents|districts)|me(?:\/preferences|\/incidents|\/devices(?:\/[a-f0-9]{64})?)?|alerts|emergency-contacts|analysis\/(?:text|audio)|incidents(?:\/[a-f0-9]{24}(?:\/confirm|\/status|\/comments(?:\/[a-f0-9]{24})?)?)?|media(?:\/[a-f0-9]{24})?|gov\/incidents|admin\/(?:incidents|emergency-contacts|users(?:\/[a-f0-9]{24}\/role)?))$/;
 const GEO_HEADERS = [
+  "cf-connecting-ip",
+  "x-real-ip",
+  "x-forwarded-for",
   "cf-iplatitude",
   "cf-iplongitude",
   "cf-ipcity",

@@ -1,4 +1,5 @@
 "use client";
+import { reportFilterCategories } from "@/lib/report-categories";
 import { useState } from "react";
 import {
   History,
@@ -188,7 +189,7 @@ export function ArchiveExplorer(): React.JSX.Element {
               onChange={(e) => setArea({ ...area, type: e.target.value })}
             >
               <option value="">Todas las categorías</option>
-              {categories.map((c) => (
+              {reportFilterCategories(categories).map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.label}
                 </option>

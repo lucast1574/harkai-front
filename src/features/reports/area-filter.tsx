@@ -1,4 +1,5 @@
 "use client";
+import { reportFilterCategories } from "@/lib/report-categories";
 import type { Area, Category } from "@/lib/contracts";
 import { Field, Select } from "@/components/ui";
 
@@ -80,7 +81,7 @@ export function AreaFilter({
             onChange={(e) => onChange({ ...area, type: e.target.value })}
           >
             <option value="">Todas las categorías</option>
-            {categories.map((c) => (
+            {reportFilterCategories(categories).map((c) => (
               <option key={c.id} value={c.id}>
                 {c.label}
               </option>

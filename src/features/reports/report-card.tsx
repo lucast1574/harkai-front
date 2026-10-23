@@ -1,4 +1,5 @@
 "use client";
+import { reportTypeLabel } from "@/lib/report-categories";
 import Link from "next/link";
 import type { Incident, Category } from "@/lib/contracts";
 import { dateLabel } from "@/lib/contracts";
@@ -20,12 +21,11 @@ export function ReportCard({
   incident: Incident;
   categories: Category[];
 }): React.JSX.Element {
-  const category = categories.find((c) => c.id === incident.type);
   return (
     <Link href={`/incidents/${incident.id}`} className="report-card">
       <div className="report-card-head">
         <span className="category-label">
-          {category?.label || incident.type}
+          {reportTypeLabel(incident.type, categories)}
         </span>
         <span className="muted small">{dateLabel(incident.created_at)}</span>
       </div>

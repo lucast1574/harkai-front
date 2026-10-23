@@ -1,4 +1,5 @@
 "use client";
+import { reportFilterCategories } from "@/lib/report-categories";
 import { useLocationState } from "@/lib/user-location";
 import { ScopeToggle } from "../map/scope-toggle";
 import { LocationControl } from "../map/location-control";
@@ -80,7 +81,7 @@ export function ZoneControls({
             onChange={(e) => onChange({ ...area, type: e.target.value })}
           >
             <option value="">Todas las categorías</option>
-            {categories.map((c) => (
+            {reportFilterCategories(categories).map((c) => (
               <option key={c.id} value={c.id}>
                 {c.label}
               </option>

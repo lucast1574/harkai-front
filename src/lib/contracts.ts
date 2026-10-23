@@ -14,6 +14,8 @@ export type User = {
   created_at: string;
 };
 export type Incident = {
+  category?: string;
+  subcategory?: string;
   id: string;
   type: string;
   description: string;
@@ -39,6 +41,7 @@ export type Category = {
   advice: string[];
 };
 export type Meta = {
+  report_categories?: { id: string; label: string; subcategories: Category[] }[];
   categories: Category[];
   capabilities: Record<string, boolean>;
 };

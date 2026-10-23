@@ -8,9 +8,9 @@ import { Notice } from "@/components/ui";
 const GROUPS = [
   {
     id: "security",
-    title: "Seguridad y amenazas",
+    title: "Crimen",
     icon: Shield,
-    description: "Robo, extorsión y violencia.",
+    description: "Robos, extorsiones, secuestros y violencia.",
   },
   {
     id: "emergency",

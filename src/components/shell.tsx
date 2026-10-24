@@ -1,7 +1,7 @@
 "use client";
 import { CoverageNotice } from "@/features/support/coverage-notice";
 import Link from "next/link";
-import Image from "next/image";
+import { Brand } from "./brand";
 import { usePathname } from "next/navigation";
 import { useRef } from "react";
 import {
@@ -72,9 +72,7 @@ export function Shell({
     return (
       <>
         <header className="publication-header">
-          <Link href="/comunidad" className="brand">
-            harkai<small>El pulso de tu comunidad</small>
-          </Link>
+          <Brand />
           <nav aria-label="Navegación pública">
             <Link href="/comunidad">Comunidad</Link>
             <Link href="/dashboard">Mapa</Link>
@@ -88,19 +86,7 @@ export function Shell({
     );
   const content = (
     <>
-      <Link href="/dashboard" className="brand" onClick={close}>
-        <Image
-          src="/icon.png"
-          alt=""
-          width="48"
-          height="48"
-          className="brand-icon"
-          unoptimized
-        />
-        <span>
-          harkai<small>El pulso de tu comunidad</small>
-        </span>
-      </Link>
+      <Brand onClick={close} />
       <nav aria-label="Navegación principal">
         {navigation
           .filter(

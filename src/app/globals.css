@@ -22,8 +22,8 @@
 @import "../styles/location.css";
 @import "../styles/map-surface.css";
 .brand-icon {
-  width: 46px;
-  height: 46px;
+  width: 55px;
+  height: 55px;
   object-fit: contain;
   flex-shrink: 0;
 }

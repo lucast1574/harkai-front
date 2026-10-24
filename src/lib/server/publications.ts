@@ -30,7 +30,10 @@ export const labels: Record<string, string> = {
   place: "Lugar de ayuda",
 };
 export function title(i: Incident): string {
-  return `${labels[i.type] || "Reporte vecinal"} en ${[i.district, i.city].filter(Boolean).join(", ") || "Perú"}`;
+  const location = [i.district, i.city].filter(Boolean).join(", ") || "Perú";
+  const text = i.description.trim().split(/\n/)[0];
+  const summary = text.length > 100 ? `${text.slice(0, 97).trimEnd()}…` : text;
+  return `${summary || labels[i.type] || "Reporte vecinal"} · ${location}`;
 }
 export function photo(i: Incident): string | undefined {
   return i.media_id

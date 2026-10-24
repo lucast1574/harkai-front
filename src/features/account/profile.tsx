@@ -20,6 +20,8 @@ export function Profile(): React.JSX.Element {
     setMessage("");
     try {
       const p: Preferences = {
+        business_notifications:
+          user?.preferences.business_notifications ?? false,
         notifications: form.get(
           "notifications",
         ) as Preferences["notifications"],
@@ -142,8 +144,8 @@ export function Profile(): React.JSX.Element {
           <section className="panel account-privacy">
             <h2>Tu actividad y privacidad</h2>
             <p className="muted small">
-              Consulta cómo se protegen tus datos o solicita la eliminación de tu
-              cuenta.
+              Consulta cómo se protegen tus datos o solicita la eliminación de
+              tu cuenta.
             </p>
             <div className="page-actions">
               <a

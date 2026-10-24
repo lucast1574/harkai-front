@@ -1,5 +1,6 @@
 export type Role = "user" | "gov" | "admin";
 export type Preferences = {
+  business_notifications?: boolean;
   notifications: "all" | "critical" | "none";
   radius_meters: number;
   language: "es" | "en";
@@ -41,7 +42,11 @@ export type Category = {
   advice: string[];
 };
 export type Meta = {
-  report_categories?: { id: string; label: string; subcategories: Category[] }[];
+  report_categories?: {
+    id: string;
+    label: string;
+    subcategories: Category[];
+  }[];
   categories: Category[];
   capabilities: Record<string, boolean>;
 };

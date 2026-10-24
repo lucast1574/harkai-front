@@ -10,6 +10,7 @@ import {
   dateLabel,
   type Meta,
   type Area,
+  type Incident,
 } from "@/lib/contracts";
 import { useResource } from "@/lib/use-resource";
 import type { SupportPlace } from "../support/contracts";
@@ -19,21 +20,30 @@ import { NeighborhoodRail } from "./neighborhood-rail";
 import ZoneMap from "./map-loader";
 import { MapCityControl } from "./map-city-control";
 
-export function MapWorkspace(): React.JSX.Element {
+export function MapWorkspace({
+  initialIncident,
+}: { initialIncident?: string } = {}): React.JSX.Element {
   const [area, setArea] = useArea(LIMA);
-  const [selectedId, setSelected] = useState("");
+  const [selectedId, setSelected] = useState(initialIncident || "");
   const { user } = useAuth();
   const institutional = user?.role === "gov" || user?.role === "admin";
   const { data: meta, error: metaError } = useResource<Meta>("meta");
   const categories = meta?.categories || [];
   const reports = useReports(area);
+  const linked = useResource<Incident>(
+    initialIncident ? `incidents/${initialIncident}` : null,
+  );
+  const incidents =
+    linked.data && !reports.items.some((i) => i.id === linked.data!.id)
+      ? [...reports.items, linked.data]
+      : reports.items;
   const support = useResource<{ items: SupportPlace[] }>(
     area.geoPending || area.geoError
       ? null
       : `support/places?${areaQuery(area)}`,
   );
   const supportPlaces = support.data?.items || [];
-  const selected = reports.items.find((i) => i.id === selectedId);
+  const selected = incidents.find((i) => i.id === selectedId);
   const changeArea = (a: Area) => {
     setArea({ ...a, type: "" });
     setSelected("");
@@ -60,7 +70,7 @@ export function MapWorkspace(): React.JSX.Element {
           supportPlaces={supportPlaces}
           scrollWheelZoom
           area={area}
-          incidents={reports.items}
+          incidents={incidents}
           categories={categories}
           selectedId={selectedId}
           onSelect={setSelected}

@@ -11,6 +11,7 @@ import {
   Menu,
   X,
   Wallet,
+  Store,
   MessageCircle,
   History,
   LifeBuoy,
@@ -19,6 +20,12 @@ import { useAuth } from "@/lib/auth";
 import { Notice } from "./ui";
 
 const navigation = [
+  {
+    href: "/dashboard/businesses",
+    label: "Negocios",
+    icon: Store,
+    admin: true,
+  },
   {
     href: "/dashboard",
     label: "Mapa de mi zona",
@@ -57,6 +64,24 @@ export function Shell({
   const path = usePathname();
   const dialog = useRef<HTMLDialogElement>(null);
   const close = () => dialog.current?.close();
+  if (path.startsWith("/incidents/") || path === "/comunidad")
+    return (
+      <>
+        <header className="publication-header">
+          <Link href="/comunidad" className="brand">
+            harkai<small>El pulso de tu comunidad</small>
+          </Link>
+          <nav aria-label="Navegación pública">
+            <Link href="/comunidad">Comunidad</Link>
+            <Link href="/dashboard">Mapa</Link>
+            <Link href={user ? "/dashboard/profile" : "/login"}>
+              {user ? "Mi cuenta" : "Ingresar"}
+            </Link>
+          </nav>
+        </header>
+        <main>{children}</main>
+      </>
+    );
   const content = (
     <>
       <Link href="/dashboard" className="brand" onClick={close}>
@@ -105,9 +130,7 @@ export function Shell({
       </nav>
       <div className="sidebar-purpose">
         <span className="live-dot" />
-        <p>
-          Red vecinal activa en Lima, Callao y Trujillo.
-        </p>
+        <p>Red vecinal activa en Lima, Callao y Trujillo.</p>
       </div>
       <div className="sidebar-bottom">
         <Link

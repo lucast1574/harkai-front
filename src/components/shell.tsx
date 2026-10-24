@@ -64,7 +64,11 @@ export function Shell({
   const path = usePathname();
   const dialog = useRef<HTMLDialogElement>(null);
   const close = () => dialog.current?.close();
-  if (path.startsWith("/incidents/") || path === "/comunidad")
+  if (
+    path.startsWith("/incidents/") ||
+    path === "/comunidad" ||
+    path === "/eliminar-cuenta"
+  )
     return (
       <>
         <header className="publication-header">

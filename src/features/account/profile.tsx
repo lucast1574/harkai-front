@@ -22,10 +22,8 @@ export function Profile(): React.JSX.Element {
       const p: Preferences = {
         business_notifications:
           user?.preferences.business_notifications ?? false,
-        notifications: form.get(
-          "notifications",
-        ) as Preferences["notifications"],
-        radius_meters: Number(form.get("radius")),
+        notifications: "all",
+        radius_meters: 500,
         language: form.get("language") as Preferences["language"],
         theme: form.get("theme") as Preferences["theme"],
       };
@@ -97,25 +95,6 @@ export function Profile(): React.JSX.Element {
           />
           <Field label="Correo electrónico" value={user.email} readOnly />
           <Select
-            label="Qué alertas consultar"
-            name="notifications"
-            defaultValue={user.preferences.notifications}
-          >
-            <option value="all">Todas, incluidas las no verificadas</option>
-            <option value="critical">Solo emergencias y seguridad</option>
-            <option value="none">Desactivadas</option>
-          </Select>
-          <Field
-            label="Radio de alertas (metros)"
-            type="number"
-            name="radius"
-            min={100}
-            max={10000}
-            step={100}
-            defaultValue={user.preferences.radius_meters}
-            required
-          />
-          <Select
             label="Idioma preferido"
             name="language"
             defaultValue={user.preferences.language}
@@ -156,7 +135,7 @@ export function Profile(): React.JSX.Element {
               </a>
               <a
                 className="text-button"
-                href="https://harkai.lat/eliminar-cuenta/"
+                href="/eliminar-cuenta"
               >
                 Solicitar eliminación de cuenta ↗
               </a>

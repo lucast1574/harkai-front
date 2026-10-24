@@ -19,6 +19,9 @@ type Point = {
   media_id?: string;
   enabled: boolean;
   paid_until?: string;
+  offer?: string;
+  discount_code?: string;
+  payment_mode?: string;
 };
 export function BusinessReview(): React.JSX.Element {
   const { user } = useAuth();
@@ -63,8 +66,8 @@ export function BusinessReview(): React.JSX.Element {
       <h1>Negocios de la comunidad</h1>
       <p>
         Revisa la descripción, ubicación y foto. Aprobar un negocio permite
-        publicarlo únicamente cuando tenga un pago vigente. Stripe sigue
-        pendiente de habilitar.
+        publicarlo únicamente cuando tenga su pago único confirmado. Stripe
+        sigue pendiente de habilitar.
       </p>
       {error && <Notice error>{error}</Notice>}
       {items.map((p) => (
@@ -79,6 +82,8 @@ export function BusinessReview(): React.JSX.Element {
             {p.subtype ? ` · ${p.subtype}` : ""}
           </p>
           <p>{p.description}</p>
+          {p.offer && <p>Oferta: {p.offer}</p>}
+          {p.discount_code && <p>Código: {p.discount_code}</p>}
           <p>{[p.address, p.district, p.city].filter(Boolean).join(", ")}</p>
           {p.media_id && (
             <Image

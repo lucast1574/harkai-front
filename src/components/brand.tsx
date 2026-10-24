@@ -14,7 +14,7 @@ export function Brand({
       aria-label="Harkai, inicio"
     >
       <Image
-        src="/icon.png"
+        src="/brand-symbol.png"
         alt=""
         width={55}
         height={55}

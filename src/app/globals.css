@@ -21,6 +21,7 @@
 @import "../styles/support.css";
 @import "../styles/location.css";
 @import "../styles/map-surface.css";
+@import "../styles/publications.css";
 .brand-icon {
   width: 55px;
   height: 55px;

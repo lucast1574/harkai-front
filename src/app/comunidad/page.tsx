@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { publications, title } from "@/lib/server/publications";
-import { dateLabel } from "@/lib/contracts";
+import { publications } from "@/lib/server/publications";
+import { PublicationCard } from "@/components/publication-card";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Reportes de la comunidad en Perú",
@@ -26,17 +26,7 @@ export default async function Page({
       </p>
       <div className="publication-feed">
         {page.items.map((i) => (
-          <article key={i.id}>
-            <p className="publication-meta">
-              <time dateTime={i.created_at}>{dateLabel(i.created_at)}</time> ·{" "}
-              {i.verified ? "Confirmado por vecinos" : "Sin verificar"}
-            </p>
-            <h2>
-              <Link href={`/incidents/${i.id}`}>{title(i)}</Link>
-            </h2>
-            <p>{i.description.slice(0, 240)}</p>
-            <Link href={`/incidents/${i.id}`}>Leer y conversar</Link>
-          </article>
+          <PublicationCard key={i.id} incident={i} />
         ))}
       </div>
       {!page.items.length && (

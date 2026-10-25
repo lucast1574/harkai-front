@@ -14,7 +14,6 @@ import { useArea, rememberUserLocation } from "@/lib/use-area";
 import { Notice, Field, Select } from "@/components/ui";
 import { useResource } from "@/lib/use-resource";
 import { LIMA, type Meta } from "@/lib/contracts";
-import { SUPPORT_CITIES } from "../support/contracts";
 import { useLocationRequest } from "../map/use-location-request";
 import { useReports } from "../reports/use-reports";
 import { Summary } from "../stats/summary";
@@ -50,25 +49,10 @@ export function ArchiveExplorer(): React.JSX.Element {
       latitude: next.latitude,
       longitude: next.longitude,
       ubigeo: "",
+      scope: "district",
       district: "",
     });
   });
-
-  const province = area.geography?.province || "Lima";
-  const isTrujillo = province.toLowerCase().includes("trujillo");
-  const isLima = ["Lima", "Callao"].includes(province);
-
-  function selectCity(target: "lima" | "trujillo"): void {
-    const coords = SUPPORT_CITIES[target];
-    setArea({
-      ...area,
-      latitude: coords.latitude,
-      longitude: coords.longitude,
-      ubigeo: "",
-      district: "",
-      scope: "city",
-    });
-  }
 
   function applyPreset(next: "all" | "7d" | "30d" | "90d"): void {
     setPreset(next);
@@ -95,26 +79,14 @@ export function ArchiveExplorer(): React.JSX.Element {
           </p>
         </div>
         <div className="archive-hero-actions">
-          <div
-            className="city-switcher"
-            role="group"
-            aria-label="Ciudad activa"
-          >
-            <button
-              type="button"
-              className={`city-pill ${isLima ? "active" : ""}`}
-              onClick={() => selectCity("lima")}
-            >
-              Lima
-            </button>
-            <button
-              type="button"
-              className={`city-pill ${isTrujillo ? "active" : ""}`}
-              onClick={() => selectCity("trujillo")}
-            >
-              Trujillo
-            </button>
-          </div>
+          <span className="account-map-pill" role="status">
+            <LocateFixed size={15} aria-hidden="true" />
+            <span>
+              {area.geoPending
+                ? "Ubicando tu zona…"
+                : area.geography?.name || "Elige tu zona"}
+            </span>
+          </span>
           <button
             type="button"
             className="account-map-pill"

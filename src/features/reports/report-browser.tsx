@@ -6,7 +6,6 @@ import { Notice } from "@/components/ui";
 import { Access } from "@/components/access";
 import { useResource } from "@/lib/use-resource";
 import { LIMA, type Meta } from "@/lib/contracts";
-import { SUPPORT_CITIES } from "../support/contracts";
 import { useLocationRequest } from "../map/use-location-request";
 import { ZoneControls } from "./zone-controls";
 import { AreaFilter } from "./area-filter";
@@ -95,21 +94,9 @@ function Browser({
       latitude: next.latitude,
       longitude: next.longitude,
       ubigeo: "",
+      scope: "district",
     });
   });
-
-  const province = area.geography?.province || "Lima";
-  const isTrujillo = province.toLowerCase().includes("trujillo");
-
-  function selectCity(target: "lima" | "trujillo"): void {
-    const coords = SUPPORT_CITIES[target];
-    setArea({
-      ...area,
-      latitude: coords.latitude,
-      longitude: coords.longitude,
-      ubigeo: "",
-    });
-  }
 
   return (
     <div className="archive-shell">
@@ -137,26 +124,14 @@ function Browser({
           </p>
         </div>
         <div className="archive-hero-actions">
-          <div
-            className="city-switcher"
-            role="group"
-            aria-label="Ciudad activa"
-          >
-            <button
-              type="button"
-              className={`city-pill ${["Lima", "Callao"].includes(province) ? "active" : ""}`}
-              onClick={() => selectCity("lima")}
-            >
-              Lima
-            </button>
-            <button
-              type="button"
-              className={`city-pill ${isTrujillo ? "active" : ""}`}
-              onClick={() => selectCity("trujillo")}
-            >
-              Trujillo
-            </button>
-          </div>
+          <span className="account-map-pill" role="status">
+            <LocateFixed size={15} aria-hidden="true" />
+            <span>
+              {area.geoPending
+                ? "Ubicando tu zona…"
+                : area.geography?.name || "Elige tu zona"}
+            </span>
+          </span>
           <button
             type="button"
             className="account-map-pill"

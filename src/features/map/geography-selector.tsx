@@ -20,7 +20,6 @@ const normalize = (s: string): string =>
 export function GeographySelector({
   area,
   onChange,
-  quick = true,
 }: {
   area: Area;
   onChange: (area: Area) => void;
@@ -71,30 +70,6 @@ export function GeographySelector({
   }
   return (
     <div className="geography-selector">
-      {quick && (
-        <div
-          className="geography-shortcuts"
-          role="group"
-          aria-label="Accesos rápidos de ubicación"
-        >
-          <button
-            type="button"
-            className="city-pill"
-            disabled={!all.length}
-            onClick={() => choose("150101", "city")}
-          >
-            Lima y Callao
-          </button>
-          <button
-            type="button"
-            className="city-pill"
-            disabled={!all.length}
-            onClick={() => choose("130101", "province")}
-          >
-            Trujillo
-          </button>
-        </div>
-      )}
       <Select
         label="Departamento"
         value={department}

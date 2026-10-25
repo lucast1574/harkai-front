@@ -40,7 +40,7 @@ export function SupportPlaceLayer({
     groups.set(key, group);
   }
   return (
-    <Pane name="health-resources" style={{ zIndex: 350 }}>
+    <Pane name="health-resources" style={{ zIndex: 450 }}>
       {[...groups.entries()].map(([key, group]) => {
         if (group.length === 1)
           return <SupportPlaceMarker key={key} place={group[0]} />;

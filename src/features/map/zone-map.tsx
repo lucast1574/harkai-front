@@ -7,6 +7,7 @@ import {
   Circle,
   GeoJSON,
   CircleMarker,
+  Pane,
   MapContainer,
   TileLayer,
   Popup,
@@ -137,37 +138,39 @@ export default function ZoneMap({
       </div>
       <SupportPlaceLayer places={supportPlaces} />
       {heat && <IncidentHeatLayer incidents={incidents} />}
-      {incidents.map((i) => (
-        <CircleMarker
-          key={i.id}
-          center={[i.latitude, i.longitude]}
-          radius={selectedId === i.id ? 12 : heat ? 4 : 7}
-          eventHandlers={{ click: () => onSelect?.(i.id) }}
-          pathOptions={{
-            color: heat ? "#ffffff" : i.verified ? "#247751" : "#b06a23",
-            fillColor: heat
-              ? incidentColor(i.type)
-              : i.verified
-                ? "#39bc7c"
-                : "#f6b44c",
-            weight: heat ? 1 : 3,
-            fillOpacity: heat ? 0.9 : 0.95,
-          }}
-        >
-          {!onSelect && (
-            <Popup>
-              <strong>
-                {categories.find((c) => c.id === i.type)?.label || i.type}
-              </strong>
-              <p>
-                {i.verified ? "Confirmado por la comunidad" : "No verificado"}
-              </p>
-              <p>{i.description.slice(0, 160)}</p>
-              <Link href={`/incidents/${i.id}`}>Ver reporte completo</Link>
-            </Popup>
-          )}
-        </CircleMarker>
-      ))}
+      <Pane name="report-alerts" style={{ zIndex: 500 }}>
+        {incidents.map((i) => (
+          <CircleMarker
+            key={i.id}
+            center={[i.latitude, i.longitude]}
+            radius={selectedId === i.id ? 12 : heat ? 4 : 7}
+            eventHandlers={{ click: () => onSelect?.(i.id) }}
+            pathOptions={{
+              color: heat ? "#ffffff" : i.verified ? "#247751" : "#b06a23",
+              fillColor: heat
+                ? incidentColor(i.type)
+                : i.verified
+                  ? "#39bc7c"
+                  : "#f6b44c",
+              weight: heat ? 1 : 3,
+              fillOpacity: heat ? 0.9 : 0.95,
+            }}
+          >
+            {!onSelect && (
+              <Popup>
+                <strong>
+                  {categories.find((c) => c.id === i.type)?.label || i.type}
+                </strong>
+                <p>
+                  {i.verified ? "Confirmado por la comunidad" : "No verificado"}
+                </p>
+                <p>{i.description.slice(0, 160)}</p>
+                <Link href={`/incidents/${i.id}`}>Ver reporte completo</Link>
+              </Popup>
+            )}
+          </CircleMarker>
+        ))}
+      </Pane>
     </MapContainer>
   );
 }

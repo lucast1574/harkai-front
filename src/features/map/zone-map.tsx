@@ -116,7 +116,7 @@ export default function ZoneMap({
             weight: 2,
           }}
         >
-          <Popup>Centro de tu zona de consulta</Popup>
+          <Popup pane="popupPane">Centro de tu zona de consulta</Popup>
         </CircleMarker>
       )}
       <UserLocationMarker />
@@ -157,7 +157,7 @@ export default function ZoneMap({
             }}
           >
             {!onSelect && (
-              <Popup>
+              <Popup pane="popupPane">
                 <strong>
                   {categories.find((c) => c.id === i.type)?.label || i.type}
                 </strong>

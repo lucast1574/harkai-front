@@ -183,3 +183,19 @@ html[data-theme="dark"] .point-map {
   font-weight: 600;
   text-decoration: none;
 }
+
+.health-place-photo {
+  display: block;
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.health-place-actions a[href^="tel:"] {
+  justify-content: center;
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 9px;
+  background: #e8f4ed;
+  color: #176244;
+}

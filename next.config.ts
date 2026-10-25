@@ -2,6 +2,16 @@ import type { NextConfig } from "next";
 const config: NextConfig = {
   output: "standalone",
   poweredByHeader: false,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "app20.susalud.gob.pe",
+        port: "8080",
+        pathname: "/registro-renipress-webapp/ipress.htm",
+      },
+    ],
+  },
   async rewrites() {
     return [
       {

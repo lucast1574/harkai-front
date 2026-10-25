@@ -22,6 +22,7 @@ export type SupportPlace = {
   latitude: number;
   longitude: number;
   phone?: string;
+  photo_urls?: string[];
   institution?: string;
   classification?: string;
   category?: string;

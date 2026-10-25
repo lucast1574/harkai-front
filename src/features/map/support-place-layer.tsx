@@ -76,7 +76,7 @@ export function SupportPlaceLayer({
                 ),
             }}
           >
-            <Tooltip>
+            <Tooltip pane="tooltipPane">
               {group.length} lugares de salud · acerca el mapa para verlos
             </Tooltip>
           </Marker>

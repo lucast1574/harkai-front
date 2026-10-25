@@ -1,5 +1,7 @@
 "use client";
-import { MapPin, Phone, ArrowUpRight } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
+import { MapPin, Phone } from "lucide-react";
 import { Marker, Popup } from "react-leaflet";
 import { medicalIcon } from "./map-icons";
 import type { SupportPlace } from "../support/contracts";
@@ -16,7 +18,7 @@ export function SupportPlaceMarker({
       title={`Salud y ayuda: ${place.name}`}
       zIndexOffset={200}
     >
-      <Popup className="health-place-popup">
+      <Popup pane="popupPane" className="health-place-popup">
         <div className="health-place-card">
           <span className="health-place-kind">
             {place.kind === "hospital"
@@ -24,30 +26,53 @@ export function SupportPlaceMarker({
               : "Centro de salud"}
           </span>
           <strong>{place.name}</strong>
+          {place.photo_urls?.[0] && (
+            <PlacePhoto
+              key={place.photo_urls[0]}
+              src={place.photo_urls[0]}
+              name={place.name}
+            />
+          )}
           <p>
             <MapPin size={14} aria-hidden="true" />
             <span>
               {place.address} · {place.district}
             </span>
           </p>
-          <div className="health-place-actions">
-            {place.phone && (
-              <a href={`tel:${place.phone}`}>
-                <Phone size={14} aria-hidden="true" />
-                Llamar
-              </a>
-            )}
-            <a
-              href={place.source_url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Ver fuente
-              <ArrowUpRight size={14} aria-hidden="true" />
-            </a>
-          </div>
+          {place.phone && (
+            <div className="health-place-actions">
+              {place.phone && (
+                <a href={`tel:${place.phone}`}>
+                  <Phone size={14} aria-hidden="true" />
+                  Llamar
+                </a>
+              )}
+            </div>
+          )}
         </div>
       </Popup>
     </Marker>
+  );
+}
+
+function PlacePhoto({
+  src,
+  name,
+}: {
+  src: string;
+  name: string;
+}): React.JSX.Element | null {
+  const [failed, setFailed] = useState(false);
+  if (failed) return null;
+  return (
+    <Image
+      className="health-place-photo"
+      src={src}
+      alt={`Foto de ${name}`}
+      width={560}
+      height={320}
+      sizes="280px"
+      onError={() => setFailed(true)}
+    />
   );
 }

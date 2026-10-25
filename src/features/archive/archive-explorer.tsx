@@ -1,4 +1,5 @@
 "use client";
+import { incidentColor } from "@/lib/incident-density";
 import { reportFilterCategories } from "@/lib/report-categories";
 import { useState } from "react";
 import {
@@ -92,7 +93,11 @@ export function ArchiveExplorer(): React.JSX.Element {
           </p>
         </div>
         <div className="archive-hero-actions">
-          <div className="city-switcher" role="group" aria-label="Ciudad activa">
+          <div
+            className="city-switcher"
+            role="group"
+            aria-label="Ciudad activa"
+          >
             <button
               type="button"
               className={`city-pill ${!isTrujillo ? "active" : ""}`}
@@ -137,7 +142,11 @@ export function ArchiveExplorer(): React.JSX.Element {
               <h2>Zona y categoría</h2>
             </div>
 
-            <div className="archive-scope-pills" role="group" aria-label="Alcance de consulta">
+            <div
+              className="archive-scope-pills"
+              role="group"
+              aria-label="Alcance de consulta"
+            >
               <button
                 type="button"
                 className={area.scope !== "city" ? "active" : ""}
@@ -203,7 +212,11 @@ export function ArchiveExplorer(): React.JSX.Element {
               <h2>Periodo de consulta</h2>
             </div>
 
-            <div className="archive-preset-grid" role="group" aria-label="Periodo rápido">
+            <div
+              className="archive-preset-grid"
+              role="group"
+              aria-label="Periodo rápido"
+            >
               {(
                 [
                   ["all", "Todo"],
@@ -281,7 +294,9 @@ export function ArchiveExplorer(): React.JSX.Element {
                 onClick={() => setHeat(!heat)}
               >
                 <Flame size={14} />
-                <span>{heat ? "Concentración activa" : "Ver concentración"}</span>
+                <span>
+                  {heat ? "Concentración activa" : "Ver concentración"}
+                </span>
               </button>
             </div>
             <ZoneMap
@@ -290,9 +305,27 @@ export function ArchiveExplorer(): React.JSX.Element {
               categories={categories}
               heat={heat}
             />
+            {heat && reports.items.length > 0 && (
+              <div
+                className="archive-heat-legend"
+                aria-label="Colores por tipo de reporte"
+              >
+                {[...new Set(reports.items.map((i) => i.type))].map((type) => (
+                  <span key={type}>
+                    <i
+                      style={{ backgroundColor: incidentColor(type) }}
+                      aria-hidden="true"
+                    />
+                    {categories.find((c) => c.id === type)?.label || type}
+                  </span>
+                ))}
+                <small>Más intensidad y tamaño = más reportes cercanos</small>
+              </div>
+            )}
             <p className="map-note">
               La concentración representa aportes de la comunidad, no una tasa
-              oficial de criminalidad. Selecciona un punto para abrir el reporte.
+              oficial de criminalidad. Selecciona un punto para abrir el
+              reporte.
             </p>
           </section>
         </div>

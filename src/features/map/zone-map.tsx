@@ -14,6 +14,8 @@ import {
 } from "react-leaflet";
 import { SupportPlaceLayer } from "./support-place-layer";
 import { UserLocationMarker } from "./user-location-marker";
+import { IncidentHeatLayer } from "./incident-heat-layer";
+import { incidentColor } from "@/lib/incident-density";
 import { ZoneMapView } from "./zone-map-view";
 import type { SupportPlace } from "../support/contracts";
 import type { Area, Incident, Category } from "@/lib/contracts";
@@ -123,22 +125,25 @@ export default function ZoneMap({
           {area.geography?.name ||
             (area.geoPending ? "Ubicando distrito…" : "Lima")}
         </strong>
-        <span>
-          {area.scope === "city" ? "Ciudad completa" : "Distrito"}
-        </span>
+        <span>{area.scope === "city" ? "Ciudad completa" : "Distrito"}</span>
       </div>
       <SupportPlaceLayer places={supportPlaces} />
+      {heat && <IncidentHeatLayer incidents={incidents} />}
       {incidents.map((i) => (
         <CircleMarker
           key={i.id}
           center={[i.latitude, i.longitude]}
-          radius={heat ? 26 : selectedId === i.id ? 12 : 7}
+          radius={selectedId === i.id ? 12 : heat ? 4 : 7}
           eventHandlers={{ click: () => onSelect?.(i.id) }}
           pathOptions={{
-            color: i.verified ? "#247751" : "#b06a23",
-            fillColor: i.verified ? "#39bc7c" : "#f6b44c",
-            weight: heat ? 0 : 3,
-            fillOpacity: heat ? 0.16 : 0.95,
+            color: heat ? "#ffffff" : i.verified ? "#247751" : "#b06a23",
+            fillColor: heat
+              ? incidentColor(i.type)
+              : i.verified
+                ? "#39bc7c"
+                : "#f6b44c",
+            weight: heat ? 1 : 3,
+            fillOpacity: heat ? 0.9 : 0.95,
           }}
         >
           {!onSelect && (

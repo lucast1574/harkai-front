@@ -255,3 +255,27 @@
     height: 320px;
   }
 }
+
+.archive-heat-legend {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  padding: 16px 20px 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+.archive-heat-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.archive-heat-legend i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+.archive-heat-legend small {
+  flex-basis: 100%;
+  font-size: 11px;
+}

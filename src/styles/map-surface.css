@@ -55,15 +55,16 @@ html[data-theme="dark"] .point-map {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border: 2px solid white;
+  width: 14px;
+  height: 14px;
+  margin: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
   border-radius: 50%;
-  background: #df3546;
+  background: rgba(78, 113, 128, 0.8);
 }
 .medical-symbol svg {
-  width: 18px;
-  height: 18px;
+  width: 9px;
+  height: 9px;
 }
 .user-location-symbol {
   display: block;
@@ -93,7 +94,7 @@ html[data-theme="dark"] .point-map {
   margin: 8px 0;
 }
 .report-dot.support {
-  background: #df3546 !important;
+  background: #5f7e88 !important;
   border: 0 !important;
   width: 15px;
   height: 15px;

@@ -71,39 +71,6 @@ export function GeographySelector({
   return (
     <div className="geography-selector">
       <Select
-        label="Departamento"
-        value={department}
-        disabled={!all.length}
-        onChange={(e) => choose(e.target.value, "department")}
-      >
-        <option value="">Selecciona departamento</option>
-        {departments.map((d) => (
-          <option key={d.id} value={d.id}>
-            {d.name}
-          </option>
-        ))}
-      </Select>
-      <Select
-        label="Provincia"
-        value={province}
-        disabled={!all.length || !department}
-        onChange={(e) => choose(e.target.value, "province")}
-      >
-        <option value="">Selecciona provincia</option>
-        {provinces.map((p) => (
-          <option key={p.id} value={p.id}>
-            {p.name}
-          </option>
-        ))}
-      </Select>
-      <Field
-        label="Buscar distrito"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        placeholder="Escribe el nombre"
-        disabled={!all.length || !province}
-      />
-      <Select
         label="Distrito"
         value={area.ubigeo || ""}
         disabled={!all.length || !province}
@@ -116,25 +83,62 @@ export function GeographySelector({
           </option>
         ))}
       </Select>
-      <Select
-        label="Área que quieres consultar"
-        value={area.scope || "district"}
-        disabled={!area.ubigeo || area.geoPending}
-        onChange={(e) =>
-          onChange({
-            ...area,
-            scope: e.target.value as Area["scope"],
-            district: "",
-          })
-        }
-      >
-        <option value="district">Solo este distrito</option>
-        <option value="province">Toda la provincia</option>
-        <option value="department">Todo el departamento</option>
-        {(province === "1501" || province === "0701") && (
-          <option value="city">Lima y Callao juntos</option>
-        )}
-      </Select>
+      <details className="geography-advanced">
+        <summary>Explorar otra zona</summary>
+        <div className="geography-advanced-fields">
+          <Select
+            label="Departamento"
+            value={department}
+            disabled={!all.length}
+            onChange={(e) => choose(e.target.value, "department")}
+          >
+            <option value="">Selecciona departamento</option>
+            {departments.map((d) => (
+              <option key={d.id} value={d.id}>
+                {d.name}
+              </option>
+            ))}
+          </Select>
+          <Select
+            label="Provincia"
+            value={province}
+            disabled={!all.length || !department}
+            onChange={(e) => choose(e.target.value, "province")}
+          >
+            <option value="">Selecciona provincia</option>
+            {provinces.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.name}
+              </option>
+            ))}
+          </Select>
+          <Field
+            label="Buscar distrito"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Escribe el nombre"
+            disabled={!all.length || !province}
+          />
+          <Select
+            label="Área que quieres consultar"
+            value={
+              area.scope === "city" ? "province" : area.scope || "district"
+            }
+            disabled={!area.ubigeo || area.geoPending}
+            onChange={(e) =>
+              onChange({
+                ...area,
+                scope: e.target.value as Area["scope"],
+                district: "",
+              })
+            }
+          >
+            <option value="district">Solo este distrito</option>
+            <option value="province">Toda la provincia</option>
+            <option value="department">Todo el departamento</option>
+          </Select>
+        </div>
+      </details>
       {catalog.error && (
         <Notice error>
           {catalog.error}

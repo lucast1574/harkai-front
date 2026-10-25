@@ -1,6 +1,8 @@
 "use client";
 import Link from "next/link";
-import { MapPin, ArrowUpRight, ChevronDown } from "lucide-react";
+import { MapPin, LocateFixed, ArrowUpRight, ChevronDown } from "lucide-react";
+import { rememberUserLocation } from "@/lib/use-area";
+import { useLocationRequest } from "./use-location-request";
 import { Notice } from "@/components/ui";
 import type { Area, Category } from "@/lib/contracts";
 import type { useReports } from "../reports/use-reports";
@@ -34,6 +36,17 @@ export function NeighborhoodRail({
   supportPlaces: SupportPlace[];
   metadataError: string;
 }): React.JSX.Element {
+  const locate = useLocationRequest((point) => {
+    rememberUserLocation(point);
+    onArea({
+      ...area,
+      latitude: point.latitude,
+      longitude: point.longitude,
+      ubigeo: "",
+      scope: "district",
+      district: "",
+    });
+  });
   const name = area.geography?.name || "tu zona";
   const count = reports.items.length;
   const pending = reports.items.filter((report) => !report.verified).length;
@@ -48,6 +61,16 @@ export function NeighborhoodRail({
           Qué pasa en <span>{name}</span>
         </h1>
       </header>
+      <button
+        className={styles.locate}
+        type="button"
+        disabled={locate.busy}
+        onClick={() => void locate.find()}
+      >
+        <LocateFixed size={17} aria-hidden="true" />
+        {locate.busy ? "Buscando tu ubicación…" : "Mi ubicación"}
+      </button>
+      {locate.error && <Notice error>{locate.error}</Notice>}
       <details className={styles.settings}>
         <summary>
           <span className={styles.zonePin}>

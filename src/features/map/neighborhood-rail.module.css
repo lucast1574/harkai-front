@@ -320,3 +320,30 @@
     margin: 0 18px 18px;
   }
 }
+
+.locate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(87, 212, 99, 0.1);
+  color: var(--accent-ink);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+}
+.locate:hover,
+.locate:focus-visible {
+  background: rgba(87, 212, 99, 0.18);
+  color: var(--ink);
+  outline: none;
+}
+.locate:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}

@@ -1,7 +1,6 @@
 "use client";
 import type { Area } from "@/lib/contracts";
 import { GeographySelector } from "./geography-selector";
-import { LocationControl } from "./location-control";
 export function NeighborhoodZone({
   area,
   onChange,
@@ -12,12 +11,6 @@ export function NeighborhoodZone({
   return (
     <div className="zone-controls zone-controls-compact">
       <GeographySelector area={area} onChange={onChange} />
-      <LocationControl
-        point={area}
-        onChange={(point) =>
-          onChange({ ...area, ...point, ubigeo: undefined, scope: "district" })
-        }
-      />
     </div>
   );
 }

@@ -258,3 +258,26 @@
   gap: 8px;
   flex-wrap: wrap;
 }
+
+.geography-advanced {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+.geography-advanced > summary {
+  cursor: pointer;
+  color: var(--accent-ink);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 0;
+}
+.geography-advanced > summary:hover,
+.geography-advanced > summary:focus-visible {
+  color: var(--ink);
+  background: var(--surface-soft);
+  outline: none;
+}
+.geography-advanced-fields {
+  display: grid;
+  gap: 14px;
+  padding-top: 14px;
+}

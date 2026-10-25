@@ -1,7 +1,7 @@
 "use client";
 import { useCallback, useSyncExternalStore } from "react";
 import { divIcon, latLngBounds } from "leaflet";
-import { Marker, Tooltip, useMap } from "react-leaflet";
+import { Marker, Pane, Tooltip, useMap } from "react-leaflet";
 import type { SupportPlace } from "../support/contracts";
 import { SupportPlaceMarker } from "./support-place-marker";
 
@@ -34,13 +34,13 @@ export function SupportPlaceLayer({
     const key =
       zoom >= 16
         ? place.id
-        : `${Math.floor(pixel.x / 56)}:${Math.floor(pixel.y / 56)}`;
+        : `${Math.floor(pixel.x / 96)}:${Math.floor(pixel.y / 96)}`;
     const group = groups.get(key) || [];
     group.push(place);
     groups.set(key, group);
   }
   return (
-    <>
+    <Pane name="health-resources" style={{ zIndex: 350 }}>
       {[...groups.entries()].map(([key, group]) => {
         if (group.length === 1)
           return <SupportPlaceMarker key={key} place={group[0]} />;
@@ -52,9 +52,9 @@ export function SupportPlaceLayer({
         ];
         const icon = divIcon({
           className: "medical-marker",
-          html: `<span class="medical-symbol medical-group"><span aria-hidden="true">+</span><b>${group.length}</b></span>`,
-          iconSize: [38, 38],
-          iconAnchor: [19, 19],
+          html: '<span class="medical-symbol medical-group" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6Z" fill="white"/></svg></span>',
+          iconSize: [28, 28],
+          iconAnchor: [14, 14],
         });
         return (
           <Marker
@@ -62,6 +62,7 @@ export function SupportPlaceLayer({
             position={center}
             icon={icon}
             alt={`${group.length} lugares de salud. Acercar para verlos`}
+            title={`${group.length} lugares de salud. Acercar para verlos`}
             eventHandlers={{
               click: () =>
                 map.fitBounds(
@@ -81,6 +82,6 @@ export function SupportPlaceLayer({
           </Marker>
         );
       })}
-    </>
+    </Pane>
   );
 }

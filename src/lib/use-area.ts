@@ -115,7 +115,7 @@ export function useArea(defaults: Area = LIMA): [Area, (next: Area) => void] {
     ...point,
     latitude: resolvedPoint.latitude,
     longitude: resolvedPoint.longitude,
-    ubigeo: region.district?.id,
+    ubigeo: region.district?.id || point.ubigeo,
     geography: region.area,
     districts: region.districts,
     geoPending: region.loading,

@@ -97,9 +97,12 @@ export function DistrictDirectory(): React.JSX.Element {
           </p>
         </>
       )}
-      {!directory.loading && !directory.error && !selected && (
-        <Notice>No hay una ficha disponible para este distrito.</Notice>
-      )}
+      {!area.geoPending &&
+        !directory.loading &&
+        !directory.error &&
+        !selected && (
+          <Notice>No hay una ficha disponible para este distrito.</Notice>
+        )}
     </section>
   );
 }

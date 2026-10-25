@@ -306,28 +306,32 @@ export function ArchiveExplorer(): React.JSX.Element {
               heat={heat}
               scrollWheelZoom={false}
             />
-            {heat && reports.items.length > 0 && (
-              <div
-                className="archive-heat-legend"
-                aria-label="Colores por tipo de reporte"
-              >
-                {[...new Set(reports.items.map((i) => i.type))].map((type) => (
-                  <span key={type}>
-                    <i
-                      style={{ backgroundColor: incidentColor(type) }}
-                      aria-hidden="true"
-                    />
-                    {categories.find((c) => c.id === type)?.label || type}
-                  </span>
-                ))}
-                <small>Más intensidad y tamaño = más reportes cercanos</small>
-              </div>
-            )}
-            <p className="map-note">
-              La concentración representa aportes de la comunidad, no una tasa
-              oficial de criminalidad. Selecciona un punto para abrir el
-              reporte.
-            </p>
+            <footer className="archive-map-footer">
+              {heat && reports.items.length > 0 && (
+                <div
+                  className="archive-heat-legend"
+                  aria-label="Colores por tipo de reporte"
+                >
+                  {[...new Set(reports.items.map((i) => i.type))].map(
+                    (type) => (
+                      <span key={type}>
+                        <i
+                          style={{ backgroundColor: incidentColor(type) }}
+                          aria-hidden="true"
+                        />
+                        {categories.find((c) => c.id === type)?.label || type}
+                      </span>
+                    ),
+                  )}
+                  <small>Más intensidad y tamaño = más reportes cercanos</small>
+                </div>
+              )}
+              <p className="map-note">
+                La concentración representa aportes de la comunidad, no una tasa
+                oficial de criminalidad. Selecciona un punto para abrir el
+                reporte.
+              </p>
+            </footer>
           </section>
         </div>
       </div>

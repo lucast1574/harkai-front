@@ -279,3 +279,28 @@
   flex-basis: 100%;
   font-size: 11px;
 }
+
+.archive-map-footer {
+  display: grid;
+  gap: 18px;
+  padding: 24px 28px 26px;
+  border-top: 1px solid var(--border);
+}
+.archive-map-footer .archive-heat-legend {
+  padding: 0;
+  gap: 12px 24px;
+  line-height: 1.6;
+}
+.archive-map-footer .map-note {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  line-height: 1.8;
+  max-width: 90ch;
+}
+@media (max-width: 600px) {
+  .archive-map-footer {
+    padding: 22px 20px 24px;
+    gap: 16px;
+  }
+}

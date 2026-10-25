@@ -1,12 +1,10 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
 import {
   MessageCircle,
   RefreshCw,
   ArrowUpRight,
   LocateFixed,
-  MapPin,
 } from "lucide-react";
 import { useArea, rememberUserLocation } from "@/lib/use-area";
 import { useAuth } from "@/lib/auth";
@@ -17,17 +15,15 @@ import { useLocationRequest } from "../map/use-location-request";
 import { ForumCompose } from "./forum-compose";
 import { ForumCard } from "./forum-card";
 import { useForum } from "./use-forum";
+import { GeographySelector } from "../map/geography-selector";
 import styles from "./forum.module.css";
 
 export function CommunityForum(): React.JSX.Element {
   const [area, setArea] = useArea(LIMA);
-  const [city, setCity] = useState(false);
-  const [districtFilter, setDistrictFilter] = useState("");
   const { user } = useAuth();
 
   const locate = useLocationRequest((next) => {
     rememberUserLocation(next);
-    setDistrictFilter("");
     setArea({
       ...area,
       latitude: next.latitude,
@@ -44,20 +40,14 @@ export function CommunityForum(): React.JSX.Element {
   const province = area.geography?.province || "Lima";
   const isTrujillo = province.toLowerCase().includes("trujillo");
 
-  const selectedFilter = area.districts?.some(
-    (item) => item.id === districtFilter,
-  )
-    ? districtFilter
-    : "";
-  const id = city && selectedFilter ? selectedFilter : area.ubigeo;
+  const id = area.ubigeo;
   const path =
     area.geoPending || area.geoError || !id
       ? null
-      : `forum?ubigeo=${id}&scope=${city && !selectedFilter ? "city" : "district"}`;
+      : `forum?ubigeo=${id}&scope=${area.scope || "district"}`;
 
   function selectCity(target: "lima" | "trujillo"): void {
     const coords = SUPPORT_CITIES[target];
-    setDistrictFilter("");
     setArea({
       ...area,
       latitude: coords.latitude,
@@ -82,10 +72,14 @@ export function CommunityForum(): React.JSX.Element {
           </p>
         </div>
         <div className={styles.heroActions}>
-          <div className="city-switcher" role="group" aria-label="Ciudad activa">
+          <div
+            className="city-switcher"
+            role="group"
+            aria-label="Ciudad activa"
+          >
             <button
               type="button"
-              className={`city-pill ${!isTrujillo ? "active" : ""}`}
+              className={`city-pill ${["Lima", "Callao"].includes(province) ? "active" : ""}`}
               onClick={() => selectCity("lima")}
             >
               Lima
@@ -107,85 +101,22 @@ export function CommunityForum(): React.JSX.Element {
             <LocateFixed size={15} />
             <span>{locate.busy ? "Ubicando…" : "Mi ubicación"}</span>
           </button>
-          <Link href="/dashboard/incidents/reports" className="account-map-pill">
+          <Link
+            href="/dashboard/incidents/reports"
+            className="account-map-pill"
+          >
             <span>Alertas vecinales</span>
             <ArrowUpRight size={15} />
           </Link>
         </div>
       </header>
 
-      <div className={styles.toolbar}>
-        <div
-          className={styles.tabs}
-          role="tablist"
-          aria-label="Zona de las conversaciones"
-          onKeyDown={(event) => {
-            if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key))
-              return;
-            event.preventDefault();
-            const next =
-              event.key === "Home" ? false : event.key === "End" ? true : !city;
-            setCity(next);
-            document
-              .getElementById(next ? "forum-city-tab" : "forum-district-tab")
-              ?.focus();
-          }}
-        >
-          <button
-            id="forum-district-tab"
-            type="button"
-            role="tab"
-            aria-selected={!city}
-            tabIndex={city ? -1 : 0}
-            aria-controls="forum-panel"
-            onClick={() => setCity(false)}
-          >
-            Mi distrito · {district}
-          </button>
-          <button
-            id="forum-city-tab"
-            type="button"
-            role="tab"
-            aria-selected={city}
-            tabIndex={city ? 0 : -1}
-            aria-controls="forum-panel"
-            onClick={() => setCity(true)}
-          >
-            Toda la ciudad · {province}
-          </button>
-        </div>
-
-        <div className={styles.districtPicker}>
-          <MapPin size={15} />
-          <select
-            aria-label={city ? "Filtrar por distrito" : "Cambiar distrito"}
-            value={city ? selectedFilter : area.ubigeo || ""}
-            disabled={area.geoPending || !area.districts?.length}
-            onChange={(event) => {
-              const nextId = event.target.value;
-              if (city) {
-                setDistrictFilter(nextId);
-              } else {
-                setArea({ ...area, ubigeo: nextId, scope: "district" });
-              }
-            }}
-          >
-            {city && (
-              <option value="">Todos los distritos de {province}</option>
-            )}
-            {area.districts?.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.name}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
+      <section className="panel">
+        <GeographySelector area={area} onChange={setArea} quick={false} />
+      </section>
       <section
         id="forum-panel"
-        role="tabpanel"
-        aria-labelledby={city ? "forum-city-tab" : "forum-district-tab"}
+        aria-label="Conversaciones de la zona seleccionada"
       >
         {(area.geoError || locate.error) && (
           <Notice error>{area.geoError || locate.error}</Notice>

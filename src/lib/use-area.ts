@@ -11,8 +11,9 @@ const KEY = "harkai:query-zone:v3";
 const EVENT = "harkai:query-zone";
 type QueryPoint = Point & {
   ubigeo?: string;
-  scope?: "district" | "city";
+  scope?: "district" | "city" | "province" | "department";
   auto?: boolean;
+  manual?: boolean;
 };
 const initial: QueryPoint = {
   latitude: LIMA.latitude,
@@ -35,7 +36,10 @@ function snapshot(): QueryPoint {
           latitude: point.latitude,
           longitude: point.longitude,
           ubigeo: /^\d{6}$/.test(point.ubigeo || "") ? point.ubigeo : undefined,
-          scope: point.scope === "city" ? "city" : "district",
+          scope: ["city", "province", "department"].includes(point.scope)
+            ? point.scope
+            : "district",
+          manual: true,
           auto: false,
         };
     } catch {
@@ -57,7 +61,8 @@ function save(point: QueryPoint, persist = false): void {
     current.longitude === point.longitude &&
     current.ubigeo === point.ubigeo &&
     current.scope === point.scope &&
-    current.auto === point.auto
+    current.auto === point.auto &&
+    current.manual === point.manual
   )
     return;
   current = {
@@ -66,6 +71,7 @@ function save(point: QueryPoint, persist = false): void {
     ubigeo: point.ubigeo,
     scope: point.scope || "district",
     auto: Boolean(point.auto),
+    manual: Boolean(point.manual),
   };
   try {
     if (persist) {
@@ -82,6 +88,7 @@ function save(point: QueryPoint, persist = false): void {
 export function useArea(defaults: Area = LIMA): [Area, (next: Area) => void] {
   const point = useSyncExternalStore(subscribe, snapshot, () => initial);
   useEffect(() => {
+    if (snapshot().manual) return;
     const revision = manualRevision;
     void startAutoLocation((next) => {
       if (manualRevision === revision)
@@ -120,17 +127,19 @@ export function useArea(defaults: Area = LIMA): [Area, (next: Area) => void] {
     (next) => {
       if (!validPoint(next)) return;
       setFilters(next);
-      const ubigeoChanged =
-        Boolean(next.ubigeo) && next.ubigeo !== area.ubigeo;
+      const ubigeoChanged = Boolean(next.ubigeo) && next.ubigeo !== area.ubigeo;
       const moved =
         next.latitude !== area.latitude || next.longitude !== area.longitude;
-      if (moved || ubigeoChanged) manualRevision++;
+      const territoryChanged =
+        moved || ubigeoChanged || next.scope !== area.scope;
+      if (territoryChanged) manualRevision++;
       save(
         {
           latitude: next.latitude,
           longitude: next.longitude,
           ubigeo: ubigeoChanged ? next.ubigeo : moved ? undefined : next.ubigeo,
           scope: next.scope || "district",
+          manual: snapshot().manual || territoryChanged,
           auto: false,
         },
         true,

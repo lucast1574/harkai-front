@@ -1,6 +1,7 @@
 "use client";
 import { reportFilterCategories } from "@/lib/report-categories";
 import type { Area, Category } from "@/lib/contracts";
+import { GeographySelector } from "../map/geography-selector";
 import { Field, Select } from "@/components/ui";
 
 export function AreaFilter({
@@ -16,8 +17,6 @@ export function AreaFilter({
   fixedType?: string;
   dates?: boolean;
 }): React.JSX.Element {
-  const province = area.geography?.province || "la ciudad";
-
   return (
     <section className="area-filter panel" aria-label="Filtros de consulta">
       <div className="filter-heading">
@@ -25,55 +24,10 @@ export function AreaFilter({
           <span className="eyebrow">FILTROS DE CONSULTA</span>
           <h2>Alcance y categoría</h2>
         </div>
-        <div
-          className="archive-scope-pills"
-          role="group"
-          aria-label="Alcance territorial"
-        >
-          <button
-            type="button"
-            className={area.scope !== "city" ? "active" : ""}
-            onClick={() =>
-              onChange({ ...area, scope: "district", district: "" })
-            }
-          >
-            Por distrito
-          </button>
-          <button
-            type="button"
-            className={area.scope === "city" ? "active" : ""}
-            onClick={() => onChange({ ...area, scope: "city", district: "" })}
-          >
-            Toda {province}
-          </button>
-        </div>
       </div>
 
       <div className="filter-fields">
-        <Select
-          label="Distrito"
-          value={area.ubigeo || ""}
-          disabled={area.geoPending || !!area.geoError}
-          onChange={(e) =>
-            onChange({
-              ...area,
-              ubigeo: e.target.value,
-              scope: "district",
-              district: "",
-            })
-          }
-        >
-          {!area.ubigeo && (
-            <option value="">
-              {area.geoPending ? "Buscando…" : "Sin distrito"}
-            </option>
-          )}
-          {area.districts?.map((d) => (
-            <option key={d.id} value={d.id}>
-              {d.name}
-            </option>
-          ))}
-        </Select>
+        <GeographySelector area={area} onChange={onChange} />
         {!fixedType && (
           <Select
             label="Categoría"

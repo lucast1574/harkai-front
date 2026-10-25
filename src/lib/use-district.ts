@@ -13,7 +13,7 @@ const cache = new Map<string, Region>();
 export function useDistrict(
   point: Point & { auto?: boolean },
   ubigeo?: string,
-  scope: "district" | "city" = "district",
+  scope: "district" | "city" | "province" | "department" = "district",
 ): {
   district?: GeographicDistrict;
   area?: GeographicDistrict;

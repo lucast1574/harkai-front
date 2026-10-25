@@ -25,10 +25,10 @@ export function CoverageNotice(): React.JSX.Element | null {
     >
       <MapPin size={21} aria-hidden="true" />
       <div>
-        <strong>Tu ciudad aún no tiene cobertura</strong>
-        <p>Estamos trabajando para llevar Harkai a todo el Perú.</p>
+        <strong>Ubicación fuera del directorio nacional</strong>
+        <p>Puedes consultar establecimientos de salud en todo el Perú.</p>
         <small>
-          Por ahora puedes explorar Lima, Callao y Trujillo. Los números
+          Selecciona un departamento, provincia y distrito. Los números
           nacionales de ayuda siguen disponibles.
         </small>
       </div>

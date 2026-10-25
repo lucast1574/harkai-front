@@ -6,6 +6,7 @@ export type SupportContact = {
   reviewed_at: string;
 };
 export type SupportDistrict = {
+  district_id?: string;
   country: string;
   city: string;
   district: string;

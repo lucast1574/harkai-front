@@ -71,7 +71,7 @@ export type GeographicDistrict = {
   geometry:
     | { type: "Polygon"; coordinates: number[][][] }
     | { type: "MultiPolygon"; coordinates: number[][][][] };
-  scope?: "district" | "city";
+  scope?: "district" | "city" | "province" | "department";
   source_url: string;
   reference_year: number;
 };
@@ -82,7 +82,7 @@ export type DistrictItem = {
   lng?: string;
 };
 export type Area = {
-  scope?: "district" | "city";
+  scope?: "district" | "city" | "province" | "department";
   ubigeo?: string;
   geography?: GeographicDistrict;
   districts?: DistrictItem[];

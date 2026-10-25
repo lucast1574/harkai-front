@@ -110,7 +110,7 @@ export function OfficialPlaces({ area }: { area: Area }): React.JSX.Element {
       {!loading && !error && !data?.items.length && (
         <Notice>
           Aún no hay establecimientos del directorio cargados cerca de esta
-          zona. Amplía el radio o elige Lima y Callao o Trujillo.
+          zona. Elige otro distrito o amplía el área de consulta.
         </Notice>
       )}
     </section>

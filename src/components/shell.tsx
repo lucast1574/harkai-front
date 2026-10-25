@@ -120,7 +120,7 @@ export function Shell({
       </nav>
       <div className="sidebar-purpose">
         <span className="live-dot" />
-        <p>Red vecinal activa en Lima, Callao y Trujillo.</p>
+        <p>Red vecinal en todo el Perú.</p>
       </div>
       <div className="sidebar-bottom">
         <Link

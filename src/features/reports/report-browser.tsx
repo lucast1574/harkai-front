@@ -137,10 +137,14 @@ function Browser({
           </p>
         </div>
         <div className="archive-hero-actions">
-          <div className="city-switcher" role="group" aria-label="Ciudad activa">
+          <div
+            className="city-switcher"
+            role="group"
+            aria-label="Ciudad activa"
+          >
             <button
               type="button"
-              className={`city-pill ${!isTrujillo ? "active" : ""}`}
+              className={`city-pill ${["Lima", "Callao"].includes(province) ? "active" : ""}`}
               onClick={() => selectCity("lima")}
             >
               Lima
@@ -177,12 +181,7 @@ function Browser({
               className="account-map-pill"
               disabled={!reports.items.length}
               onClick={() =>
-                exportReports(
-                  reports.items,
-                  categories,
-                  !!reports.cursor,
-                  area,
-                )
+                exportReports(reports.items, categories, !!reports.cursor, area)
               }
             >
               <Download size={15} />

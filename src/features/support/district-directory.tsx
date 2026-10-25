@@ -1,11 +1,11 @@
 "use client";
-import { useState } from "react";
 import { Phone, ExternalLink, MapPin } from "lucide-react";
-import { Select, Notice } from "@/components/ui";
+import { Notice } from "@/components/ui";
 import { LIMA } from "@/lib/contracts";
 import { useArea } from "@/lib/use-area";
 import { useResource } from "@/lib/use-resource";
-import { SUPPORT_CITIES, type SupportDistrict } from "./contracts";
+import { type SupportDistrict } from "./contracts";
+import { GeographySelector } from "../map/geography-selector";
 import styles from "./directory.module.css";
 
 function normalizeName(value: string): string {
@@ -16,48 +16,23 @@ function normalizeName(value: string): string {
     .trim();
 }
 
-export function DistrictDirectory({
-  onCityChange,
-}: {
-  onCityChange?: (city: keyof typeof SUPPORT_CITIES) => void;
-}): React.JSX.Element {
-  const [area] = useArea(LIMA);
-  const detectedCity: keyof typeof SUPPORT_CITIES =
-    area.geography?.province &&
-    normalizeName(area.geography.province).includes("trujillo")
+export function DistrictDirectory(): React.JSX.Element {
+  const [area, setArea] = useArea(LIMA);
+  const province = (area.ubigeo || "").slice(0, 4);
+  const city = ["1501", "0701"].includes(province)
+    ? "lima"
+    : province === "1301"
       ? "trujillo"
-      : "lima";
-
-  const [manualCity, setManualCity] = useState<
-    keyof typeof SUPPORT_CITIES | null
-  >(null);
-  const [manualDistrict, setManualDistrict] = useState<string | null>(null);
-
-  const city = manualCity ?? detectedCity;
+      : province;
   const directory = useResource<{ items: SupportDistrict[] }>(
-    `support/directory?city=${city}`,
+    city ? `support/directory?city=${city}` : null,
   );
-
-  const items = directory.data?.items || [];
-  const detectedDistrictMatch =
-    !manualCity && area.geography?.name
-      ? items.find(
-          (item) =>
-            normalizeName(item.district) ===
-            normalizeName(area.geography?.name || ""),
-        )?.district
-      : undefined;
-
-  const activeDistrict =
-    (manualDistrict && items.some((d) => d.district === manualDistrict)
-      ? manualDistrict
-      : undefined) ||
-    detectedDistrictMatch ||
-    items[0]?.district ||
-    (city === "lima" ? "Lima" : "Trujillo");
-
-  const selected = items.find((item) => item.district === activeDistrict);
-
+  const name = area.districts?.find((d) => d.id === area.ubigeo)?.name || "";
+  const selected = directory.data?.items.find(
+    (item) =>
+      item.district_id === area.ubigeo ||
+      normalizeName(item.district) === normalizeName(name),
+  );
   return (
     <section className={`panel ${styles.directory}`}>
       <header className={styles.header}>
@@ -65,48 +40,12 @@ export function DistrictDirectory({
           <span className="eyebrow">DIRECTORIO OFICIAL</span>
           <h2>Líneas de emergencia por distrito</h2>
           <p className="muted small">
-            Contactos municipales y líneas nacionales verificadas.
+            Líneas nacionales en todo el Perú y contactos municipales donde
+            están verificados.
           </p>
         </div>
-        <div className="city-switcher" role="group" aria-label="Ciudad del directorio">
-          {(
-            Object.entries(SUPPORT_CITIES) as [
-              keyof typeof SUPPORT_CITIES,
-              (typeof SUPPORT_CITIES)["lima"],
-            ][]
-          ).map(([id, c]) => (
-            <button
-              key={id}
-              type="button"
-              className={`city-pill ${city === id ? "active" : ""}`}
-              onClick={() => {
-                setManualCity(id);
-                setManualDistrict(null);
-                onCityChange?.(id);
-              }}
-            >
-              {id === "lima" ? "Lima" : c.label}
-            </button>
-          ))}
-        </div>
       </header>
-
-      <div className={styles.selectorRow}>
-        <Select
-          label="Distrito de consulta"
-          value={directory.data ? activeDistrict : ""}
-          disabled={directory.loading || !!directory.error}
-          onChange={(e) => setManualDistrict(e.target.value)}
-        >
-          {!directory.data && <option value="">Cargando distritos…</option>}
-          {items.map((d) => (
-            <option key={d.district} value={d.district}>
-              {d.district}
-            </option>
-          ))}
-        </Select>
-      </div>
-
+      <GeographySelector area={area} onChange={setArea} />
       {directory.loading && <Notice>Consultando el directorio…</Notice>}
       {directory.error && (
         <Notice error>

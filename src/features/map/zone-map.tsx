@@ -125,7 +125,7 @@ export default function ZoneMap({
           {area.geography?.name ||
             (area.geoPending ? "Ubicando distrito…" : "Lima")}
         </strong>
-        <span>{area.scope === "city" ? "Ciudad completa" : "Distrito"}</span>
+        <span>{area.scope === "department" ? "Departamento" : area.scope === "province" ? "Provincia" : area.scope === "city" ? "Área metropolitana" : "Distrito"}</span>
       </div>
       <SupportPlaceLayer places={supportPlaces} />
       {heat && <IncidentHeatLayer incidents={incidents} />}

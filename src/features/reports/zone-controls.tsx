@@ -1,7 +1,7 @@
 "use client";
 import { reportFilterCategories } from "@/lib/report-categories";
 import { useLocationState } from "@/lib/user-location";
-import { ScopeToggle } from "../map/scope-toggle";
+import { GeographySelector } from "../map/geography-selector";
 import { LocationControl } from "../map/location-control";
 import type { Area, Category } from "@/lib/contracts";
 import { Select } from "@/components/ui";
@@ -23,7 +23,9 @@ export function ZoneControls({
     <>
       <LocationControl
         point={area}
-        onChange={(point) => onChange({ ...area, ...point })}
+        onChange={(point) =>
+          onChange({ ...area, ...point, ubigeo: "", scope: "district" })
+        }
       />
       {area.geography && (
         <p className="small geography-source">
@@ -50,30 +52,7 @@ export function ZoneControls({
         </div>
       )}
       <div className="zone-options">
-        <Select
-          label="Distrito"
-          value={area.ubigeo || ""}
-          disabled={area.geoPending || !!area.geoError}
-          onChange={(e) =>
-            onChange({
-              ...area,
-              ubigeo: e.target.value,
-              scope: "district",
-              district: "",
-            })
-          }
-        >
-          {!area.ubigeo && (
-            <option value="">
-              {area.geoPending ? "Buscando…" : "Sin distrito"}
-            </option>
-          )}
-          {area.districts?.map((d) => (
-            <option key={d.id} value={d.id}>
-              {d.name}
-            </option>
-          ))}
-        </Select>
+        <GeographySelector area={area} onChange={onChange} />
         {!fixedType && (
           <Select
             label="Tipo de reporte"
@@ -89,7 +68,7 @@ export function ZoneControls({
           </Select>
         )}
       </div>
-      <ScopeToggle area={area} onChange={onChange} />
+
       {area.geoError && (
         <p className="small error" role="alert">
           {area.geoError}

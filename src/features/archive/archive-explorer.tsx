@@ -19,6 +19,7 @@ import { useLocationRequest } from "../map/use-location-request";
 import { useReports } from "../reports/use-reports";
 import { Summary } from "../stats/summary";
 import { ReportCollection } from "../reports/report-collection";
+import { GeographySelector } from "../map/geography-selector";
 import ZoneMap from "../map/map-loader";
 
 function daysAgoISO(days: number): string {
@@ -55,6 +56,7 @@ export function ArchiveExplorer(): React.JSX.Element {
 
   const province = area.geography?.province || "Lima";
   const isTrujillo = province.toLowerCase().includes("trujillo");
+  const isLima = ["Lima", "Callao"].includes(province);
 
   function selectCity(target: "lima" | "trujillo"): void {
     const coords = SUPPORT_CITIES[target];
@@ -100,7 +102,7 @@ export function ArchiveExplorer(): React.JSX.Element {
           >
             <button
               type="button"
-              className={`city-pill ${!isTrujillo ? "active" : ""}`}
+              className={`city-pill ${isLima ? "active" : ""}`}
               onClick={() => selectCity("lima")}
             >
               Lima
@@ -142,56 +144,7 @@ export function ArchiveExplorer(): React.JSX.Element {
               <h2>Zona y categoría</h2>
             </div>
 
-            <div
-              className="archive-scope-pills"
-              role="group"
-              aria-label="Alcance de consulta"
-            >
-              <button
-                type="button"
-                className={area.scope !== "city" ? "active" : ""}
-                onClick={() =>
-                  setArea({ ...area, scope: "district", district: "" })
-                }
-              >
-                Por distrito
-              </button>
-              <button
-                type="button"
-                className={area.scope === "city" ? "active" : ""}
-                onClick={() =>
-                  setArea({ ...area, scope: "city", district: "" })
-                }
-              >
-                Toda {province}
-              </button>
-            </div>
-
-            <Select
-              label="Distrito"
-              value={area.ubigeo || ""}
-              disabled={area.geoPending || !!area.geoError}
-              onChange={(e) =>
-                setArea({
-                  ...area,
-                  ubigeo: e.target.value,
-                  scope: "district",
-                  district: "",
-                })
-              }
-            >
-              {!area.ubigeo && (
-                <option value="">
-                  {area.geoPending ? "Buscando…" : "Sin distrito"}
-                </option>
-              )}
-              {area.districts?.map((d) => (
-                <option key={d.id} value={d.id}>
-                  {d.name}
-                </option>
-              ))}
-            </Select>
-
+            <GeographySelector area={area} onChange={setArea} quick={false} />
             <Select
               label="Categoría"
               value={area.type}

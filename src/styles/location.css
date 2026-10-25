@@ -246,3 +246,15 @@
     display: none;
   }
 }
+
+.geography-selector {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+  width: 100%;
+}
+.geography-shortcuts {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}

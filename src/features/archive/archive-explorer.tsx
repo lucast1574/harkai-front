@@ -304,6 +304,7 @@ export function ArchiveExplorer(): React.JSX.Element {
               incidents={reports.items}
               categories={categories}
               heat={heat}
+              scrollWheelZoom={false}
             />
             {heat && reports.items.length > 0 && (
               <div

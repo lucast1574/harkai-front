@@ -45,7 +45,7 @@ export default function AdminKanban({ revision = 0 }: { revision?: number }) {
         version: ticket.version,
       });
       setNotice(
-        `Reporte movido a ${ticketStateLabel(state)}.${state === "DONE" ? " El aviso por correo quedó pendiente de envío." : ""}`,
+        `Reporte movido a ${ticketStateLabel(state)}.${state === "DONE" ? " El usuario recibirá un correo." : ""}`,
       );
       reload();
     } catch (failure) {

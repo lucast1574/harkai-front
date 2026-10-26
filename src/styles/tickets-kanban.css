@@ -1,6 +1,6 @@
 .helpdesk-kanban {
   display: grid;
-  grid-template-columns: repeat(4, minmax(245px, 1fr));
+  grid-template-columns: repeat(4, minmax(200px, 1fr));
   gap: 16px;
   overflow-x: auto;
   padding: 2px 2px 14px;

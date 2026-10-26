@@ -4,7 +4,7 @@ import { limitedBody } from "@/lib/server/body";
 export const dynamic = "force-dynamic";
 type Context = { params: Promise<{ path: string[] }> };
 const paths =
-  /^(publications|businesses(?:\/[a-f0-9]{24})?|me\/businesses(?:\/[a-f0-9]{24}(?:\/enabled)?)?|admin\/businesses(?:\/[a-f0-9]{24}\/moderation)?|geo\/(?:district|catalog)|support\/(?:directory|places|coverage)|meta|archive\/(?:incidents|districts)|me(?:\/account-deletion-options|\/preferences|\/incidents|\/devices(?:\/[a-f0-9]{64})?)?|alerts|emergency-contacts|analysis\/(?:text|audio)|incidents(?:\/[a-f0-9]{24}(?:\/confirm|\/status|\/comments(?:\/[a-f0-9]{24})?)?)?|media(?:\/[a-f0-9]{24})?|gov\/incidents|admin\/(?:incidents|emergency-contacts|users(?:\/[a-f0-9]{24}\/role)?))$/;
+  /^(publications|businesses(?:\/[a-f0-9]{24})?|me\/businesses(?:\/[a-f0-9]{24}(?:\/enabled)?)?|admin\/businesses(?:\/[a-f0-9]{24}\/moderation)?|geo\/(?:district|catalog)|support\/(?:directory|places|coverage|tickets(?:\/[a-f0-9]{24}\/images\/[0-2])?)|admin\/support\/tickets(?:\/[a-f0-9]{24})?|meta|archive\/(?:incidents|districts)|me(?:\/account-deletion-options|\/preferences|\/incidents|\/devices(?:\/[a-f0-9]{64})?)?|alerts|emergency-contacts|analysis\/(?:text|audio)|incidents(?:\/[a-f0-9]{24}(?:\/confirm|\/status|\/comments(?:\/[a-f0-9]{24})?)?)?|media(?:\/[a-f0-9]{24})?|gov\/incidents|admin\/(?:incidents|emergency-contacts|users(?:\/[a-f0-9]{24}\/role)?))$/;
 async function proxy(
   request: NextRequest,
   context: Context,
@@ -44,8 +44,7 @@ async function proxy(
     request.headers.get("cf-iplongitude") ||
     request.headers.get("x-vercel-ip-longitude");
   const geoCity =
-    request.headers.get("cf-ipcity") ||
-    request.headers.get("x-vercel-ip-city");
+    request.headers.get("cf-ipcity") || request.headers.get("x-vercel-ip-city");
   if (clientIp) headers.set("x-harkai-client-ip", clientIp);
   if (geoLat) headers.set("x-geo-latitude", geoLat);
   if (geoLng) headers.set("x-geo-longitude", geoLng);

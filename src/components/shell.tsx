@@ -15,11 +15,19 @@ import {
   MessageCircle,
   History,
   LifeBuoy,
+  Ticket,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { Notice } from "./ui";
 
 const navigation = [
+  { href: "/dashboard/tickets", label: "Soporte técnico", icon: Ticket },
+  {
+    href: "/dashboard/tickets/admin",
+    label: "Tickets de usuarios",
+    icon: Ticket,
+    admin: true,
+  },
   {
     href: "/dashboard/businesses",
     label: "Negocios",

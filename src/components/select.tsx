@@ -63,6 +63,7 @@ export function Select({
   );
   const [active, setActive] = useState(0);
   const [open, setOpen] = useState(false);
+  const [portalContainer, setPortalContainer] = useState<Element | null>(null);
   const [invalid, setInvalid] = useState(false);
   const [position, setPosition] = useState({
     left: 0,
@@ -85,6 +86,7 @@ export function Select({
 
   function show(): void {
     if (disabled || !trigger.current) return;
+    setPortalContainer(trigger.current.closest("dialog") || document.body);
     setPosition(selectPosition(trigger.current, options.length));
     setActive(
       selected >= 0 && !options[selected]?.disabled
@@ -120,6 +122,10 @@ export function Select({
 
   function keyboard(event: KeyboardEvent<HTMLButtonElement>): void {
     if (event.key === "Tab" || event.key === "Escape") {
+      if (event.key === "Escape" && open) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
       setOpen(false);
       return;
     }
@@ -268,7 +274,7 @@ export function Select({
               </div>
             ))}
           </div>,
-          document.body,
+          portalContainer || document.body,
         )}
     </div>
   );

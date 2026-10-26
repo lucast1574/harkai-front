@@ -6,8 +6,20 @@ import { Icon } from "./elements";
 import { supportStates, ticketStateLabel, type Ticket } from "./types";
 import { useTickets } from "./use-tickets";
 import TicketDetail from "./ticket-detail";
+import AdminKanban from "./admin-kanban";
 
-export default function SupportBoard({
+export default function SupportBoard(props: {
+  admin?: boolean;
+  revision?: number;
+}) {
+  return props.admin ? (
+    <AdminKanban revision={props.revision} />
+  ) : (
+    <SupportListBoard {...props} />
+  );
+}
+
+function SupportListBoard({
   admin = false,
   revision = 0,
 }: {

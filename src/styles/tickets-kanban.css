@@ -1,0 +1,244 @@
+.helpdesk-kanban {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(245px, 1fr));
+  gap: 16px;
+  overflow-x: auto;
+  padding: 2px 2px 14px;
+  align-items: stretch;
+}
+.helpdesk-kanban-column {
+  --lane: #ad7a27;
+  min-width: 0;
+  min-height: 390px;
+  border-radius: 16px;
+  padding: 16px;
+  background: color-mix(in srgb, var(--accent-ink) 5%, var(--surface-soft));
+  border: 1px solid transparent;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+.helpdesk-kanban-column[data-state="IN_PROGRESS"] {
+  --lane: #448773;
+}
+.helpdesk-kanban-column[data-state="WAITING"] {
+  --lane: #7e8880;
+}
+.helpdesk-kanban-column[data-state="DONE"] {
+  --lane: #295e4d;
+}
+.helpdesk-kanban-column[data-over="true"] {
+  border-color: var(--lane);
+  background: color-mix(in srgb, var(--lane) 12%, var(--surface));
+}
+.helpdesk-kanban-column > header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.helpdesk-kanban-column > header h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  margin: 0;
+  font-family: inherit;
+  font-weight: 650;
+}
+.helpdesk-kanban-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--lane);
+  flex-shrink: 0;
+}
+.helpdesk-kanban-total {
+  min-width: 26px;
+  min-height: 26px;
+  border-radius: 30px;
+  display: grid;
+  place-items: center;
+  background: var(--surface);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.helpdesk-kanban-cards {
+  display: grid;
+  gap: 12px;
+}
+.helpdesk-kanban-card {
+  width: 100%;
+  text-align: left;
+  display: grid;
+  gap: 14px;
+  padding: 18px 16px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: inherit;
+  border-radius: 12px;
+  cursor: pointer;
+  font: inherit;
+  min-width: 0;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+.helpdesk-kanban-card[draggable="true"] {
+  cursor: grab;
+}
+.helpdesk-kanban-card[draggable="true"]:active {
+  cursor: grabbing;
+}
+.helpdesk-kanban-card:hover,
+.helpdesk-kanban-card:focus-visible {
+  outline: none;
+  box-shadow: none;
+  border-color: var(--lane);
+  background: var(--surface-soft);
+}
+.helpdesk-kanban-card > strong {
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.helpdesk-kanban-id,
+.helpdesk-kanban-card time {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.helpdesk-kanban-id {
+  font-size: 10px;
+  letter-spacing: 0.35px;
+}
+.helpdesk-kanban-person {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+}
+.helpdesk-kanban-person > span:last-child {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+.helpdesk-kanban-person b {
+  font-size: 12px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.helpdesk-kanban-person small {
+  font-size: 11px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.helpdesk-kanban-avatar {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--lane) 15%, var(--surface));
+  color: var(--lane);
+  font-size: 13px;
+  font-weight: 650;
+}
+.helpdesk-kanban-empty {
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: center;
+  color: var(--muted);
+  padding: 40px 4px;
+}
+.helpdesk-kanban-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  margin-top: 16px;
+}
+.helpdesk-kanban-pagination button {
+  background: var(--surface);
+  color: inherit;
+  border: 0;
+  border-radius: 6px;
+  padding: 8px;
+  cursor: pointer;
+  font: inherit;
+}
+.helpdesk-kanban-pagination button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.helpdesk-kanban-keyboard {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 10px 0 0;
+}
+.helpdesk-ticket-dialog {
+  padding: 0;
+  width: min(720px, calc(100vw - 32px));
+  max-height: calc(100dvh - 48px);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  color: inherit;
+  background: var(--surface);
+  outline: none;
+}
+.helpdesk-ticket-dialog::backdrop {
+  background: #151b18a6;
+  backdrop-filter: blur(3px);
+}
+.helpdesk-ticket-dialog-content {
+  position: relative;
+  padding: 36px 28px 24px;
+}
+.helpdesk-ticket-dialog .helpdesk-detail {
+  border: 0;
+  background: transparent;
+  padding: 12px 0 0;
+  max-height: none;
+}
+.helpdesk-dialog-close {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  background: var(--surface-soft);
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  color: inherit;
+}
+.helpdesk-dialog-close svg {
+  width: 16px;
+  height: 16px;
+}
+.helpdesk-dialog-close:focus-visible,
+.helpdesk-kanban-pagination button:focus-visible {
+  outline: none;
+  box-shadow: none;
+  background: var(--accent-soft);
+}
+@media (max-width: 640px) {
+  .helpdesk-ticket-dialog-content {
+    padding: 36px 20px 20px;
+  }
+  .helpdesk-kanban {
+    grid-template-columns: repeat(4, 270px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .helpdesk-kanban-column,
+  .helpdesk-kanban-card {
+    transition: none;
+  }
+}

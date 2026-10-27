@@ -21,17 +21,17 @@ import { useAuth } from "@/lib/auth";
 import { Notice } from "./ui";
 
 const navigation = [
-  { href: "/dashboard/tickets", label: "Soporte técnico", icon: Ticket },
+  {
+    href: "/dashboard/tickets",
+    label: "Soporte técnico",
+    icon: Ticket,
+    utility: true,
+  },
   {
     href: "/dashboard/tickets/admin",
     label: "Tickets de usuarios",
     icon: Ticket,
-    admin: true,
-  },
-  {
-    href: "/dashboard/businesses",
-    label: "Negocios",
-    icon: Store,
+    utility: true,
     admin: true,
   },
   {
@@ -40,7 +40,12 @@ const navigation = [
     icon: Map,
     section: "EXPLORAR",
   },
-  { href: "/dashboard/help", label: "Ayuda y orientación", icon: LifeBuoy },
+  {
+    href: "/dashboard/help",
+    label: "Ayuda y orientación",
+    icon: LifeBuoy,
+    utility: true,
+  },
   { href: "/dashboard/incidents", label: "Comunidad", icon: MessageCircle },
   {
     href: "/dashboard/archive",
@@ -53,6 +58,12 @@ const navigation = [
     icon: BarChart3,
     institutional: true,
     section: "GESTIÓN",
+  },
+  {
+    href: "/dashboard/businesses",
+    label: "Negocios",
+    icon: Store,
+    admin: true,
   },
   {
     href: "/dashboard/users",
@@ -92,45 +103,52 @@ export function Shell({
         <main>{children}</main>
       </>
     );
+  const renderLinks = (items: typeof navigation) =>
+    items
+      .filter(
+        (n) =>
+          (!n.admin || user?.role === "admin") &&
+          (!n.institutional || ["gov", "admin"].includes(user?.role || "")),
+      )
+      .map((n) => {
+        const active =
+          path === n.href ||
+          (n.href === "/dashboard/incidents" &&
+            path.startsWith("/dashboard/incidents/"));
+        return (
+          <Link
+            key={n.href}
+            href={n.href}
+            onClick={close}
+            className={active ? "nav-link active" : "nav-link"}
+            aria-current={active ? "page" : undefined}
+          >
+            {n.section && (
+              <span className="nav-section-label">{n.section}</span>
+            )}
+            <span className="nav-icon">
+              <n.icon size={20} />
+            </span>
+            <span className="nav-text">{n.label}</span>
+          </Link>
+        );
+      });
   const content = (
     <>
       <Brand onClick={close} />
       <nav aria-label="Navegación principal">
-        {navigation
-          .filter(
-            (n) =>
-              (!n.admin || user?.role === "admin") &&
-              (!n.institutional || ["gov", "admin"].includes(user?.role || "")),
-          )
-          .map((n) => {
-            const active =
-              path === n.href ||
-              (n.href === "/dashboard/incidents" &&
-                path.startsWith("/dashboard/incidents/"));
-            return (
-              <Link
-                key={n.href}
-                href={n.href}
-                onClick={close}
-                className={active ? "nav-link active" : "nav-link"}
-                aria-current={active ? "page" : undefined}
-              >
-                {n.section && (
-                  <span className="nav-section-label">{n.section}</span>
-                )}
-                <span className="nav-icon">
-                  <n.icon size={20} />
-                </span>
-                <span className="nav-text">{n.label}</span>
-              </Link>
-            );
-          })}
+        {renderLinks(navigation.filter((n) => !user || !n.utility))}
       </nav>
       <div className="sidebar-purpose">
         <span className="live-dot" />
         <p>Red vecinal en todo el Perú.</p>
       </div>
       <div className="sidebar-bottom">
+        {user && (
+          <nav aria-label="Soporte y asistencia">
+            {renderLinks(navigation.filter((n) => n.utility))}
+          </nav>
+        )}
         <Link
           href="/dashboard/profile"
           className={`account ${path === "/dashboard/profile" || path === "/dashboard/history" ? "active" : ""}`}

@@ -20,9 +20,9 @@ export function AccountSession(): React.JSX.Element {
   return (
     <section className="panel account-session">
       <div>
-        <h2>Sesión de este navegador</h2>
+        <h2>Cerrar esta sesión</h2>
         <p className="muted small">
-          Al salir, este navegador deja de recibir alertas de tu cuenta.
+          Solo saldrás de este navegador. Tu sesión móvil seguirá activa.
         </p>
         {error && <Notice error>{error}</Notice>}
       </div>

@@ -119,31 +119,25 @@ export function Profile(): React.JSX.Element {
         </form>
         <div className="account-device">
           <PushSettings key={user.id} />
-          <AccountSession />
-          <section className="panel account-privacy">
-            <h2>Tu actividad y privacidad</h2>
-            <p className="muted small">
-              Consulta cómo se protegen tus datos o solicita la eliminación de
-              tu cuenta.
-            </p>
-            <div className="page-actions">
-              <a
-                className="button secondary"
-                href="https://harkai.lat/privacidad/"
-              >
-                Política de privacidad
-              </a>
-              <a
-                className="text-button"
-                href="/eliminar-cuenta"
-              >
-                Solicitar eliminación de cuenta ↗
-              </a>
-            </div>
-          </section>
         </div>
       </div>
+      <section className="panel account-privacy">
+        <h2>Privacidad y cuenta</h2>
+        <p className="muted small">
+          Consulta cómo se protegen tus datos o solicita la eliminación de tu
+          cuenta.
+        </p>
+        <div className="page-actions">
+          <a className="button secondary" href="https://harkai.lat/privacidad/">
+            Política de privacidad
+          </a>
+          <a className="text-button" href="/eliminar-cuenta">
+            Solicitar eliminación de cuenta ↗
+          </a>
+        </div>
+      </section>
       <MobileReporting />
+      <AccountSession />
     </div>
   );
 }

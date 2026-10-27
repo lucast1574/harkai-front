@@ -456,3 +456,12 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Account actions follow the settings in reading and keyboard order. */
+.account-shell > .account-privacy {
+  margin-bottom: 24px;
+}
+.account-shell > .account-session {
+  margin-top: 24px;
+  background: transparent;
+}

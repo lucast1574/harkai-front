@@ -184,3 +184,9 @@
     height: 44px;
   }
 }
+
+.sidebar-bottom nav {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 12px;
+}

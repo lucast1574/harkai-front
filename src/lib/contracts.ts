@@ -25,6 +25,9 @@ export type Incident = {
   status: "active" | "resolved" | "hidden";
   verified: boolean;
   viewer_is_author?: boolean;
+  viewer_has_confirmed?: boolean;
+  confirmations?: number;
+  observed_at?: string;
   verification?: string;
   created_at: string;
   expires_at?: string;

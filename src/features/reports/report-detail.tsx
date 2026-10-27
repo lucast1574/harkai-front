@@ -1,6 +1,6 @@
 "use client";
 import { Comments } from "../community/comments";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { api } from "@/lib/api";
@@ -25,6 +25,11 @@ export function ReportDetail({ id }: { id: string }): React.JSX.Element {
   } = useResource<Incident>(`incidents/${id}`);
   const { data: meta } = useResource<Meta>("meta");
   const { user } = useAuth();
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(Date.now()), 30000);
+    return () => window.clearInterval(timer);
+  }, []);
   const [busy, setBusy] = useState(false);
   const [actionError, setActionError] = useState("");
   const [message, setMessage] = useState("");
@@ -82,7 +87,8 @@ export function ReportDetail({ id }: { id: string }): React.JSX.Element {
     );
   const category = meta?.categories.find((c) => c.id === incident.type);
   const expired =
-    !!incident.expires_at && new Date(incident.expires_at) <= new Date();
+    now - new Date(incident.created_at).getTime() >= 90 * 60 * 1000 ||
+    (!!incident.expires_at && new Date(incident.expires_at).getTime() <= now);
   return (
     <>
       <Heading title={category?.label || "Reporte comunitario"}>
@@ -103,6 +109,17 @@ export function ReportDetail({ id }: { id: string }): React.JSX.Element {
                   ? "Expirado"
                   : "Activo"}
           </p>
+          <p className="small muted">
+            El punto permanece hasta 90 minutos en el mapa. Esta publicación y
+            su conversación se conservan; que expire no garantiza que la zona
+            sea segura.
+          </p>
+          {incident.observed_at && (
+            <p className="small muted">
+              El autor indicó que seguía ocurriendo:{" "}
+              {dateLabel(incident.observed_at)}.
+            </p>
+          )}
           {incident.contact_info && (
             <p>Contacto compartido por el autor: {incident.contact_info}</p>
           )}
@@ -135,7 +152,7 @@ export function ReportDetail({ id }: { id: string }): React.JSX.Element {
               Compartir reporte
             </button>
             {!incident.viewer_is_author &&
-              !incident.verified &&
+              !incident.viewer_has_confirmed &&
               incident.status === "active" &&
               !expired &&
               (user ? (
@@ -154,6 +171,21 @@ export function ReportDetail({ id }: { id: string }): React.JSX.Element {
                 </Link>
               ))}
           </div>
+          {incident.viewer_is_author &&
+            incident.status === "active" &&
+            !expired && (
+              <button
+                className="button secondary"
+                disabled={busy}
+                onClick={() =>
+                  void action(`incidents/${id}/status`, "PATCH", {
+                    status: "active",
+                  })
+                }
+              >
+                Sigue ocurriendo
+              </button>
+            )}
           {incident.viewer_is_author && incident.status === "active" && (
             <button
               className="button secondary"

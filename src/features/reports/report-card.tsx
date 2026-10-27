@@ -10,7 +10,9 @@ export function Verification({
 }): React.JSX.Element {
   return (
     <span className={incident.verified ? "status confirmed" : "status pending"}>
-      {incident.verified ? "Confirmado por la comunidad" : "No verificado"}
+      {incident.verified
+        ? `${incident.confirmations || 1} ${(incident.confirmations || 1) === 1 ? "vecino confirmó" : "vecinos confirmaron"}`
+        : "No verificado"}
     </span>
   );
 }

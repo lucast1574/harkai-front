@@ -65,7 +65,7 @@ export function PushSettings(): React.JSX.Element {
   }
   const ready = meta?.capabilities.push_notifications && pushConfigured();
   return (
-    <section className="panel account-privacy">
+    <section className="panel account-privacy account-push-settings">
       <h2>Notificaciones en este navegador</h2>
       <p className="muted">
         Recibe también reportes no verificados cerca de la zona que registres.

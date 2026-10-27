@@ -465,3 +465,12 @@
   margin-top: 24px;
   background: transparent;
 }
+
+.account-device > .account-push-settings {
+  display: flex;
+  flex-direction: column;
+}
+.account-device > .account-push-settings > .page-actions {
+  margin-top: auto;
+  padding-top: 24px;
+}

@@ -56,6 +56,8 @@ export function GeographySelector({
     )
     .sort((a, b) => a.name.localeCompare(b.name, "es"));
   function choose(prefix: string, scope: Area["scope"]): void {
+    // Placeholders are not locations: every district matches startsWith("").
+    if (!prefix) return;
     const d = all.find((d) => d.id.startsWith(prefix));
     if (!d) return;
     setSearch("");
@@ -76,7 +78,9 @@ export function GeographySelector({
         disabled={!all.length || !province}
         onChange={(e) => choose(e.target.value, "district")}
       >
-        <option value="">Selecciona distrito</option>
+        <option value="" disabled>
+          Selecciona distrito
+        </option>
         {districts.map((d) => (
           <option key={d.id} value={d.id}>
             {d.name}
@@ -92,7 +96,9 @@ export function GeographySelector({
             disabled={!all.length}
             onChange={(e) => choose(e.target.value, "department")}
           >
-            <option value="">Selecciona departamento</option>
+            <option value="" disabled>
+              Selecciona departamento
+            </option>
             {departments.map((d) => (
               <option key={d.id} value={d.id}>
                 {d.name}
@@ -105,7 +111,9 @@ export function GeographySelector({
             disabled={!all.length || !department}
             onChange={(e) => choose(e.target.value, "province")}
           >
-            <option value="">Selecciona provincia</option>
+            <option value="" disabled>
+              Selecciona provincia
+            </option>
             {provinces.map((p) => (
               <option key={p.id} value={p.id}>
                 {p.name}

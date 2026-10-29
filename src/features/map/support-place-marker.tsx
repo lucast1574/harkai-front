@@ -3,7 +3,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { MapPin, Phone } from "lucide-react";
 import { Marker, Popup } from "react-leaflet";
-import { medicalIcon } from "./map-icons";
+import { supportPlaceIcon } from "./map-icons";
+import { placeKind } from "../support/place-kind";
 import type { SupportPlace } from "../support/contracts";
 export function SupportPlaceMarker({
   place,
@@ -13,17 +14,15 @@ export function SupportPlaceMarker({
   return (
     <Marker
       position={[place.latitude, place.longitude]}
-      icon={medicalIcon}
-      alt={`Salud y ayuda: ${place.name}`}
-      title={`Salud y ayuda: ${place.name}`}
+      icon={supportPlaceIcon(place.kind)}
+      alt={`${placeKind(place.kind).label}: ${place.name}`}
+      title={`${placeKind(place.kind).label}: ${place.name}`}
       zIndexOffset={200}
     >
       <Popup pane="popupPane" className="health-place-popup">
         <div className="health-place-card">
           <span className="health-place-kind">
-            {place.kind === "hospital"
-              ? "Hospital o clínica"
-              : "Centro de salud"}
+            {placeKind(place.kind).label}
           </span>
           <strong>{place.name}</strong>
           {place.photo_urls?.[0] && (

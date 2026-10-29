@@ -26,7 +26,7 @@ export function CoverageNotice(): React.JSX.Element | null {
       <MapPin size={21} aria-hidden="true" />
       <div>
         <strong>Ubicación fuera del directorio nacional</strong>
-        <p>Puedes consultar establecimientos de salud en todo el Perú.</p>
+        <p>Puedes consultar lugares de salud, policía y bomberos en todo el Perú.</p>
         <small>
           Selecciona un departamento, provincia y distrito. Los números
           nacionales de ayuda siguen disponibles.

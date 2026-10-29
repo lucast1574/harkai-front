@@ -1,10 +1,11 @@
 "use client";
 import { useCallback, useSyncExternalStore } from "react";
-import { divIcon, latLngBounds } from "leaflet";
+import { latLngBounds } from "leaflet";
 import { Marker, Pane, Tooltip, useMap } from "react-leaflet";
 import type { SupportPlace } from "../support/contracts";
+import { supportPlaceIcon } from "./map-icons";
+import { placeKind } from "../support/place-kind";
 import { SupportPlaceMarker } from "./support-place-marker";
-
 export function SupportPlaceLayer({
   places,
 }: {
@@ -34,7 +35,7 @@ export function SupportPlaceLayer({
     const key =
       zoom >= 16
         ? place.id
-        : `${Math.floor(pixel.x / 96)}:${Math.floor(pixel.y / 96)}`;
+        : `${place.kind}:${Math.floor(pixel.x / 96)}:${Math.floor(pixel.y / 96)}`;
     const group = groups.get(key) || [];
     group.push(place);
     groups.set(key, group);
@@ -50,19 +51,15 @@ export function SupportPlaceLayer({
           group.reduce((total, place) => total + place.longitude, 0) /
             group.length,
         ];
-        const icon = divIcon({
-          className: "medical-marker",
-          html: '<span class="medical-symbol medical-group" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6Z" fill="white"/></svg></span>',
-          iconSize: [28, 28],
-          iconAnchor: [14, 14],
-        });
+        const icon = supportPlaceIcon(group[0].kind);
+        const label = placeKind(group[0].kind).label;
         return (
           <Marker
             key={key}
             position={center}
             icon={icon}
-            alt={`${group.length} lugares de salud. Acercar para verlos`}
-            title={`${group.length} lugares de salud. Acercar para verlos`}
+            alt={`${group.length} · ${label}. Acercar para verlos`}
+            title={`${group.length} · ${label}. Acercar para verlos`}
             eventHandlers={{
               click: () =>
                 map.fitBounds(
@@ -77,7 +74,7 @@ export function SupportPlaceLayer({
             }}
           >
             <Tooltip pane="tooltipPane">
-              {group.length} lugares de salud · acerca el mapa para verlos
+              {group.length} · {label} · acerca el mapa para verlos
             </Tooltip>
           </Marker>
         );

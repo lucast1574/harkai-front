@@ -1,10 +1,11 @@
 "use client";
 import { useState } from "react";
-import { Hospital, MapPin, Phone, ExternalLink } from "lucide-react";
+import { MapPin, Phone, ExternalLink } from "lucide-react";
 import { Notice } from "@/components/ui";
 import { useResource } from "@/lib/use-resource";
 import { areaQuery, type Area } from "@/lib/contracts";
 import ZoneMap from "../map/map-loader";
+import { placeKind } from "./place-kind";
 import type { SupportPlace } from "./contracts";
 export function OfficialPlaces({ area }: { area: Area }): React.JSX.Element {
   const { data, error, loading, reload } = useResource<{
@@ -16,11 +17,11 @@ export function OfficialPlaces({ area }: { area: Area }): React.JSX.Element {
   );
   const [selected, setSelected] = useState("");
   return (
-    <section aria-label="Directorio de salud en el mapa">
+    <section aria-label="Directorio de salud, policía y bomberos en el mapa">
       <header className="support-results-heading">
         <div>
           <span className="eyebrow">DIRECTORIO INSTITUCIONAL</span>
-          <h2>Salud y ayuda cerca de esta zona</h2>
+          <h2>Salud, policía y bomberos cerca de esta zona</h2>
           <p className="muted small">
             Estos lugares son recursos permanentes; no son alertas ni
             confirmaciones comunitarias.
@@ -55,12 +56,8 @@ export function OfficialPlaces({ area }: { area: Area }): React.JSX.Element {
         {data?.items.map((place) => (
           <article className="panel support-place" key={place.id}>
             <span className="eyebrow">
-              <Hospital size={16} />
-              {place.kind === "hospital"
-                ? "Hospital"
-                : place.kind === "health_center"
-                  ? "Centro de salud"
-                  : "Lugar de apoyo"}
+              <PlaceIcon kind={place.kind} />
+              {placeKind(place.kind).label}
             </span>
             <h3>{place.name}</h3>
             <p className="muted small">
@@ -115,4 +112,8 @@ export function OfficialPlaces({ area }: { area: Area }): React.JSX.Element {
       )}
     </section>
   );
+}
+function PlaceIcon({ kind }: { kind: SupportPlace["kind"] }) {
+  const { Icon } = placeKind(kind);
+  return <Icon size={16} aria-hidden="true" />;
 }

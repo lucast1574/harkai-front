@@ -199,3 +199,8 @@ html[data-theme="dark"] .point-map {
   background: #e8f4ed;
   color: #176244;
 }
+
+.police-symbol { background: #2563a6; }
+.fire_station-symbol { background: #b95016; }
+.medical-marker.police-marker:hover .medical-symbol, .medical-marker.police-marker:focus-visible .medical-symbol { background: #194c85; }
+.medical-marker.fire_station-marker:hover .medical-symbol, .medical-marker.fire_station-marker:focus-visible .medical-symbol { background: #934010; }

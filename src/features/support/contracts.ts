@@ -15,7 +15,7 @@ export type SupportDistrict = {
 export type SupportPlace = {
   id: string;
   name: string;
-  kind: "hospital" | "health_center" | "support";
+  kind: "hospital" | "health_center" | "support" | "police" | "fire_station";
   city: string;
   district: string;
   address: string;

@@ -1,5 +1,5 @@
 "use client";
-import { HeartPulse } from "lucide-react";
+import { placeKind } from "./place-kind";
 import { useUserLocation } from "@/lib/use-area";
 import type { SupportPlace } from "./contracts";
 import styles from "./nearby-support.module.css";
@@ -28,15 +28,16 @@ export function NearbySupport({
     .sort((a, b) => a.meters - b.meters);
   if (!nearby.length) return null;
   const { place, meters } = nearby[0];
+  const { Icon } = placeKind(place.kind);
   return (
     <section
       className={styles.card}
-      aria-label="Salud cerca de tu ubicación"
+      aria-label="Ayuda cerca de tu ubicación"
       role="status"
     >
-      <HeartPulse size={20} aria-hidden="true" />
+      <Icon size={20} aria-hidden="true" />
       <div>
-        <strong>Tienes salud cerca</strong>
+        <strong>Tienes ayuda cerca</strong>
         <p>
           {place.name} · aprox. {Math.round(meters)} m
         </p>

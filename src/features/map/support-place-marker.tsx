@@ -1,25 +1,37 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { MapPin, Phone } from "lucide-react";
 import { Marker, Popup } from "react-leaflet";
 import { supportPlaceIcon } from "./map-icons";
 import { placeKind } from "../support/place-kind";
 import type { SupportPlace } from "../support/contracts";
-export function SupportPlaceMarker({
+export const SupportPlaceMarker = memo(function SupportPlaceMarker({
   place,
 }: {
   place: SupportPlace;
 }): React.JSX.Element {
+  // A new position array makes React Leaflet move the marker and update its
+  // popup, which can pan the map and trigger another viewport render.
+  const position = useMemo<[number, number]>(
+    () => [place.latitude, place.longitude],
+    [place.latitude, place.longitude],
+  );
   return (
     <Marker
-      position={[place.latitude, place.longitude]}
+      position={position}
       icon={supportPlaceIcon(place.kind)}
       alt={`${placeKind(place.kind).label}: ${place.name}`}
       title={`${placeKind(place.kind).label}: ${place.name}`}
       zIndexOffset={200}
     >
-      <Popup pane="popupPane" className="health-place-popup">
+      <Popup
+        pane="popupPane"
+        className="health-place-popup"
+        maxWidth={260}
+        autoPanPaddingTopLeft={[16, 64]}
+        autoPanPaddingBottomRight={[52, 72]}
+      >
         <div className="health-place-card">
           <span className="health-place-kind">
             {placeKind(place.kind).label}
@@ -52,7 +64,7 @@ export function SupportPlaceMarker({
       </Popup>
     </Marker>
   );
-}
+});
 
 function PlacePhoto({
   src,

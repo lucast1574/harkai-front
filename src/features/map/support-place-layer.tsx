@@ -44,7 +44,7 @@ export function SupportPlaceLayer({
     <Pane name="health-resources" style={{ zIndex: 450 }}>
       {[...groups.entries()].map(([key, group]) => {
         if (group.length === 1)
-          return <SupportPlaceMarker key={key} place={group[0]} />;
+          return <SupportPlaceMarker key={group[0].id} place={group[0]} />;
         const center: [number, number] = [
           group.reduce((total, place) => total + place.latitude, 0) /
             group.length,

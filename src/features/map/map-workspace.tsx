@@ -18,6 +18,7 @@ import { useReports } from "../reports/use-reports";
 import { Verification } from "../reports/report-card";
 import { NeighborhoodRail } from "./neighborhood-rail";
 import ZoneMap from "./map-loader";
+import { MapCityControl } from "./map-city-control";
 
 export function MapWorkspace({
   initialIncident,
@@ -74,6 +75,7 @@ export function MapWorkspace({
           selectedId={selectedId}
           onSelect={setSelected}
         />
+        <MapCityControl area={area} onChange={changeArea} />
         <div className="map-legend">
           <span>
             <i className="report-dot user-location" /> Tu ubicación

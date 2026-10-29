@@ -11,12 +11,7 @@ export function MapCityControl({
   onChange: (area: Area) => void;
 }): React.JSX.Element {
   const city = area.scope !== "district" && !!area.scope;
-  const label =
-    area.scope === "department"
-      ? "Explorar todo el departamento"
-      : area.scope === "city"
-        ? "Explorar Lima y Callao"
-        : "Explorar toda la provincia";
+  const label = "Explorar toda la ciudad";
   return (
     <button
       type="button"
@@ -25,9 +20,7 @@ export function MapCityControl({
       aria-checked={city}
       disabled={area.geoPending || !!area.geoError}
       className={`${styles.control} ${city ? styles.active : ""}`}
-      onClick={() =>
-        onChange({ ...area, scope: city ? "district" : "province" })
-      }
+      onClick={() => onChange({ ...area, scope: city ? "district" : "city" })}
     >
       <Globe2 size={15} aria-hidden="true" className={styles.icon} />
       <span className={styles.label}>{label}</span>

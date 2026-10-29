@@ -299,6 +299,14 @@
     order: 0;
     padding: 20px 18px 8px;
   }
+  .rail .locate {
+    order: 1;
+    align-self: flex-start;
+    width: fit-content;
+    max-width: calc(100% - 36px);
+    margin: 0 18px 12px;
+    padding: 0 16px;
+  }
   .rail .settings {
     order: 1;
     margin: 0 18px 12px;

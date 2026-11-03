@@ -228,6 +228,9 @@
   color: var(--muted);
 }
 .report-download-preview {
+  position: relative;
+  isolation: isolate;
+  padding: 20px 12px;
   margin: 0;
   display: grid;
   justify-items: center;
@@ -235,13 +238,16 @@
 }
 .report-download-phone {
   width: min(280px, 100%);
-  border: 8px solid #11283b;
+  padding: 7px;
+  background: #152b34;
+  border: 2px solid #52636a;
   border-radius: 40px;
   overflow: hidden;
   box-shadow: 0 24px 60px #01193526;
-  animation: report-phone 6s ease-in-out infinite;
+  animation: report-phone 8s ease-in-out infinite;
 }
 .report-download-phone img {
+  border-radius: 30px;
   display: block;
   width: 100%;
   height: auto;
@@ -253,10 +259,10 @@
 @keyframes report-phone {
   0%,
   100% {
-    transform: translateY(0) rotate(-2deg);
+    transform: translateY(0) rotate(5deg);
   }
   50% {
-    transform: translateY(-10px) rotate(1deg);
+    transform: translateY(-12px) rotate(2deg);
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -275,5 +281,61 @@
   }
   .report-download-phone {
     width: 240px;
+  }
+}
+
+.report-stage-word {
+  position: absolute;
+  z-index: -1;
+  left: -42px;
+  top: 38%;
+  transform: rotate(-90deg);
+  font-size: clamp(80px, 9vw, 135px);
+  font-weight: 800;
+  letter-spacing: -0.07em;
+  color: color-mix(in srgb, var(--brand-green) 13%, var(--bg));
+  user-select: none;
+  pointer-events: none;
+}
+.report-download-preview figcaption {
+  display: grid;
+  gap: 8px;
+  max-width: 300px;
+  line-height: 1.5;
+}
+.report-download-preview figcaption strong {
+  font-size: 18px;
+}
+.report-download-preview figcaption span {
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 400;
+}
+.report-download-preview figcaption small {
+  font-size: 11px;
+  font-weight: 400;
+}
+.report-store-links .store-symbol {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+.report-store-links a {
+  background: var(--surface);
+  color: var(--muted);
+  border-color: var(--border-hover);
+}
+.report-store-links a:hover,
+.report-store-links a:focus-visible {
+  background: var(--brand-green-soft);
+  color: var(--brand-green);
+}
+@media (max-width: 900px) {
+  .report-stage-word {
+    left: calc(50% - 170px);
+    font-size: 100px;
+  }
+  .report-download-preview {
+    padding: 12px 0;
   }
 }

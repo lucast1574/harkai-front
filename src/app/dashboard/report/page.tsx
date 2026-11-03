@@ -30,15 +30,22 @@ export default function Page(): React.JSX.Element {
         <small>Usa la misma cuenta en la web y en la app.</small>
       </div>
       <figure className="report-download-preview">
+        <span className="report-stage-word" aria-hidden="true">
+          CERCA.
+        </span>
         <div className="report-download-phone">
           <Image
-            src="/app/reportar.webp"
-            alt="Pantalla para crear un reporte en la app Harkai, con datos de demostración"
+            src="/app/mapa.webp"
+            alt="Mapa de la app Harkai con reportes cercanos y datos de demostración"
             width={650}
             height={1413}
           />
         </div>
-        <figcaption>Tu voz también cuida el barrio.</figcaption>
+        <figcaption>
+          <strong>Tu zona, en el mapa.</strong>
+          <span>Lo que pasa cerca, contigo donde vayas.</span>
+          <small>Vista de la app con datos de demostración.</small>
+        </figcaption>
       </figure>
     </section>
   );

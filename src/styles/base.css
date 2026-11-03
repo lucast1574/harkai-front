@@ -1,21 +1,22 @@
 :root {
-  --brand-green: #207746;
+  --brand-dot: #57d463;
+  --brand-green: #89dfa5;
   --brand-green-soft: #e8f5ed;
   --bg: #f3f6f8;
   --surface-soft: #eaf0f5;
   --input-bg: #f7f9fb;
-  --interaction: #245b8f;
-  --interaction-hover: #e1edf7;
-  --accent-soft: #e8f0f8;
-  --accent-ink: #245b8f;
-  --border-hover: #94b4d0;
+  --interaction: #207746;
+  --interaction-hover: #e8f5ed;
+  --accent-soft: #e8f5ed;
+  --accent-ink: #207746;
+  --border-hover: #89dfa5;
   --surface: #fff;
   --ink: #0f2133;
   --muted: #586b7d;
   --border: #e1e7ec;
-  --accent: #245b8f;
-  --accent-hover: #1d4d7b;
-  --on-accent: #ffffff;
+  --accent: #89dfa5;
+  --accent-hover: #b1edc4;
+  --on-accent: #103322;
   --navy: #061325;
 }
 *,

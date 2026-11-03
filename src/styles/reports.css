@@ -84,8 +84,8 @@
   color: #f7c873;
 }
 .status.confirmed {
-  background: rgba(87, 212, 99, 0.14);
-  border: 1px solid rgba(87, 212, 99, 0.28);
+  background: rgba(137, 223, 165, 0.14);
+  border: 1px solid rgba(137, 223, 165, 0.28);
   color: #6be377;
 }
 .metrics {
@@ -128,7 +128,7 @@
 }
 .chart-track > div {
   height: 100%;
-  background: #57d463;
+  background: #89dfa5;
   border-radius: 10px;
 }
 

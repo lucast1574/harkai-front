@@ -1,27 +1,27 @@
 html[data-theme="dark"] {
   --brand-green: #89dfa5;
   --brand-green-soft: #203c32;
-  --accent: #8bbcea;
-  --accent-hover: #acd2f4;
-  --on-accent: #102a43;
+  --accent: #89dfa5;
+  --accent-hover: #b1edc4;
+  --on-accent: #103322;
   --bg: #101a24;
   --navy: #101a24;
   --surface: #192733;
   --surface-soft: #243544;
   --input-bg: #121f2b;
-  --interaction: #a1cdf4;
-  --interaction-hover: #273e53;
-  --accent-soft: rgba(129, 181, 231, 0.14);
-  --accent-ink: #a1cdf4;
-  --border-hover: rgba(129, 181, 231, 0.38);
+  --interaction: #89dfa5;
+  --interaction-hover: #203c32;
+  --accent-soft: rgba(137, 223, 165, 0.14);
+  --accent-ink: #89dfa5;
+  --border-hover: rgba(137, 223, 165, 0.38);
   --ink: #f0f5fa;
   --muted: #adbdcc;
   --border: rgba(255, 255, 255, 0.09);
 }
 html[data-theme="dark"] .notice {
-  background: rgba(87, 212, 99, 0.12);
+  background: rgba(137, 223, 165, 0.12);
   color: #c6f3cd;
-  border-color: rgba(87, 212, 99, 0.28);
+  border-color: rgba(137, 223, 165, 0.28);
 }
 html[data-theme="dark"] .notice.error {
   background: rgba(220, 53, 69, 0.15);

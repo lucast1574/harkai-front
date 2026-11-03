@@ -46,7 +46,7 @@
   width: 30px;
   height: 30px;
   border-radius: 9px;
-  background: rgba(129, 181, 231, 0.14);
+  background: rgba(137, 223, 165, 0.14);
   color: var(--accent);
   display: grid;
   place-items: center;
@@ -120,7 +120,7 @@
 }
 .settings :global(.location-button:hover:not(:disabled)) {
   border-color: var(--border-hover);
-  background: rgba(129, 181, 231, 0.08);
+  background: rgba(137, 223, 165, 0.08);
 }
 .summary {
   border: 1px solid var(--border);
@@ -137,8 +137,8 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #57d463;
-  box-shadow: 0 0 0 3px rgba(129, 181, 231, 0.16);
+  background: #89dfa5;
+  box-shadow: 0 0 0 3px rgba(137, 223, 165, 0.16);
   flex-shrink: 0;
 }
 .active .summaryDot {
@@ -202,7 +202,7 @@
 }
 .selected {
   border-color: var(--accent);
-  background: rgba(129, 181, 231, 0.08);
+  background: rgba(137, 223, 165, 0.08);
 }
 .reportTop {
   display: flex;
@@ -238,7 +238,7 @@
 }
 .confirmed {
   color: var(--accent-ink);
-  background: rgba(129, 181, 231, 0.12);
+  background: rgba(137, 223, 165, 0.12);
 }
 .pending {
   border: 1px solid var(--border);
@@ -261,7 +261,7 @@
 .emptyIcon {
   color: var(--accent);
   display: inline-flex;
-  background: rgba(129, 181, 231, 0.12);
+  background: rgba(137, 223, 165, 0.12);
   border-radius: 12px;
   padding: 10px;
   margin-bottom: 10px;
@@ -287,8 +287,8 @@
   font-weight: 600;
   padding: 11px 14px;
   border-radius: 12px;
-  background: rgba(129, 181, 231, 0.1);
-  border: 1px solid rgba(129, 181, 231, 0.25);
+  background: rgba(137, 223, 165, 0.1);
+  border: 1px solid rgba(137, 223, 165, 0.25);
   color: var(--accent-ink);
 }
 @media (max-width: 760px) {
@@ -338,7 +338,7 @@
   min-height: 42px;
   border: 1px solid var(--border);
   border-radius: 12px;
-  background: rgba(129, 181, 231, 0.1);
+  background: rgba(137, 223, 165, 0.1);
   color: var(--accent-ink);
   font: inherit;
   font-size: 13px;
@@ -347,7 +347,7 @@
 }
 .locate:hover,
 .locate:focus-visible {
-  background: rgba(129, 181, 231, 0.18);
+  background: rgba(137, 223, 165, 0.18);
   color: var(--ink);
   outline: none;
 }

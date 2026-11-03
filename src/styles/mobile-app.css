@@ -21,7 +21,7 @@
   margin: auto 0;
 }
 .mobile-app-copy > svg {
-  color: #57d463;
+  color: #89dfa5;
 }
 .mobile-app-label {
   font-size: 13px;
@@ -48,7 +48,7 @@
   align-items: center;
   padding: 18px 20px;
   border-radius: 16px;
-  background: #57d463;
+  background: #89dfa5;
   color: #071b30;
   font-weight: 700;
   text-decoration: none;
@@ -124,7 +124,7 @@
   gap: 10px;
 }
 .mobile-preview-features svg {
-  color: #57d463;
+  color: #89dfa5;
   flex: none;
 }
 .mobile-preview-features small {

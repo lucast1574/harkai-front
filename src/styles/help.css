@@ -24,7 +24,7 @@
 }
 .emergency-pill:hover {
   border-color: var(--border-hover);
-  background: rgba(129, 181, 231, 0.12);
+  background: rgba(137, 223, 165, 0.12);
 }
 .emergency-pill svg {
   color: var(--accent);
@@ -121,8 +121,8 @@
   border-color: var(--border-hover);
 }
 .guidance-topic-btn.active {
-  background: rgba(129, 181, 231, 0.14);
-  border-color: rgba(129, 181, 231, 0.36);
+  background: rgba(137, 223, 165, 0.14);
+  border-color: rgba(137, 223, 165, 0.36);
 }
 .guidance-topic-btn strong {
   font-size: 13.5px;

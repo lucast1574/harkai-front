@@ -26,7 +26,7 @@ export function MobileAppInvitation() {
     <main className="mobile-app-invitation" id="contenido">
       <a href="https://harkai.lat" className="mobile-app-brand">
         <Image src="/icon.png" alt="" width="44" height="44" />
-        harkai.
+        <span className="brand-wordmark">harkai<span className="brand-dot">.</span></span>
       </a>
       <div className="mobile-app-preview" aria-label="Vista de la app Harkai">
         <div className="mobile-preview-phone">

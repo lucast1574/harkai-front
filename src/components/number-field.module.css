@@ -47,11 +47,11 @@
   border-top: 1px solid var(--border);
 }
 .stepButton:hover:not(:disabled) {
-  background: rgba(129, 181, 231, 0.14);
+  background: rgba(137, 223, 165, 0.14);
   color: var(--accent);
 }
 .stepButton:active:not(:disabled) {
-  background: rgba(129, 181, 231, 0.24);
+  background: rgba(137, 223, 165, 0.24);
 }
 .stepButton:disabled {
   opacity: 0.35;

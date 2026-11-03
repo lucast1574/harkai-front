@@ -82,15 +82,15 @@
 .nav-link.active {
   background: linear-gradient(
     90deg,
-    rgba(129, 181, 231, 0.16) 0%,
-    rgba(129, 181, 231, 0.05) 100%
+    rgba(137, 223, 165, 0.16) 0%,
+    rgba(137, 223, 165, 0.05) 100%
   );
-  border-color: rgba(129, 181, 231, 0.3);
+  border-color: rgba(137, 223, 165, 0.3);
   color: #ffffff;
   font-weight: 600;
 }
 .nav-link.active .nav-icon {
-  background: rgba(87, 212, 99, 0.16);
+  background: rgba(137, 223, 165, 0.16);
   color: #89dfa5;
 }
 .sidebar-purpose {
@@ -113,8 +113,8 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #57d463;
-  box-shadow: 0 0 0 3px rgba(87, 212, 99, 0.14);
+  background: #89dfa5;
+  box-shadow: 0 0 0 3px rgba(137, 223, 165, 0.14);
   flex-shrink: 0;
 }
 .sidebar-bottom {
@@ -140,7 +140,7 @@
 .account:hover,
 .account.active {
   background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(129, 181, 231, 0.32);
+  border-color: rgba(137, 223, 165, 0.32);
 }
 .account small {
   display: block;
@@ -152,7 +152,7 @@
 .avatar {
   width: 36px;
   height: 36px;
-  background: rgba(129, 181, 231, 0.18);
+  background: rgba(137, 223, 165, 0.18);
   color: var(--accent);
   font-weight: 700;
   border-radius: 10px;
@@ -172,7 +172,7 @@
   line-height: 1;
 }
 .brand-dot {
-  color: var(--brand-green);
+  color: var(--brand-dot);
 }
 .publication-header .brand {
   padding: 0;
@@ -218,9 +218,9 @@ html[data-theme="dark"] .nav-link:focus-visible {
   background: var(--surface-soft);
   color: var(--ink);
 }
-/* The navigation rail keeps readable blue accents in both page themes. */
+/* The navigation rail keeps consistent green accents in both page themes. */
 .sidebar,
 .mobile-sidebar {
-  --accent: #8bbcea;
+  --accent: #89dfa5;
   --brand-green: #89dfa5;
 }

@@ -17,7 +17,7 @@
   place-items: center;
   width: 88px;
   height: 104px;
-  color: #85dba0;
+  color: #89dfa5;
   animation: arrive 0.6s ease-out both;
 }
 .art > svg {
@@ -33,7 +33,7 @@
   place-items: center;
   width: 40px;
   height: 40px;
-  background: #245b8f;
+  background: #203c32;
   border: 3px solid #142d46;
   border-radius: 14px;
   color: white;
@@ -71,7 +71,7 @@
   min-height: 44px;
   padding: 10px 14px;
   border-radius: 10px;
-  background: #24445f;
+  background: #203c32;
   color: #fff;
   font-size: 13px;
   font-weight: 650;
@@ -88,7 +88,7 @@
 }
 .actions a:hover,
 .actions a:focus-visible {
-  background: #386185;
+  background: #2c503f;
   outline: 0;
 }
 .actions a.primary:hover,

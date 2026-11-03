@@ -121,8 +121,8 @@
   place-items: center;
   width: 40px;
   height: 40px;
-  background: rgba(129, 181, 231, 0.14);
-  border: 1px solid rgba(129, 181, 231, 0.28);
+  background: rgba(137, 223, 165, 0.14);
+  border: 1px solid rgba(137, 223, 165, 0.28);
   color: var(--accent);
   border-radius: 12px;
   flex-shrink: 0;

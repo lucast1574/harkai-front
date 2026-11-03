@@ -96,8 +96,8 @@
   border-color: var(--border-hover);
 }
 .archive-preset-btn.active {
-  background: rgba(129, 181, 231, 0.14);
-  border-color: rgba(129, 181, 231, 0.36);
+  background: rgba(137, 223, 165, 0.14);
+  border-color: rgba(137, 223, 165, 0.36);
   color: var(--accent-ink);
 }
 .archive-custom-dates {
@@ -185,8 +185,8 @@
     color 150ms ease;
 }
 .archive-heat-toggle.active {
-  background: rgba(129, 181, 231, 0.14);
-  border-color: rgba(129, 181, 231, 0.36);
+  background: rgba(137, 223, 165, 0.14);
+  border-color: rgba(137, 223, 165, 0.36);
   color: var(--accent-ink);
 }
 .archive-map .zone-map {

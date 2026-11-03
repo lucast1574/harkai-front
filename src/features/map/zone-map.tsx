@@ -149,7 +149,7 @@ export default function ZoneMap({
       ) : (
         <Pane
           name="report-zones"
-          style={{ zIndex: 410, opacity: 0.55, pointerEvents: "none" }}
+          style={{ zIndex: 410, opacity: 0.72, pointerEvents: "none" }}
         >
           {incidents.map((i) => (
             <Circle
@@ -160,25 +160,25 @@ export default function ZoneMap({
               pathOptions={{
                 stroke: false,
                 fillColor: incidentColor(i.type),
-                fillOpacity: 0.22,
+                fillOpacity: 0.46,
               }}
             />
           ))}
         </Pane>
       )}
-      <Pane name="report-alerts" style={{ zIndex: 500, opacity: 0.7 }}>
+      <Pane name="report-alerts" style={{ zIndex: 500, opacity: 0.85 }}>
         {incidents.map((i) => (
           <CircleMarker
             key={i.id}
             center={[i.latitude, i.longitude]}
-            radius={selectedId === i.id ? 10 : 7}
+            radius={selectedId === i.id ? 11 : 8}
             eventHandlers={{ click: () => onSelect?.(i.id) }}
             pathOptions={{
               color: incidentColor(i.type),
               fillColor: incidentColor(i.type),
-              weight: selectedId === i.id ? 2 : 1,
-              opacity: 0.55,
-              fillOpacity: selectedId === i.id ? 0.5 : 0.25,
+              weight: selectedId === i.id ? 2.5 : 1.5,
+              opacity: 0.9,
+              fillOpacity: selectedId === i.id ? 0.9 : 0.78,
             }}
           >
             {!onSelect && (

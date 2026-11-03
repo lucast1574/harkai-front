@@ -1,13 +1,14 @@
 export const incidentColors: Record<string, string> = {
-  theft: "#8b5fc7",
-  extortion: "#a342b5",
-  kidnapping: "#8752a8",
-  violence: "#d11d55",
-  homicide: "#9e244a",
-  fire: "#ef741b",
+  crime: "#7e22ce",
+  theft: "#7e22ce",
+  extortion: "#7e22ce",
+  kidnapping: "#7e22ce",
+  violence: "#7e22ce",
+  homicide: "#7e22ce",
+  fire: "#ea580c",
   emergency: "#dc3545",
-  crash: "#2876df",
-  pet: "#a46e48",
+  crash: "#2563eb",
+  pet: "#795548",
   place: "#25865b",
 };
 export function incidentColor(type: string): string {

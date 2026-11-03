@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { JoinHarkai } from "@/components/join-harkai";
 import Image from "next/image";
 import {
   publication,
@@ -48,13 +49,14 @@ export default async function Page({
     "@context": "https://schema.org",
     "@type": "SocialMediaPosting",
     headline: title(i),
+    text: i.description,
     articleBody: i.description,
     datePublished: i.created_at,
     url,
     mainEntityOfPage: url,
     inLanguage: "es-PE",
     image: image ? [image] : undefined,
-    author: { "@type": "Organization", name: "Comunidad Harkai" },
+    author: { "@type": "Person", name: "Vecino anónimo" },
     publisher: {
       "@type": "Organization",
       name: "Harkai",
@@ -75,7 +77,29 @@ export default async function Page({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(schema).replace(/</g, "\\u003c"),
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              schema,
+              {
+                "@type": "BreadcrumbList",
+                itemListElement: [
+                  {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: "Reportes de la comunidad",
+                    item: "https://panel.harkai.lat/comunidad",
+                  },
+                  {
+                    "@type": "ListItem",
+                    position: 2,
+                    name: title(i),
+                    item: url,
+                  },
+                ],
+              },
+            ],
+          }).replace(/</g, "\\u003c"),
         }}
       />
       <Link href="/comunidad" className="eyebrow">
@@ -83,6 +107,7 @@ export default async function Page({
       </Link>
       <h1>{title(i)}</h1>
       <p className="publication-meta">
+        Vecino anónimo ·{" "}
         <time dateTime={i.created_at}>{dateLabel(i.created_at)}</time> ·{" "}
         {i.verified
           ? "Confirmado por vecinos"
@@ -112,6 +137,7 @@ export default async function Page({
         Ver zona en el mapa
       </Link>
       <Comments incidentId={i.id} />
+      <JoinHarkai report />
     </article>
   );
 }

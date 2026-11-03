@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { districtChatPath } from "@/lib/district-chat";
 import { useEffect, useRef } from "react";
 import {
   MessageCircle,
@@ -149,6 +150,18 @@ function ForumContent({
             <RefreshCw size={16} />
           </button>
         </div>
+        {feed.items.length > 0 && (
+          <Link
+            className="text-button"
+            href={districtChatPath(
+              districtId,
+              district,
+              feed.items[0].province,
+            )}
+          >
+            Ver página pública del distrito <ArrowUpRight size={14} />
+          </Link>
+        )}
         {feed.error && <Notice error>{feed.error}</Notice>}
         {feed.loading && <Notice>Cargando mensajes…</Notice>}
         {!feed.loading && !feed.error && !feed.items.length && (

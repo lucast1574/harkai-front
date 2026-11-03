@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Send, VenetianMask } from "lucide-react";
 import { api } from "@/lib/api";
@@ -17,11 +18,12 @@ export function ForumCompose({
   onPublished: () => Promise<void>;
 }): React.JSX.Element {
   const { user } = useAuth();
+  const pathname = usePathname();
   const [body, setBody] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   return (
-    <section className={styles.compose}>
+    <section id="comentar" className={styles.compose}>
       <header>
         <VenetianMask size={19} />
         <div>
@@ -67,7 +69,7 @@ export function ForumCompose({
           {error && <Notice error>{error}</Notice>}
           <footer>
             <small>
-              Sin insultos ni obscenidades. Evita compartir datos que te
+              Chat público, visible en buscadores. Evita compartir datos que te
               identifiquen.
             </small>
             <button
@@ -85,7 +87,10 @@ export function ForumCompose({
             Puedes leer libremente. Para participar, entra a tu cuenta; tus
             mensajes serán anónimos públicamente.
           </p>
-          <Link className="button secondary" href="/dashboard/profile">
+          <Link
+            className="button secondary"
+            href={`/login?next=${encodeURIComponent(pathname + "#comentar")}`}
+          >
             Ingresar para conversar
           </Link>
         </div>

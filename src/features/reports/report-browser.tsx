@@ -80,6 +80,7 @@ function Browser({
 }): React.JSX.Element {
   const [area, setArea] = useArea({ ...LIMA, type: fixedType || "" });
   const [heat, setHeat] = useState(false);
+  const [municipalView, setMunicipalView] = useState("reports");
   const { data: meta, error: metaError } = useResource<Meta>("meta");
   const reports = useReports(
     area,
@@ -99,7 +100,9 @@ function Browser({
   });
 
   return (
-    <div className="archive-shell">
+    <div
+      className={`archive-shell ${institutional ? "municipal-workspace" : ""}`}
+    >
       <header className="account-hero">
         <div className="account-hero-copy">
           <div className="account-badge">
@@ -210,6 +213,27 @@ function Browser({
           archive={history}
         />
       )}
+      {institutional && (
+        <nav
+          className="municipal-views"
+          aria-label="Vista de gestión municipal"
+        >
+          {[
+            { id: "reports", label: "Reportes" },
+            { id: "map", label: "Mapa de la zona" },
+            { id: "summary", label: "Resumen" },
+          ].map((view) => (
+            <button
+              key={view.id}
+              type="button"
+              aria-pressed={municipalView === view.id}
+              onClick={() => setMunicipalView(view.id)}
+            >
+              {view.label}
+            </button>
+          ))}
+        </nav>
+      )}
       {(stats || institutional) && (
         <Summary
           incidents={reports.items}
@@ -217,9 +241,10 @@ function Browser({
           partial={!!reports.cursor}
           loading={reports.loading}
           unavailable={!!reports.error}
+          compact={institutional && municipalView !== "summary"}
         />
       )}
-      {(stats || institutional) && (
+      {(stats || (institutional && municipalView === "map")) && (
         <div className="coverage">
           <span>
             {reports.items.length} reportes cargados ·{" "}
@@ -239,11 +264,8 @@ function Browser({
           )}
         </div>
       )}
-      {map && (
-        <details
-          className="collection-zone"
-          open={institutional ? undefined : true}
-        >
+      {map && (!institutional || municipalView === "map") && (
+        <details className="collection-zone" open>
           <summary>
             Mapa de los reportes<span>Ver ubicación y concentración</span>
           </summary>
@@ -264,7 +286,8 @@ function Browser({
           </section>
         </details>
       )}
-      {mode === "directory" || mode === "feed" ? (
+      {institutional && municipalView !== "reports" ? null : mode ===
+          "directory" || mode === "feed" ? (
         <ReportCollection
           incidents={reports.items}
           categories={categories}

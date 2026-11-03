@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 import { useRef } from "react";
 import {
   Map,
+  Megaphone,
   BarChart3,
   Settings2,
   Menu,
@@ -45,6 +46,7 @@ const navigation: NavigationItem[] = [
     icon: Map,
     section: "EXPLORAR",
   },
+  { href: "/dashboard/report", label: "Reportar", icon: Megaphone },
   { href: "/dashboard/my-businesses", label: "Ponte en el mapa", icon: Store },
   {
     href: "/dashboard/help",
@@ -90,6 +92,9 @@ export function Shell({
   if (
     path.startsWith("/incidents/") ||
     path === "/comunidad" ||
+    path === "/login" ||
+    path === "/distritos" ||
+    path.startsWith("/distritos/") ||
     path === "/eliminar-cuenta"
   )
     return (
@@ -97,7 +102,8 @@ export function Shell({
         <header className="publication-header">
           <Brand />
           <nav aria-label="Navegación pública">
-            <Link href="/comunidad">Comunidad</Link>
+            <Link href="/comunidad">Alertas</Link>
+            <Link href="/distritos">Chats por distrito</Link>
             <Link href="/dashboard">Mapa</Link>
             <Link href={user ? "/dashboard/profile" : "/login"}>
               {user ? "Mi cuenta" : "Ingresar"}

@@ -1,5 +1,7 @@
 import { Smartphone, ShieldCheck, MessageCircle, Radio } from "lucide-react";
 
+import { StoreLinks } from "@/components/store-links";
+
 export function MobileReporting(): React.JSX.Element {
   return (
     <section id="app-movil" className="panel mobile-reporting">
@@ -28,6 +30,7 @@ export function MobileReporting(): React.JSX.Element {
           <MessageCircle size={14} /> Sincronizado con la web
         </span>
       </div>
+      <StoreLinks />
     </section>
   );
 }

@@ -1,0 +1,141 @@
+.card {
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr);
+  gap: 24px;
+  align-items: center;
+  margin: 48px 0 8px;
+  padding: 32px;
+  border-radius: 24px;
+  background: #142d46;
+  color: #f5faff;
+  border: 1px solid #315570;
+  overflow: hidden;
+}
+.art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 104px;
+  color: #85dba0;
+  animation: arrive 0.6s ease-out both;
+}
+.art > svg {
+  width: 72px;
+  height: 72px;
+  stroke-width: 1.2;
+}
+.art span {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  background: #245b8f;
+  border: 3px solid #142d46;
+  border-radius: 14px;
+  color: white;
+  animation: float 5s ease-in-out infinite;
+}
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: #89dfa5;
+  font-weight: 700;
+}
+.copy h2 {
+  font-size: clamp(23px, 3vw, 30px);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin: 10px 0;
+}
+.copy p {
+  font-size: 15px;
+  line-height: 1.65;
+  color: #c3d3e1;
+  max-width: 560px;
+}
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 22px 0 14px;
+}
+.actions a {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #24445f;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 650;
+  transition: background 0.2s;
+}
+.actions a.primary {
+  background: #89dfa5;
+  color: #103322;
+}
+.actions a:hover,
+.actions a:focus-visible {
+  background: #386185;
+  outline: 0;
+}
+.actions a.primary:hover,
+.actions a.primary:focus-visible {
+  background: #b1edc4;
+}
+.copy small {
+  color: #aec2d3;
+}
+@keyframes arrive {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .art,
+  .art span {
+    animation: none;
+  }
+  .actions a {
+    transition: none;
+  }
+}
+@media (max-width: 600px) {
+  .card {
+    grid-template-columns: 1fr;
+    padding: 24px;
+    gap: 12px;
+  }
+  .art {
+    width: 64px;
+    height: 72px;
+  }
+  .art > svg {
+    width: 56px;
+    height: 56px;
+  }
+  .actions a {
+    flex: 1 1 auto;
+  }
+}

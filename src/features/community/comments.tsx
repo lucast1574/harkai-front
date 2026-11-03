@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { MessageCircle, Send, Trash2 } from "lucide-react";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
@@ -38,6 +39,7 @@ function Thread({
   namespace: "incidents" | "forum";
 }): React.JSX.Element {
   const { user } = useAuth();
+  const pathname = usePathname();
   const [items, setItems] = useState<Comment[]>([]);
   const [cursor, setCursor] = useState("");
   const [loading, setLoading] = useState(false);
@@ -84,7 +86,10 @@ function Thread({
     };
   }, [load]);
   return (
-    <section id="conversacion" className="discussion panel">
+    <section
+      id={namespace === "forum" ? `respuestas-${incidentId}` : "conversacion"}
+      className="discussion panel"
+    >
       <div className="discussion-heading">
         <span className="discussion-icon">
           <MessageCircle size={22} />
@@ -238,7 +243,10 @@ function Thread({
       ) : (
         <div className="discussion-login">
           <p>Explora la conversación. Para participar, ingresa a tu cuenta.</p>
-          <Link className="button secondary" href="/dashboard/profile">
+          <Link
+            className="button secondary"
+            href={`/login?next=${encodeURIComponent(pathname + (namespace === "forum" ? "#comentar" : "#conversacion"))}`}
+          >
             Ingresar para comentar
           </Link>
         </div>

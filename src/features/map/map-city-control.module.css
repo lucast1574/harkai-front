@@ -59,8 +59,8 @@
   transition: transform 160ms ease;
 }
 .active .track {
-  background: #8bbcea;
-  border-color: #8bbcea;
+  background: #89dfa5;
+  border-color: #89dfa5;
 }
 .active .thumb {
   transform: translateX(16px);
@@ -85,4 +85,8 @@
   .control + :global(.map-legend) {
     max-width: calc(100% - 90px);
   }
+}
+
+.active .icon {
+  color: #89dfa5;
 }

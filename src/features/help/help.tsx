@@ -75,7 +75,6 @@ export function Help(): React.JSX.Element {
         {[
           { id: "contacts", label: "Contactos de mi zona", icon: PhoneCall },
           { id: "guidance", label: "Qué hacer", icon: LifeBuoy },
-          { id: "assistant", label: "Consultar una situación", icon: Sparkles },
         ].map((item) => (
           <button
             key={item.id}
@@ -94,7 +93,7 @@ export function Help(): React.JSX.Element {
         {section === "contacts" && <DistrictDirectory />}
 
         <div className="help-side-stack">
-          {section === "assistant" && (
+          {section === "contacts" && (
             <section className="panel help-consult-card">
               <div className="help-card-head">
                 <span className="account-benefit-icon">
@@ -102,7 +101,7 @@ export function Help(): React.JSX.Element {
                 </span>
                 <div>
                   <span className="eyebrow">ASISTENTE DE ORIENTACIÓN</span>
-                  <h2>Describe lo que ocurre</h2>
+                  <h2>Consultar una situación</h2>
                 </div>
               </div>
               <p className="muted small">

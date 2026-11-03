@@ -143,3 +143,50 @@ html[data-theme="dark"] .publication-verification {
     transition: none;
   }
 }
+
+.public-district-chat {
+  max-width: 960px;
+}
+.public-chat-messages {
+  display: grid;
+  gap: 16px;
+  margin: 32px 0;
+}
+.public-chat-messages article {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid var(--border);
+}
+.public-chat-messages p {
+  overflow-wrap: anywhere;
+}
+.district-chat-directory {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin: 32px 0;
+}
+.district-chat-directory a {
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+.district-chat-directory a:hover,
+.district-chat-directory a:focus-visible {
+  background: var(--interaction-hover);
+}
+.district-chat-directory h2 {
+  font-size: 20px;
+  margin: 0 0 8px;
+}
+.district-chat-directory p {
+  color: var(--muted);
+  font-size: 14px;
+}
+.district-chat-directory span {
+  color: var(--brand-green);
+  font-size: 14px;
+  font-weight: 650;
+}

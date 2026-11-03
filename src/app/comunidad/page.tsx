@@ -24,6 +24,9 @@ export default async function Page({
         Reportes de vecinos de Perú. Una conversación que sigue, incluso cuando
         el punto deja el mapa.
       </p>
+      <Link className="button secondary" href="/distritos">
+        Leer los chats por distrito
+      </Link>
       <div className="publication-feed">
         {page.items.map((i) => (
           <PublicationCard key={i.id} incident={i} />

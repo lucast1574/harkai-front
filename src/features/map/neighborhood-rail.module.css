@@ -355,3 +355,22 @@
   opacity: 0.65;
   cursor: wait;
 }
+
+.locate,
+.zoneAction {
+  color: var(--brand-green);
+  background: var(--brand-green-soft);
+}
+.locate:hover:not(:disabled),
+.locate:focus-visible {
+  background: color-mix(in srgb, var(--brand-green) 16%, var(--surface));
+}
+.zonePin {
+  color: var(--brand-green);
+  background: var(--brand-green-soft);
+}
+.settings[open] .zoneAction,
+.settings > summary:focus-visible .zoneAction {
+  color: var(--ink);
+  background: var(--brand-green-soft);
+}

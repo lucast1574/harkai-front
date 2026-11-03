@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowUpRight, MapPin, MessageCircle, Smartphone } from "lucide-react";
+import { ArrowUpRight, MapPin, MessageCircle } from "lucide-react";
+import { StoreIcon } from "./store-links";
 import styles from "./join-harkai.module.css";
 export function JoinHarkai({
   report = false,
@@ -33,10 +34,10 @@ export function JoinHarkai({
             </Link>
           )}
           <a href="https://play.google.com/store/apps/details?id=com.lucast.harkai">
-            <Smartphone size={17} /> Android <ArrowUpRight size={15} />
+            <StoreIcon store="play" /> Google Play <ArrowUpRight size={15} />
           </a>
           <a href="https://apps.apple.com/app/id6829396398">
-            <Smartphone size={17} /> iPhone <ArrowUpRight size={15} />
+            <StoreIcon store="apple" /> App Store <ArrowUpRight size={15} />
           </a>
         </div>
         <small>Gratis · Para vecinos de todo el Perú</small>

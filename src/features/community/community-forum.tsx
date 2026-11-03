@@ -140,28 +140,30 @@ function ForumContent({
               Chat del distrito · Tu nombre y foto no se muestran.
             </p>
           </div>
-          <button
-            type="button"
-            className="icon-button"
-            aria-label="Actualizar conversaciones"
-            disabled={feed.loading}
-            onClick={() => void feed.reload()}
-          >
-            <RefreshCw size={16} />
-          </button>
-        </div>
-        {feed.items.length > 0 && (
-          <Link
-            className="text-button"
-            href={districtChatPath(
-              districtId,
-              district,
-              feed.items[0].province,
+          <div className={styles.feedActions}>
+            {feed.items.length > 0 && (
+              <Link
+                className={`button secondary ${styles.publicLink}`}
+                href={districtChatPath(
+                  districtId,
+                  district,
+                  feed.items[0].province,
+                )}
+              >
+                Ver página pública <ArrowUpRight size={14} />
+              </Link>
             )}
-          >
-            Ver página pública del distrito <ArrowUpRight size={14} />
-          </Link>
-        )}
+            <button
+              type="button"
+              className="icon-button"
+              aria-label="Actualizar conversaciones"
+              disabled={feed.loading}
+              onClick={() => void feed.reload()}
+            >
+              <RefreshCw size={16} />
+            </button>
+          </div>
+        </div>
         {feed.error && <Notice error>{feed.error}</Notice>}
         {feed.loading && <Notice>Cargando mensajes…</Notice>}
         {!feed.loading && !feed.error && !feed.items.length && (

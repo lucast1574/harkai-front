@@ -22,6 +22,8 @@
 }
 .feedHeading {
   display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
   align-items: center;
   justify-content: space-between;
   padding: 20px 24px;
@@ -248,5 +250,25 @@
   .body,
   .card > footer {
     margin-left: 0;
+  }
+}
+
+.feedActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.publicLink {
+  font-size: 12px;
+  white-space: nowrap;
+}
+@media (max-width: 600px) {
+  .feedActions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .publicLink {
+    white-space: normal;
   }
 }

@@ -81,6 +81,11 @@
   background: #89dfa5;
   color: #103322;
 }
+.actions :global(.store-symbol) {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
 .actions a:hover,
 .actions a:focus-visible {
   background: #386185;

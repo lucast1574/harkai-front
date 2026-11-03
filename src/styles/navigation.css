@@ -167,9 +167,12 @@
 }
 
 .brand-wordmark {
-  color: var(--brand-green);
+  color: #f5faff;
   white-space: nowrap;
   line-height: 1;
+}
+.brand-dot {
+  color: var(--brand-green);
 }
 .publication-header .brand {
   padding: 0;

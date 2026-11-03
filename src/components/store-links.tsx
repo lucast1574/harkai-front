@@ -20,7 +20,11 @@ export function StoreLinks(): React.JSX.Element {
   );
 }
 
-function StoreIcon({ store }: { store: "play" | "apple" }): React.JSX.Element {
+export function StoreIcon({
+  store,
+}: {
+  store: "play" | "apple";
+}): React.JSX.Element {
   return store === "play" ? (
     <svg
       className="store-symbol"

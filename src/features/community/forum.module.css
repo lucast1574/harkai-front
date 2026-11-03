@@ -272,3 +272,63 @@
     white-space: normal;
   }
 }
+
+.composerRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.composerRow :global(.field) textarea {
+  height: 48px;
+  flex: 1;
+  min-width: 0;
+  min-height: 48px;
+  max-height: 144px;
+  padding: 12px 18px;
+  border-radius: 24px;
+  resize: none;
+  line-height: 24px;
+}
+.sendButton {
+  display: grid;
+  place-items: center;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--brand-green);
+  color: #103322;
+  cursor: pointer;
+}
+.sendButton:hover:not(:disabled),
+.sendButton:focus-visible {
+  background: #b1edc4;
+  outline: none;
+}
+.sendButton:disabled {
+  background: var(--surface-2, var(--bg));
+  color: var(--muted);
+  cursor: default;
+  opacity: 0.6;
+}
+.sending {
+  animation: send-spin 1s linear infinite;
+}
+@keyframes send-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sending {
+    animation: none;
+  }
+}
+
+.composerRow :global(.field) {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+}

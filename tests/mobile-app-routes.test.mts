@@ -16,7 +16,6 @@ test("public report articles remain readable on mobile", () => {
 test("every other panel page invites mobile visitors to the app", () => {
   for (const path of [
     "/",
-    "/eliminar-cuenta",
     "/incidents",
     "/incidents/123/extra",
     "/dashboard",
@@ -48,4 +47,9 @@ test("public district conversations, login and reporting downloads remain access
     "/dashboard/report",
   ])
     assert.equal(shouldInviteToMobileApp(path), false, path);
+});
+
+test("account deletion is accessible directly in mobile browsers", () => {
+  assert.equal(shouldInviteToMobileApp("/eliminar-cuenta"), false);
+  assert.equal(shouldInviteToMobileApp("/eliminar-cuenta/"), false);
 });

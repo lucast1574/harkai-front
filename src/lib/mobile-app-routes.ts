@@ -1,5 +1,6 @@
-/** Public report articles stay readable on phones; the rest invites users to the app. */
+/** Keep public content and account deletion accessible in mobile browsers. */
 export function shouldInviteToMobileApp(path: string): boolean {
+  if (/^\/eliminar-cuenta\/?$/.test(path)) return false;
   if (path === "/dashboard/report") return false;
   if (
     path === "/comunidad" ||

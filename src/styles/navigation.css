@@ -179,6 +179,9 @@
   border-bottom: 0;
   flex-shrink: 0;
 }
+.publication-header .brand-wordmark {
+  color: var(--ink);
+}
 @media (max-width: 600px) {
   .publication-header .brand {
     font-size: 30px;

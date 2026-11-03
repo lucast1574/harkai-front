@@ -2,10 +2,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Send, VenetianMask } from "lucide-react";
+import { Send, VenetianMask, LoaderCircle } from "lucide-react";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
-import { Notice, TextArea } from "@/components/ui";
+import { Notice } from "@/components/ui";
 import styles from "./forum.module.css";
 
 export function ForumCompose({
@@ -35,6 +35,7 @@ export function ForumCompose({
         <form
           onSubmit={async (event) => {
             event.preventDefault();
+            const form = event.currentTarget;
             if (busy || !districtId || body.trim().length < 2) return;
             setBusy(true);
             setError("");
@@ -47,6 +48,8 @@ export function ForumCompose({
                 }),
               });
               setBody("");
+              const input = form.querySelector("textarea");
+              if (input) input.style.height = "auto";
               await onPublished();
             } catch (failure) {
               setError((failure as Error).message);
@@ -55,30 +58,55 @@ export function ForumCompose({
             }
           }}
         >
-          <TextArea
-            label={`Mensaje para ${district}`}
-            rows={2}
-            placeholder="Una pregunta, una novedad o algo que ayude a tu barrio…"
-            value={body}
-            onChange={(event) => setBody(event.target.value)}
-            minLength={2}
-            maxLength={1000}
-            required
-            disabled={busy}
-          />
+          <div className={styles.composerRow}>
+            <div className="field">
+              <textarea
+                aria-label={`Mensaje para ${district}`}
+                rows={1}
+                placeholder="Escribe a tu barrio…"
+                value={body}
+                onChange={(event) => {
+                  setBody(event.target.value);
+                  event.target.style.height = "auto";
+                  event.target.style.height = `${Math.min(event.target.scrollHeight, 144)}px`;
+                }}
+                onKeyDown={(event) => {
+                  if (
+                    event.key === "Enter" &&
+                    !event.shiftKey &&
+                    !event.nativeEvent.isComposing
+                  ) {
+                    event.preventDefault();
+                    event.currentTarget.form?.requestSubmit();
+                  }
+                }}
+                minLength={2}
+                maxLength={1000}
+                required
+                disabled={busy}
+              />
+            </div>
+            <button
+              type="submit"
+              className={styles.sendButton}
+              aria-label={busy ? "Enviando mensaje" : "Enviar mensaje"}
+              title={busy ? "Enviando mensaje" : "Enviar mensaje"}
+              aria-busy={busy}
+              disabled={busy || !districtId || body.trim().length < 2}
+            >
+              {busy ? (
+                <LoaderCircle size={20} className={styles.sending} />
+              ) : (
+                <Send size={20} />
+              )}
+            </button>
+          </div>
           {error && <Notice error>{error}</Notice>}
           <footer>
             <small>
-              Chat público, visible en buscadores. Evita compartir datos que te
-              identifiquen.
+              Chat público, visible en buscadores. Evita compartir datos
+              personales.
             </small>
-            <button
-              className="button"
-              disabled={busy || !districtId || body.trim().length < 2}
-            >
-              <Send size={14} />
-              {busy ? "Enviando…" : "Enviar mensaje"}
-            </button>
           </footer>
         </form>
       ) : (

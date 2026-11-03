@@ -1,4 +1,4 @@
-export const mobileAppPaths = new Set([
-  "/dashboard", "/dashboard/help", "/dashboard/incidents",
-  "/dashboard/archive", "/dashboard/profile", "/dashboard/tickets",
-]);
+/** Public report articles stay readable on phones; the rest invites users to the app. */
+export function shouldInviteToMobileApp(path: string): boolean {
+  return !/^\/incidents\/[^/]+\/?$/.test(path);
+}

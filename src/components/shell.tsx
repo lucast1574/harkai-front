@@ -1,5 +1,5 @@
 "use client";
-import { mobileAppPaths } from "@/lib/mobile-app-routes";
+import { shouldInviteToMobileApp } from "@/lib/mobile-app-routes";
 import { MobileAppInvitation, useMobileScreen } from "./mobile-app-invitation";
 import { CoverageNotice } from "@/features/support/coverage-notice";
 import Link from "next/link";
@@ -86,7 +86,7 @@ export function Shell({
   const mobile = useMobileScreen();
   const dialog = useRef<HTMLDialogElement>(null);
   const close = () => dialog.current?.close();
-  if (mobileAppPaths.has(path)) {
+  if (shouldInviteToMobileApp(path)) {
     if (mobile === null) return <main aria-busy="true" />;
     if (mobile) return <MobileAppInvitation />;
   }

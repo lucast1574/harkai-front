@@ -112,7 +112,7 @@ export function Shell({
       .filter(
         (n) =>
           (!n.admin || user?.role === "admin") &&
-          (!n.institutional || user?.role === "gov"),
+          (!n.institutional || user?.role === "gov" || user?.role === "admin"),
       )
       .map((n) => {
         const active =

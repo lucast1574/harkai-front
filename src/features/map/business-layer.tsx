@@ -1,4 +1,6 @@
 "use client";
+import Image from "next/image";
+import { useState } from "react";
 import { divIcon } from "leaflet";
 import { Marker, Popup, Tooltip } from "react-leaflet";
 import { businessKinds, type Business } from "../business/business-contract";
@@ -29,32 +31,34 @@ export function BusinessLayer({
             {point.name}
           </Tooltip>
           <Popup className="business-map-popup">
-            <div className="business-map-detail">
-              <p>Negocio promocionado</p>
-              <h2>{point.name}</h2>
-              <p>{businessKinds[point.kind]}</p>
-              <p>{point.description}</p>
-              {point.offer && <strong>{point.offer}</strong>}
-              {point.discount_code && <p>Código: {point.discount_code}</p>}
-              <p>{point.address}</p>
-              {point.phone && (
-                <a href={`tel:${point.phone}`}>Llamar al negocio</a>
-              )}
-              {point.website?.startsWith("https://") && (
-                <p>
-                  <a
-                    href={point.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Visitar sitio web
-                  </a>
-                </p>
-              )}
-            </div>
+            <BusinessPreview key={point.media_id || point.id} point={point} />
           </Popup>
         </Marker>
       ))}
     </>
+  );
+}
+
+function BusinessPreview({ point }: { point: Business }): React.JSX.Element {
+  const [failed, setFailed] = useState(false);
+  if (point.media_id && !failed) {
+    return (
+      <Image
+        className="business-map-photo"
+        unoptimized
+        width={320}
+        height={240}
+        src={`/api/backend/media/${point.media_id}`}
+        alt={`Foto de ${point.name}`}
+        onError={() => setFailed(true)}
+      />
+    );
+  }
+  return (
+    <div className="business-map-detail">
+      <span>{businessKinds[point.kind] || "Negocio local"}</span>
+      <h2>{point.name}</h2>
+      <p>{point.description}</p>
+    </div>
   );
 }

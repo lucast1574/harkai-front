@@ -1,4 +1,6 @@
 html[data-theme="dark"] {
+  --brand-green: #89dfa5;
+  --brand-green-soft: #203c32;
   --accent: #8bbcea;
   --accent-hover: #acd2f4;
   --on-accent: #102a43;

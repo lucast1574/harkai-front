@@ -83,8 +83,8 @@
   font-size: 17px;
 }
 .business-free {
-  background: var(--accent-soft);
-  color: var(--accent-ink);
+  background: var(--brand-green-soft);
+  color: var(--brand-green);
   padding: 12px 18px;
   border-radius: 12px;
   white-space: nowrap;
@@ -317,4 +317,64 @@
     background: var(--surface);
     z-index: 2;
   }
+}
+
+.business-success > svg {
+  color: var(--brand-green);
+}
+.business-map-popup .leaflet-popup-content-wrapper {
+  padding: 0;
+  overflow: hidden;
+  border-radius: 18px;
+  background: var(--surface);
+  color: var(--ink);
+}
+.business-map-popup .leaflet-popup-content {
+  margin: 0;
+  width: min(300px, 70vw) !important;
+}
+.business-map-popup .leaflet-popup-tip {
+  background: var(--surface);
+}
+.leaflet-container .business-map-popup a.leaflet-popup-close-button {
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #102a43;
+  color: white;
+}
+.business-map-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
+  background: #101a24;
+}
+.business-map-detail {
+  padding: 24px;
+}
+.business-map-detail > span {
+  color: var(--brand-green);
+  font-size: 12px;
+  font-weight: 600;
+}
+.business-map-detail h2 {
+  margin: 8px 0;
+  font-size: 19px;
+  padding-right: 15px;
+}
+.business-map-detail p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.business-map-symbol svg {
+  color: #ffffff;
+}
+.business-map-symbol svg path:first-child {
+  fill: #57d463;
+  stroke: #102a43;
 }

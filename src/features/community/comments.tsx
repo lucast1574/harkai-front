@@ -18,25 +18,32 @@ type Comment = {
 export function Comments({
   incidentId,
   namespace = "incidents",
+  showComposer = true,
+  revision = 0,
 }: {
   incidentId: string;
   namespace?: "incidents" | "forum";
+  showComposer?: boolean;
+  revision?: number;
 }): React.JSX.Element {
   const { user } = useAuth();
   return (
     <Thread
-      key={`${incidentId}:${user?.id || "guest"}:${user?.role || ""}`}
+      key={`${incidentId}:${user?.id || "guest"}:${user?.role || ""}:${revision}`}
       incidentId={incidentId}
       namespace={namespace}
+      showComposer={showComposer}
     />
   );
 }
 function Thread({
   incidentId,
   namespace,
+  showComposer,
 }: {
   incidentId: string;
   namespace: "incidents" | "forum";
+  showComposer: boolean;
 }): React.JSX.Element {
   const { user } = useAuth();
   const pathname = usePathname();
@@ -190,67 +197,70 @@ function Thread({
         </button>
       )}
       {error && <Notice error>{error}</Notice>}
-      {user ? (
-        <form
-          className="comment-compose"
-          onSubmit={async (e) => {
-            e.preventDefault();
-            setBusy(true);
-            setError("");
-            try {
-              const created = await api<Comment>(path, {
-                method: "POST",
-                body: JSON.stringify({ body: body.trim() }),
-              });
-              setBody("");
-              ++generation.current;
-              setLoading(false);
-              setItems((old) => [
-                ...new Map([...old, created].map((c) => [c.id, c])).values(),
-              ]);
-            } catch (err) {
-              setError((err as Error).message);
-            } finally {
-              setBusy(false);
-            }
-          }}
-        >
-          <TextArea
-            label="Tu comentario"
-            placeholder="¿Qué información puedes aportar?"
-            minLength={2}
-            maxLength={1000}
-            required
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-          />
-          <div>
-            <small>
-              No compartas datos personales ni acusaciones sin sustento.{" "}
-              <a href="https://harkai.lat/normas-comunidad/">
-                Normas de la comunidad
-              </a>
-            </small>
-            <button
-              className="button"
-              disabled={busy || body.trim().length < 2}
-            >
-              <Send size={15} />
-              {busy ? "Publicando…" : "Comentar"}
-            </button>
-          </div>
-        </form>
-      ) : (
-        <div className="discussion-login">
-          <p>Explora la conversación. Para participar, ingresa a tu cuenta.</p>
-          <Link
-            className="button secondary"
-            href={`/login?next=${encodeURIComponent(pathname + (namespace === "forum" ? "#comentar" : "#conversacion"))}`}
+      {showComposer &&
+        (user ? (
+          <form
+            className="comment-compose"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              setBusy(true);
+              setError("");
+              try {
+                const created = await api<Comment>(path, {
+                  method: "POST",
+                  body: JSON.stringify({ body: body.trim() }),
+                });
+                setBody("");
+                ++generation.current;
+                setLoading(false);
+                setItems((old) => [
+                  ...new Map([...old, created].map((c) => [c.id, c])).values(),
+                ]);
+              } catch (err) {
+                setError((err as Error).message);
+              } finally {
+                setBusy(false);
+              }
+            }}
           >
-            Ingresar para comentar
-          </Link>
-        </div>
-      )}
+            <TextArea
+              label="Tu comentario"
+              placeholder="¿Qué información puedes aportar?"
+              minLength={2}
+              maxLength={1000}
+              required
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+            />
+            <div>
+              <small>
+                No compartas datos personales ni acusaciones sin sustento.{" "}
+                <a href="https://harkai.lat/normas-comunidad/">
+                  Normas de la comunidad
+                </a>
+              </small>
+              <button
+                className="button"
+                disabled={busy || body.trim().length < 2}
+              >
+                <Send size={15} />
+                {busy ? "Publicando…" : "Comentar"}
+              </button>
+            </div>
+          </form>
+        ) : (
+          <div className="discussion-login">
+            <p>
+              Explora la conversación. Para participar, ingresa a tu cuenta.
+            </p>
+            <Link
+              className="button secondary"
+              href={`/login?next=${encodeURIComponent(pathname + (namespace === "forum" ? "#comentar" : "#conversacion"))}`}
+            >
+              Ingresar para comentar
+            </Link>
+          </div>
+        ))}
     </section>
   );
 }

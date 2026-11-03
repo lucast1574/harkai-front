@@ -11,9 +11,13 @@ import styles from "./forum.module.css";
 export function ForumCard({
   thread,
   onRemoved,
+  onReply,
+  replyRevision = 0,
 }: {
   thread: ForumThread;
   onRemoved: () => Promise<void>;
+  onReply: (thread: ForumThread) => void;
+  replyRevision?: number;
 }): React.JSX.Element {
   const [open, setOpen] = useState(false);
   const [confirm, setConfirm] = useState(false);
@@ -41,11 +45,19 @@ export function ForumCard({
         <button
           className="text-button"
           aria-expanded={open}
-          onClick={() => setOpen(!open)}
+          onClick={() => {
+            setOpen(true);
+            onReply(thread);
+          }}
         >
           <MessageCircle size={15} />
-          {open ? "Ocultar respuestas" : "Responder"}
+          Responder
         </button>
+        {open && (
+          <button className="text-button" onClick={() => setOpen(false)}>
+            Ocultar respuestas
+          </button>
+        )}
         {thread.can_delete && (
           <button className="text-button" onClick={() => setConfirm(!confirm)}>
             <Trash2 size={13} />
@@ -77,7 +89,14 @@ export function ForumCard({
         </div>
       )}
       {error && <Notice error>{error}</Notice>}
-      {open && <Comments incidentId={thread.id} namespace="forum" />}
+      {open && (
+        <Comments
+          incidentId={thread.id}
+          namespace="forum"
+          showComposer={false}
+          revision={replyRevision}
+        />
+      )}
     </article>
   );
 }

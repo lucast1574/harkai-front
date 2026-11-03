@@ -332,3 +332,32 @@
   min-width: 0;
   margin: 0;
 }
+
+.replyPreview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--brand-green);
+}
+.replyPreview > div {
+  flex: 1;
+  min-width: 0;
+}
+.replyPreview strong {
+  font-size: 12px;
+}
+.replyPreview p {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 4px 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.replyPreview > svg {
+  flex-shrink: 0;
+}

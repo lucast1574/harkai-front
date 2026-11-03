@@ -102,6 +102,7 @@ export default async function Page(props: Props): Promise<React.JSX.Element> {
       </p>
       {cursor && <Link href={path}>Volver a los mensajes recientes</Link>}
       <PublicDistrictChat
+        key={id}
         items={page.items}
         districtId={id}
         district={first.district}

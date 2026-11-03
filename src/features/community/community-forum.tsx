@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { districtChatPath } from "@/lib/district-chat";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   MessageCircle,
   RefreshCw,
@@ -14,6 +14,7 @@ import { LIMA } from "@/lib/contracts";
 import { Notice } from "@/components/ui";
 import { useLocationRequest } from "../map/use-location-request";
 import { ForumCompose } from "./forum-compose";
+import type { ForumThread } from "./forum-contracts";
 import { ForumCard } from "./forum-card";
 import { useForum } from "./use-forum";
 import { DistrictSearch } from "../map/district-search";
@@ -114,6 +115,8 @@ function ForumContent({
   district: string;
 }): React.JSX.Element {
   const feed = useForum(path);
+  const [replyTo, setReplyTo] = useState<ForumThread | null>(null);
+  const [replyRevision, setReplyRevision] = useState(0);
   const messages = useRef<HTMLDivElement>(null);
   const follow = useRef(true);
   useEffect(() => {
@@ -192,11 +195,22 @@ function ForumContent({
             <ForumCard
               key={thread.id}
               thread={thread}
-              onRemoved={() => feed.reload()}
+              onReply={setReplyTo}
+              replyRevision={replyRevision}
+              onRemoved={() => {
+                setReplyTo(null);
+                return feed.reload();
+              }}
             />
           ))}
       </div>
       <ForumCompose
+        replyTo={replyTo}
+        onCancelReply={() => setReplyTo(null)}
+        onReplied={() => {
+          setReplyRevision((n) => n + 1);
+          setReplyTo(null);
+        }}
         districtId={districtId}
         district={district}
         onPublished={() => {

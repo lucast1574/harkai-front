@@ -34,7 +34,7 @@
   color: var(--ink);
 }
 .city-pill.active {
-  background: rgba(87, 212, 99, 0.16);
+  background: rgba(129, 181, 231, 0.16);
   color: var(--accent-ink);
 }
 .location-dialog {
@@ -198,8 +198,8 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #57d463;
-  box-shadow: 0 0 0 3px rgba(87, 212, 99, 0.2);
+  background: var(--accent);
+  box-shadow: 0 0 0 3px rgba(129, 181, 231, 0.2);
   flex-shrink: 0;
 }
 .map-zone-label strong {

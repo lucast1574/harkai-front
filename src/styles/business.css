@@ -4,15 +4,62 @@
   padding: 40px 24px 72px;
 }
 .business-map-marker {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #e6b86a;
-  color: #061325;
-  border-radius: 12px 12px 12px 0;
+  background: transparent;
+  border: 0;
+}
+.business-map-symbol {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  background: #245b8f;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 3px 8px rgb(3 20 38 / 30%);
+}
+.business-map-symbol::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  bottom: -7px;
+  width: 10px;
+  height: 10px;
+  transform: rotate(45deg);
+  background: #245b8f;
+  border-right: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+}
+.business-map-symbol svg {
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+.business-map-marker:hover .business-map-symbol,
+.business-map-marker:focus-visible .business-map-symbol,
+.business-map-marker:hover .business-map-symbol::after,
+.business-map-marker:focus-visible .business-map-symbol::after {
+  background: #173f68;
+}
+.leaflet-tooltip.business-map-tooltip {
+  padding: 7px 11px;
+  border: 0;
+  border-radius: 8px;
+  background: #102a43;
+  color: #ffffff;
+  font:
+    600 13px/1.4 "Inter",
+    "Segoe UI",
+    sans-serif;
+}
+.leaflet-tooltip-top.business-map-tooltip::before {
+  border-top-color: #102a43;
 }
 .report-dot.business {
-  background: #e6b86a;
+  background: #245b8f;
+  border-color: #245b8f;
+  border-radius: 3px;
 }
 .business-map-detail {
   max-height: 340px;
@@ -98,18 +145,6 @@
 }
 .business-form-main .point-map {
   height: 100%;
-}
-.business-confirm {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  min-height: 48px;
-}
-.business-confirm input {
-  width: 20px;
-  height: 20px;
-  accent-color: var(--accent-ink);
 }
 .business-preview {
   padding: 28px;

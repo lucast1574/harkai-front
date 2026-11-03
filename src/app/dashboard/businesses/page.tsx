@@ -1,2 +1,4 @@
-import { BusinessReview } from "@/features/business/business-review";
-export default function Page():React.JSX.Element{return <BusinessReview/>;}
+import { redirect } from "next/navigation";
+export default function Page(): never {
+  redirect("/dashboard/admin?section=businesses");
+}

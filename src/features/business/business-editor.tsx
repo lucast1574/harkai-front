@@ -37,7 +37,6 @@ export function BusinessEditor({
   const automatic = useLocationState();
   const [positionChosen, setPositionChosen] = useState(!!point);
   const position = positionChosen ? draft : (automatic.point ?? area);
-  const [located, setLocated] = useState(!!point);
   const request = useLocationRequest((next) => {
     setDraft((old) => ({
       ...old,
@@ -45,7 +44,6 @@ export function BusinessEditor({
       longitude: next.longitude,
     }));
     setPositionChosen(true);
-    setLocated(false);
   });
   const [step, setStep] = useState(0);
   const [busy, setBusy] = useState(false);
@@ -65,9 +63,14 @@ export function BusinessEditor({
   ): Promise<void> {
     event.preventDefault();
     if (lock.current || busy) return;
-    if (step === 1 && !located) {
-      setError("Confirma la ubicación de tu negocio en el mapa.");
-      return;
+    if (step === 1) {
+      request.cancel();
+      setDraft((old) => ({
+        ...old,
+        latitude: position.latitude,
+        longitude: position.longitude,
+      }));
+      setPositionChosen(true);
     }
     if (step < 2) {
       move(step + 1);
@@ -252,26 +255,8 @@ export function BusinessEditor({
                     request.cancel();
                     setPositionChosen(true);
                     setDraft((old) => ({ ...old, ...p }));
-                    setLocated(false);
                   }}
                 />
-                <label className="business-confirm">
-                  <input
-                    type="checkbox"
-                    checked={located}
-                    onChange={(e) => {
-                      request.cancel();
-                      setDraft((old) => ({
-                        ...old,
-                        latitude: position.latitude,
-                        longitude: position.longitude,
-                      }));
-                      setPositionChosen(true);
-                      setLocated(e.target.checked);
-                    }}
-                  />
-                  El punto está en la entrada de mi negocio
-                </label>
               </>
             )}
             {step === 2 && (

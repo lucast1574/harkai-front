@@ -1,12 +1,14 @@
 "use client";
 import { divIcon } from "leaflet";
-import { Marker, Popup } from "react-leaflet";
+import { Marker, Popup, Tooltip } from "react-leaflet";
 import { businessKinds, type Business } from "../business/business-contract";
 const icon = divIcon({
   className: "business-map-marker",
-  iconSize: [36, 36],
-  iconAnchor: [18, 36],
-  html: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 10h18l-2-6H5l-2 6Zm2 0v10h14V10M9 20v-6h6v6M3 10a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0"/></svg>',
+  iconSize: [44, 50],
+  iconAnchor: [22, 50],
+  popupAnchor: [0, -44],
+  tooltipAnchor: [0, -38],
+  html: '<span class="business-map-symbol"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10h18l-2-6H5l-2 6Z"/><path d="M5 10v10h14V10M9 20v-6h6v6M9 4l-1 6M15 4l1 6"/></svg></span>',
 });
 export function BusinessLayer({
   points,
@@ -21,8 +23,12 @@ export function BusinessLayer({
           position={[point.latitude, point.longitude]}
           icon={icon}
           title={point.name}
+          alt={`Negocio: ${point.name}`}
         >
-          <Popup>
+          <Tooltip direction="top" className="business-map-tooltip">
+            {point.name}
+          </Tooltip>
+          <Popup className="business-map-popup">
             <div className="business-map-detail">
               <p>Negocio promocionado</p>
               <h2>{point.name}</h2>

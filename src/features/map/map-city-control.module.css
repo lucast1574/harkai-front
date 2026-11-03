@@ -23,14 +23,14 @@
 }
 .control:hover:not(:disabled) {
   background: rgba(10, 27, 50, 0.96);
-  border-color: rgba(87, 212, 99, 0.45);
+  border-color: rgba(129, 181, 231, 0.45);
 }
 .active {
-  border-color: rgba(87, 212, 99, 0.65);
+  border-color: rgba(129, 181, 231, 0.65);
   background: rgba(8, 28, 44, 0.94);
 }
 .icon {
-  color: #57d463;
+  color: #8bbcea;
   flex-shrink: 0;
 }
 .label {
@@ -59,8 +59,8 @@
   transition: transform 160ms ease;
 }
 .active .track {
-  background: #57d463;
-  border-color: #57d463;
+  background: #8bbcea;
+  border-color: #8bbcea;
 }
 .active .thumb {
   transform: translateX(16px);

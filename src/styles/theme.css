@@ -1,16 +1,19 @@
 html[data-theme="dark"] {
-  --bg: #10191e;
-  --navy: #10191e;
-  --surface: #182329;
-  --surface-soft: #233138;
-  --input-bg: #111c22;
-  --interaction: #8de3ad;
-  --interaction-hover: #293e35;
-  --accent-soft: rgba(87, 212, 99, 0.14);
-  --accent-ink: #8de3ad;
-  --border-hover: rgba(87, 212, 99, 0.38);
-  --ink: #f1f6f3;
-  --muted: #a8bbb4;
+  --accent: #8bbcea;
+  --accent-hover: #acd2f4;
+  --on-accent: #102a43;
+  --bg: #101a24;
+  --navy: #101a24;
+  --surface: #192733;
+  --surface-soft: #243544;
+  --input-bg: #121f2b;
+  --interaction: #a1cdf4;
+  --interaction-hover: #273e53;
+  --accent-soft: rgba(129, 181, 231, 0.14);
+  --accent-ink: #a1cdf4;
+  --border-hover: rgba(129, 181, 231, 0.38);
+  --ink: #f0f5fa;
+  --muted: #adbdcc;
   --border: rgba(255, 255, 255, 0.09);
 }
 html[data-theme="dark"] .notice {

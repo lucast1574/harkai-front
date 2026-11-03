@@ -82,16 +82,16 @@
 .nav-link.active {
   background: linear-gradient(
     90deg,
-    rgba(87, 212, 99, 0.16) 0%,
-    rgba(87, 212, 99, 0.05) 100%
+    rgba(129, 181, 231, 0.16) 0%,
+    rgba(129, 181, 231, 0.05) 100%
   );
-  border-color: rgba(87, 212, 99, 0.3);
+  border-color: rgba(129, 181, 231, 0.3);
   color: #ffffff;
   font-weight: 600;
 }
 .nav-link.active .nav-icon {
-  background: rgba(87, 212, 99, 0.22);
-  color: #57d463;
+  background: rgba(129, 181, 231, 0.22);
+  color: var(--accent);
 }
 .sidebar-purpose {
   margin-top: auto;
@@ -113,8 +113,8 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #57d463;
-  box-shadow: 0 0 0 3px rgba(87, 212, 99, 0.18);
+  background: var(--accent);
+  box-shadow: 0 0 0 3px rgba(129, 181, 231, 0.18);
   flex-shrink: 0;
 }
 .sidebar-bottom {
@@ -140,7 +140,7 @@
 .account:hover,
 .account.active {
   background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(87, 212, 99, 0.32);
+  border-color: rgba(129, 181, 231, 0.32);
 }
 .account small {
   display: block;
@@ -152,8 +152,8 @@
 .avatar {
   width: 36px;
   height: 36px;
-  background: rgba(87, 212, 99, 0.18);
-  color: #57d463;
+  background: rgba(129, 181, 231, 0.18);
+  color: var(--accent);
   font-weight: 700;
   border-radius: 10px;
   display: grid;
@@ -191,41 +191,6 @@
   margin-bottom: 12px;
 }
 
-.admin-navigation-trigger {
-  width: 100%;
-  background: transparent;
-  text-align: left;
-}
-.admin-navigation-trigger > svg {
-  margin-left: auto;
-  flex-shrink: 0;
-}
-.admin-navigation-trigger > svg.expanded {
-  transform: rotate(180deg);
-}
-.admin-navigation-links:not([hidden]) {
-  display: grid;
-  gap: 4px;
-  margin: 6px 0 0 20px;
-  padding: 8px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.035);
-}
-.admin-navigation-links .nav-link {
-  min-height: 44px;
-  padding: 7px 10px;
-  font-size: 13px;
-  gap: 10px;
-}
-.admin-navigation-links .nav-icon {
-  width: 26px;
-  height: 26px;
-  background: none;
-}
-.admin-navigation .nav-link:focus-visible {
-  background: rgba(255, 255, 255, 0.09);
-  color: #fff;
-}
 html[data-theme="dark"] .nav-link {
   color: var(--muted);
 }
@@ -245,4 +210,9 @@ html[data-theme="dark"] .nav-link:hover,
 html[data-theme="dark"] .nav-link:focus-visible {
   background: var(--surface-soft);
   color: var(--ink);
+}
+/* The navigation rail keeps readable blue accents in both page themes. */
+.sidebar,
+.mobile-sidebar {
+  --accent: #8bbcea;
 }

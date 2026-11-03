@@ -5,16 +5,14 @@ import { CoverageNotice } from "@/features/support/coverage-notice";
 import Link from "next/link";
 import { Brand } from "./brand";
 import { UserAvatar } from "./user-avatar";
-import { AdminNavigation } from "./admin-navigation";
 import { usePathname } from "next/navigation";
 import { useRef } from "react";
 import {
   Map,
   BarChart3,
-  Users,
+  Settings2,
   Menu,
   X,
-  Wallet,
   Store,
   MessageCircle,
   History,
@@ -68,18 +66,11 @@ const navigation: NavigationItem[] = [
     section: "GESTIÓN",
   },
   {
-    href: "/dashboard/businesses",
-    label: "Negocios",
-    icon: Store,
+    href: "/dashboard/admin",
+    label: "Administración",
+    icon: Settings2,
     admin: true,
   },
-  {
-    href: "/dashboard/users",
-    label: "Usuarios y roles",
-    icon: Users,
-    admin: true,
-  },
-  { href: "/dashboard/revenue", label: "Ganancias", icon: Wallet, admin: true },
 ];
 
 export function Shell({
@@ -87,7 +78,7 @@ export function Shell({
 }: {
   children: React.ReactNode;
 }): React.JSX.Element {
-  const { user, error } = useAuth();
+  const { user, error, reload } = useAuth();
   const path = usePathname();
   const mobile = useMobileScreen();
   const dialog = useRef<HTMLDialogElement>(null);
@@ -121,7 +112,7 @@ export function Shell({
       .filter(
         (n) =>
           (!n.admin || user?.role === "admin") &&
-          (!n.institutional || ["gov", "admin"].includes(user?.role || "")),
+          (!n.institutional || user?.role === "gov"),
       )
       .map((n) => {
         const active =
@@ -150,28 +141,7 @@ export function Shell({
     <>
       <Brand onClick={close} />
       <nav aria-label="Navegación principal">
-        {renderLinks(
-          navigation.filter(
-            (n) =>
-              !n.admin &&
-              (!n.institutional || user?.role !== "admin") &&
-              (!user || !n.utility),
-          ),
-        )}
-        {user?.role === "admin" && (
-          <AdminNavigation
-            key={path}
-            active={navigation.some(
-              (n) => (n.admin || n.institutional) && n.href === path,
-            )}
-          >
-            {renderLinks(
-              navigation
-                .filter((n) => n.admin || n.institutional)
-                .map((n) => ({ ...n, section: undefined })),
-            )}
-          </AdminNavigation>
-        )}
+        {renderLinks(navigation.filter((n) => !user || !n.utility))}
       </nav>
       <div className="sidebar-purpose">
         <span className="live-dot" />
@@ -232,7 +202,18 @@ export function Shell({
           path === "/dashboard" ? "main-content map-content" : "main-content"
         }
       >
-        {error && <Notice error>{error}</Notice>}
+        {error && (
+          <Notice error={!user}>
+            <strong>No pudimos actualizar tu sesión.</strong> {error}{" "}
+            <button
+              type="button"
+              className="text-button"
+              onClick={() => void reload()}
+            >
+              Reintentar
+            </button>
+          </Notice>
+        )}
         {path !== "/dashboard" && <CoverageNotice />}
         {children}
       </main>

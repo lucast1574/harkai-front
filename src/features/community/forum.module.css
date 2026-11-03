@@ -61,7 +61,7 @@
   padding: 0;
 }
 .compose header > svg {
-  color: var(--green);
+  color: var(--accent);
   flex-shrink: 0;
   margin-top: 2px;
 }
@@ -119,9 +119,9 @@
   place-items: center;
   width: 40px;
   height: 40px;
-  background: rgba(87, 212, 99, 0.14);
-  border: 1px solid rgba(87, 212, 99, 0.28);
-  color: var(--green);
+  background: rgba(129, 181, 231, 0.14);
+  border: 1px solid rgba(129, 181, 231, 0.28);
+  color: var(--accent);
   border-radius: 12px;
   flex-shrink: 0;
 }
@@ -189,7 +189,7 @@
   justify-items: center;
 }
 .empty svg {
-  color: var(--green);
+  color: var(--accent);
 }
 .empty h3 {
   color: var(--ink);

@@ -1,9 +1,4 @@
-import { Access } from "@/components/access";
-import { Users } from "@/features/admin/users";
-export default function Page(): React.JSX.Element {
-  return (
-    <Access roles={["admin"]}>
-      <Users />
-    </Access>
-  );
+import { redirect } from "next/navigation";
+export default function Page(): never {
+  redirect("/dashboard/admin?section=users");
 }

@@ -19,7 +19,6 @@ import { useReports } from "../reports/use-reports";
 import { Summary } from "../stats/summary";
 import { ReportCollection } from "../reports/report-collection";
 import { GeographySelector } from "../map/geography-selector";
-import { DistrictSearch } from "../map/district-search";
 import ZoneMap from "../map/map-loader";
 
 function daysAgoISO(days: number): string {
@@ -127,11 +126,7 @@ export function ArchiveExplorer(): React.JSX.Element {
               </button>
             </div>
 
-            <DistrictSearch area={area} onChange={setArea} />
-            <details className="archive-custom-dates">
-              <summary>Consultar una zona más amplia</summary>
-              <GeographySelector area={area} onChange={setArea} quick={false} />
-            </details>
+            <GeographySelector area={area} onChange={setArea} />
             <Select
               label="Categoría"
               value={area.type}

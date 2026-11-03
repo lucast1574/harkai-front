@@ -59,7 +59,7 @@
   background: var(--accent-ink);
 }
 .helpdesk-composer .helpdesk-action:hover {
-  background: #83e59b;
+  background: var(--accent-hover);
 }
 .helpdesk-attachment-heading {
   display: flex;
@@ -522,8 +522,8 @@
   color: var(--ink);
 }
 .helpdesk-page .helpdesk-action {
-  background: var(--green);
-  color: #092f1f;
+  background: var(--accent);
+  color: var(--on-accent);
 }
 .helpdesk-intro {
   max-width: 780px;

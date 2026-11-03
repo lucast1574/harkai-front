@@ -5,7 +5,11 @@ import { useResource } from "@/lib/use-resource";
 import { api } from "@/lib/api";
 import type { User, Page, Role } from "@/lib/contracts";
 import { Heading, Notice, Select } from "@/components/ui";
-export function Users(): React.JSX.Element {
+export function Users({
+  embedded = false,
+}: {
+  embedded?: boolean;
+}): React.JSX.Element {
   const { user } = useAuth();
   const [cursor, setCursor] = useState("");
   const { data, error, loading, reload } = useResource<Page<User>>(
@@ -13,10 +17,20 @@ export function Users(): React.JSX.Element {
   );
   return (
     <>
-      <Heading title="Usuarios y roles">
-        Selecciona un rol para guardarlo al instante. Las cuentas de
-        administrador están protegidas.
-      </Heading>
+      {embedded ? (
+        <>
+          <h2>Usuarios y roles</h2>
+          <p className="muted">
+            Selecciona un rol para guardarlo al instante. Las cuentas de
+            administrador están protegidas.
+          </p>
+        </>
+      ) : (
+        <Heading title="Usuarios y roles">
+          Selecciona un rol para guardarlo al instante. Las cuentas de
+          administrador están protegidas.
+        </Heading>
+      )}
       {error && <Notice error>{error}</Notice>}
       <section className="panel table-wrapper">
         <table>

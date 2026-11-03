@@ -36,8 +36,19 @@ async function read<T>(response: Response): Promise<T> {
   return data as T;
 }
 let refreshing: Promise<boolean> | undefined;
+async function fetchRequest(url: string, init: RequestInit): Promise<Response> {
+  try {
+    return await fetch(url, init);
+  } catch (error) {
+    if (error instanceof Error && error.name === "AbortError") throw error;
+    throw new Error(
+      "No pudimos conectar con Harkai. Comprueba tu conexión y vuelve a intentarlo.",
+    );
+  }
+}
 async function refreshSession(): Promise<boolean> {
-  const run = async () => (await fetch("/api/session", { method: "PUT" })).ok;
+  const run = async () =>
+    (await fetchRequest("/api/session", { method: "PUT" })).ok;
   if (!refreshing) {
     refreshing = Promise.resolve(
       navigator.locks ? navigator.locks.request("harkai-session", run) : run(),
@@ -60,14 +71,14 @@ export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
     },
     cache: "no-store" as RequestCache,
   };
-  let response = await fetch(`/api/backend/${path}`, options);
+  let response = await fetchRequest(`/api/backend/${path}`, options);
   if (response.status === 401 && (await refreshSession()))
-    response = await fetch(`/api/backend/${path}`, options);
+    response = await fetchRequest(`/api/backend/${path}`, options);
   return read<T>(response);
 }
 export async function session(method = "GET", body?: unknown): Promise<User> {
   return read<User>(
-    await fetch("/api/session", {
+    await fetchRequest("/api/session", {
       method,
       headers: body ? { "Content-Type": "application/json" } : {},
       body: body ? JSON.stringify(body) : undefined,

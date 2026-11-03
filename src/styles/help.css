@@ -24,10 +24,10 @@
 }
 .emergency-pill:hover {
   border-color: var(--border-hover);
-  background: rgba(87, 212, 99, 0.12);
+  background: rgba(129, 181, 231, 0.12);
 }
 .emergency-pill svg {
-  color: var(--green);
+  color: var(--accent);
 }
 .emergency-pill strong {
   font-size: 14px;
@@ -89,7 +89,7 @@
   border: 1px solid var(--border);
 }
 .guidance-tab.active svg {
-  color: var(--green);
+  color: var(--accent);
 }
 
 .guidance-body {
@@ -121,8 +121,8 @@
   border-color: var(--border-hover);
 }
 .guidance-topic-btn.active {
-  background: rgba(87, 212, 99, 0.14);
-  border-color: rgba(87, 212, 99, 0.36);
+  background: rgba(129, 181, 231, 0.14);
+  border-color: rgba(129, 181, 231, 0.36);
 }
 .guidance-topic-btn strong {
   font-size: 13.5px;
@@ -145,7 +145,7 @@
   margin-bottom: 16px;
 }
 .guidance-steps-head svg {
-  color: var(--green);
+  color: var(--accent);
   flex-shrink: 0;
 }
 .guidance-steps-head h3 {

@@ -53,7 +53,11 @@ export function AuthProvider({
       void reload();
     };
     window.addEventListener("focus", focus);
-    return () => window.removeEventListener("focus", focus);
+    window.addEventListener("online", focus);
+    return () => {
+      window.removeEventListener("focus", focus);
+      window.removeEventListener("online", focus);
+    };
   }, [reload]);
   useEffect(() => {
     const theme = user?.preferences.theme || "system";

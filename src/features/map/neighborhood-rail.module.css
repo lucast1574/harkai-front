@@ -10,7 +10,7 @@
   color: var(--ink);
 }
 .heading h1 span {
-  color: var(--green);
+  color: var(--accent);
 }
 .eyebrow {
   font-size: 10px;
@@ -46,8 +46,8 @@
   width: 30px;
   height: 30px;
   border-radius: 9px;
-  background: rgba(87, 212, 99, 0.14);
-  color: var(--green);
+  background: rgba(129, 181, 231, 0.14);
+  color: var(--accent);
   display: grid;
   place-items: center;
   flex-shrink: 0;
@@ -120,7 +120,7 @@
 }
 .settings :global(.location-button:hover:not(:disabled)) {
   border-color: var(--border-hover);
-  background: rgba(87, 212, 99, 0.08);
+  background: rgba(129, 181, 231, 0.08);
 }
 .summary {
   border: 1px solid var(--border);
@@ -138,7 +138,7 @@
   height: 8px;
   border-radius: 50%;
   background: #57d463;
-  box-shadow: 0 0 0 3px rgba(87, 212, 99, 0.16);
+  box-shadow: 0 0 0 3px rgba(129, 181, 231, 0.16);
   flex-shrink: 0;
 }
 .active .summaryDot {
@@ -201,8 +201,8 @@
   border-color: var(--border-hover);
 }
 .selected {
-  border-color: var(--green);
-  background: rgba(87, 212, 99, 0.08);
+  border-color: var(--accent);
+  background: rgba(129, 181, 231, 0.08);
 }
 .reportTop {
   display: flex;
@@ -238,7 +238,7 @@
 }
 .confirmed {
   color: var(--accent-ink);
-  background: rgba(87, 212, 99, 0.12);
+  background: rgba(129, 181, 231, 0.12);
 }
 .pending {
   border: 1px solid var(--border);
@@ -259,9 +259,9 @@
   margin-top: 6px;
 }
 .emptyIcon {
-  color: var(--green);
+  color: var(--accent);
   display: inline-flex;
-  background: rgba(87, 212, 99, 0.12);
+  background: rgba(129, 181, 231, 0.12);
   border-radius: 12px;
   padding: 10px;
   margin-bottom: 10px;
@@ -287,8 +287,8 @@
   font-weight: 600;
   padding: 11px 14px;
   border-radius: 12px;
-  background: rgba(87, 212, 99, 0.1);
-  border: 1px solid rgba(87, 212, 99, 0.25);
+  background: rgba(129, 181, 231, 0.1);
+  border: 1px solid rgba(129, 181, 231, 0.25);
   color: var(--accent-ink);
 }
 @media (max-width: 760px) {
@@ -338,7 +338,7 @@
   min-height: 42px;
   border: 1px solid var(--border);
   border-radius: 12px;
-  background: rgba(87, 212, 99, 0.1);
+  background: rgba(129, 181, 231, 0.1);
   color: var(--accent-ink);
   font: inherit;
   font-size: 13px;
@@ -347,7 +347,7 @@
 }
 .locate:hover,
 .locate:focus-visible {
-  background: rgba(87, 212, 99, 0.18);
+  background: rgba(129, 181, 231, 0.18);
   color: var(--ink);
   outline: none;
 }

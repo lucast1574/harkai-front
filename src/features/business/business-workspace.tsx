@@ -88,9 +88,13 @@ function BusinessManager(): React.JSX.Element {
         point={editing === "new" ? undefined : editing}
         onCancel={() => setEditing(null)}
         onSaved={(point) => {
+          setItems((old) => [
+            point,
+            ...old.filter((item) => item.id !== point.id),
+          ]);
+          setError("");
           setSaved(point);
           setEditing(null);
-          void load();
         }}
       />
     );

@@ -14,8 +14,8 @@
 .button {
   border: 1px solid transparent;
   border-radius: 10px;
-  background: var(--green);
-  color: #092f1f;
+  background: var(--accent);
+  color: var(--on-accent);
   padding: 11px 18px;
   font-size: 13px;
   display: inline-flex;
@@ -31,7 +31,7 @@
     border-color 160ms ease;
 }
 .button:hover:not(:disabled) {
-  background: #68d679;
+  background: var(--accent-hover);
 }
 .button.secondary:hover:not(:disabled) {
   background: var(--surface-soft);
@@ -220,8 +220,8 @@ form {
 }
 /* Shared interaction hierarchy: neutral surfaces, accent for actions and selection. */
 .button:focus-visible:not(:disabled) {
-  background: #83e59b;
-  color: #092f1f;
+  background: var(--accent-hover);
+  color: var(--on-accent);
 }
 .button.secondary:hover:not(:disabled),
 .button.secondary:focus-visible:not(:disabled) {
@@ -247,4 +247,12 @@ form {
 }
 button:disabled {
   opacity: 0.55;
+}
+.district-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
+  gap: 14px;
+}
+.district-search-panel {
+  max-width: 760px;
 }

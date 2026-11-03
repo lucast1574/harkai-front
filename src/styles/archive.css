@@ -36,7 +36,7 @@
   display: flex;
   align-items: center;
   gap: 9px;
-  color: var(--green);
+  color: var(--accent);
 }
 .archive-filter-title h2 {
   font-size: 14px;
@@ -96,8 +96,8 @@
   border-color: var(--border-hover);
 }
 .archive-preset-btn.active {
-  background: rgba(87, 212, 99, 0.14);
-  border-color: rgba(87, 212, 99, 0.36);
+  background: rgba(129, 181, 231, 0.14);
+  border-color: rgba(129, 181, 231, 0.36);
   color: var(--accent-ink);
 }
 .archive-custom-dates {
@@ -185,8 +185,8 @@
     color 150ms ease;
 }
 .archive-heat-toggle.active {
-  background: rgba(87, 212, 99, 0.14);
-  border-color: rgba(87, 212, 99, 0.36);
+  background: rgba(129, 181, 231, 0.14);
+  border-color: rgba(129, 181, 231, 0.36);
   color: var(--accent-ink);
 }
 .archive-map .zone-map {

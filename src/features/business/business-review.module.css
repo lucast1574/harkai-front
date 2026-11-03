@@ -1,0 +1,128 @@
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0;
+}
+.filters button {
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 16px;
+  background: var(--surface);
+  color: var(--muted);
+}
+.filters button[aria-pressed="true"] {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+.filters button:hover,
+.filters button:focus-visible {
+  background: var(--interaction-hover);
+  color: var(--ink);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 20px;
+  align-items: start;
+  margin-bottom: 20px;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  min-width: 0;
+}
+.photo {
+  width: 100%;
+  height: 180px;
+  object-fit: contain;
+  background: var(--input-bg);
+  display: block;
+}
+.placeholder {
+  height: 100px;
+  display: grid;
+  place-items: center;
+  background: var(--surface-soft);
+  color: var(--muted);
+}
+.body {
+  padding: 22px;
+  overflow-wrap: anywhere;
+}
+.body h3 {
+  font-size: 21px;
+  margin: 12px 0 4px;
+}
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: 12px;
+  padding: 4px 9px;
+  border-radius: 6px;
+}
+.location {
+  display: flex;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.location svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.body summary {
+  color: var(--interaction);
+  cursor: pointer;
+}
+.body details p {
+  margin-top: 12px;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.empty {
+  padding: 32px;
+  border: 1px dashed var(--border);
+  border-radius: 16px;
+  color: var(--muted);
+}
+.empty h3 {
+  color: var(--ink);
+  font-size: 18px;
+}
+.dialog {
+  width: min(440px, calc(100% - 32px));
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px;
+  background: var(--surface);
+  color: var(--ink);
+}
+.dialog::backdrop {
+  background: rgb(2 12 22 / 65%);
+}
+.dialog > svg {
+  color: var(--accent-ink);
+  margin-bottom: 18px;
+}
+.dialog .button {
+  width: 100%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .spinner {
+    animation: turn 1s linear infinite;
+  }
+}
+@keyframes turn {
+  to {
+    transform: rotate(360deg);
+  }
+}

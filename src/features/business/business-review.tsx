@@ -66,8 +66,8 @@ export function BusinessReview(): React.JSX.Element {
       <h1>Negocios de la comunidad</h1>
       <p>
         Revisa la descripción, ubicación y foto. Aprobar un negocio permite
-        publicarlo únicamente cuando tenga su pago único confirmado. Stripe
-        sigue pendiente de habilitar.
+        publicarlo con acceso gratuito durante esta etapa. Los negocios con
+        cobros anteriores conservan su estado de pago.
       </p>
       {error && <Notice error>{error}</Notice>}
       {items.map((p) => (

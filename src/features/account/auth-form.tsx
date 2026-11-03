@@ -35,7 +35,11 @@ function GoogleLogo(): React.JSX.Element {
   );
 }
 
-export function AuthForm(): React.JSX.Element {
+export function AuthForm({
+  redirectTo = "/dashboard/profile",
+}: {
+  redirectTo?: string;
+}): React.JSX.Element {
   const [register, setRegister] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -53,7 +57,7 @@ export function AuthForm(): React.JSX.Element {
     setError("");
     try {
       await login(input);
-      router.push("/dashboard/profile");
+      router.push(redirectTo);
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -93,7 +97,9 @@ export function AuthForm(): React.JSX.Element {
       </div>
 
       <div className="auth-header">
-        <h2>{register ? "Crea tu cuenta en Harkai" : "Bienvenido de vuelta"}</h2>
+        <h2>
+          {register ? "Crea tu cuenta en Harkai" : "Bienvenido de vuelta"}
+        </h2>
         <p>
           {register
             ? "Usa una sola cuenta para participar en la web y publicar desde la app móvil."
@@ -170,13 +176,21 @@ export function AuthForm(): React.JSX.Element {
           minLength={register ? 12 : 1}
           maxLength={72}
           hint={
-            register ? "Usa al menos 12 caracteres para proteger tu cuenta." : undefined
+            register
+              ? "Usa al menos 12 caracteres para proteger tu cuenta."
+              : undefined
           }
           required
         />
         {error && <Notice error>{error}</Notice>}
         <button className="button auth-submit" disabled={busy}>
-          <span>{busy ? "Un momento…" : register ? "Crear mi cuenta" : "Ingresar a Harkai"}</span>
+          <span>
+            {busy
+              ? "Un momento…"
+              : register
+                ? "Crear mi cuenta"
+                : "Ingresar a Harkai"}
+          </span>
           <ArrowRight size={16} />
         </button>
       </form>

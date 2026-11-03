@@ -19,6 +19,7 @@ import { Verification } from "../reports/report-card";
 import { NeighborhoodRail } from "./neighborhood-rail";
 import ZoneMap from "./map-loader";
 import { MapCityControl } from "./map-city-control";
+import type { Business } from "../business/business-contract";
 
 export function MapWorkspace({
   initialIncident,
@@ -43,6 +44,11 @@ export function MapWorkspace({
       : `support/places?${areaQuery(area)}`,
   );
   const supportPlaces = support.data?.items || [];
+  const businesses = useResource<{ items: Business[] }>(
+    area.geoPending || area.geoError
+      ? null
+      : `businesses?lat=${area.latitude}&lng=${area.longitude}&radius_meters=${area.radius}&limit=100`,
+  );
   const selected = incidents.find((i) => i.id === selectedId);
   const changeArea = (a: Area) => {
     setArea({ ...a, type: "" });
@@ -67,6 +73,7 @@ export function MapWorkspace({
       />
       <div className="map-stage">
         <ZoneMap
+          businesses={businesses.data?.items || []}
           supportPlaces={supportPlaces}
           scrollWheelZoom
           area={area}
@@ -77,6 +84,9 @@ export function MapWorkspace({
         />
         <MapCityControl area={area} onChange={changeArea} />
         <div className="map-legend">
+          <span>
+            <i className="report-dot business" /> Negocios
+          </span>
           <span>
             <i className="report-dot user-location" /> Tu ubicación
           </span>

@@ -23,6 +23,7 @@ import { useAuth } from "@/lib/auth";
 import { Notice } from "./ui";
 
 const navigation = [
+  { href: "/dashboard/my-businesses", label: "Ponte en el mapa", icon: Store },
   {
     href: "/dashboard/tickets",
     label: "Soporte técnico",

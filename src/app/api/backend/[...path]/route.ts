@@ -13,7 +13,7 @@ async function proxy(
   if (!paths.test(path)) return new Response(null, { status: 404 });
   if (
     request.method === "POST" &&
-    ["incidents", "media", "analysis/audio"].includes(path)
+    ["incidents", "analysis/audio"].includes(path)
   )
     return Response.json(
       { error: { code: "mobile_publication_only" } },

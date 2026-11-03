@@ -1,6 +1,10 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { shouldInviteToMobileApp } from "../src/lib/mobile-app-routes.ts";
+test("business registration remains available in the mobile browser", () => {
+  assert.equal(shouldInviteToMobileApp("/dashboard/my-businesses"), false);
+  assert.equal(shouldInviteToMobileApp("/dashboard/my-businesses/"), false);
+});
 test("public report articles remain readable on mobile", () => {
   for (const path of ["/incidents/0123456789abcdef01234567", "/incidents/report-slug", "/incidents/report-slug/"]) assert.equal(shouldInviteToMobileApp(path), false, path);
 });

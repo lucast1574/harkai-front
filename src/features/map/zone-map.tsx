@@ -1,5 +1,7 @@
 "use client";
 import Link from "next/link";
+import { BusinessLayer } from "./business-layer";
+import type { Business } from "../business/business-contract";
 import { geoJSON } from "leaflet";
 import { LocateFixed } from "lucide-react";
 import { useUserLocation, queryUserLocation } from "@/lib/use-area";
@@ -22,6 +24,7 @@ import type { SupportPlace } from "../support/contracts";
 import type { Area, Incident, Category } from "@/lib/contracts";
 import "leaflet/dist/leaflet.css";
 export type ZoneMapProps = {
+  businesses?: Business[];
   supportPlaces?: SupportPlace[];
   area: Area;
   incidents: Incident[];
@@ -32,6 +35,7 @@ export type ZoneMapProps = {
   onSelect?: (id: string) => void;
 };
 export default function ZoneMap({
+  businesses = [],
   area,
   incidents,
   supportPlaces = [],
@@ -137,6 +141,7 @@ export default function ZoneMap({
         </span>
       </div>
       <SupportPlaceLayer places={supportPlaces} />
+      <BusinessLayer points={businesses} />
       {heat && <IncidentHeatLayer incidents={incidents} />}
       <Pane name="report-alerts" style={{ zIndex: 500 }}>
         {incidents.map((i) => (

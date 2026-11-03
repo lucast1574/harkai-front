@@ -1,4 +1,5 @@
 "use client";
+import { UserAvatar } from "@/components/user-avatar";
 import Link from "next/link";
 import { MobileReporting } from "./mobile-reporting";
 import { AccountSession } from "./account-session";
@@ -57,7 +58,7 @@ export function Profile(): React.JSX.Element {
         Preferencias sincronizadas entre el panel web y la app móvil.
       </Heading>
       <section className="panel account-overview">
-        <span className="account-large-avatar">{user.name.slice(0, 1)}</span>
+        <UserAvatar user={user} large />
         <div className="account-overview-meta">
           <div className="account-name-row">
             <h2>{user.name}</h2>

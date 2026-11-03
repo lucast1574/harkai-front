@@ -4,6 +4,7 @@ import { MobileAppInvitation, useMobileScreen } from "./mobile-app-invitation";
 import { CoverageNotice } from "@/features/support/coverage-notice";
 import Link from "next/link";
 import { Brand } from "./brand";
+import { UserAvatar } from "./user-avatar";
 import { usePathname } from "next/navigation";
 import { useRef } from "react";
 import {
@@ -23,7 +24,6 @@ import { useAuth } from "@/lib/auth";
 import { Notice } from "./ui";
 
 const navigation = [
-  { href: "/dashboard/my-businesses", label: "Ponte en el mapa", icon: Store },
   {
     href: "/dashboard/tickets",
     label: "Soporte técnico",
@@ -43,6 +43,7 @@ const navigation = [
     icon: Map,
     section: "EXPLORAR",
   },
+  { href: "/dashboard/my-businesses", label: "Ponte en el mapa", icon: Store },
   {
     href: "/dashboard/help",
     label: "Ayuda y orientación",
@@ -163,7 +164,7 @@ export function Shell({
           aria-current={path === "/dashboard/profile" ? "page" : undefined}
           onClick={close}
         >
-          <span className="avatar">{user?.name.slice(0, 1) || "H"}</span>
+          <UserAvatar user={user} />
           <span>
             Mi cuenta<small>{user?.name || "Ingresar o registrarme"}</small>
           </span>

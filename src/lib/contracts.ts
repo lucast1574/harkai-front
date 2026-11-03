@@ -7,6 +7,7 @@ export type Preferences = {
   theme: "system" | "light" | "dark";
 };
 export type User = {
+  photo_url?: string;
   id: string;
   name: string;
   email: string;

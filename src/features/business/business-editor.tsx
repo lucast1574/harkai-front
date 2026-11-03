@@ -5,7 +5,9 @@ import { MapPin, Navigation, Store } from "lucide-react";
 import { Select } from "@/components/select";
 import { Notice } from "@/components/ui";
 import { api } from "@/lib/api";
-import { locate } from "@/lib/location";
+import { useArea } from "@/lib/use-area";
+import { useLocationState } from "@/lib/user-location";
+import { useLocationRequest } from "@/features/map/use-location-request";
 import { BusinessPhoto } from "./business-photo";
 import {
   businessKinds,
@@ -31,8 +33,21 @@ export function BusinessEditor({
     ...emptyBusiness,
     ...point,
   });
-  const [step, setStep] = useState(0);
+  const [area] = useArea();
+  const automatic = useLocationState();
+  const [positionChosen, setPositionChosen] = useState(!!point);
+  const position = positionChosen ? draft : (automatic.point ?? area);
   const [located, setLocated] = useState(!!point);
+  const request = useLocationRequest((next) => {
+    setDraft((old) => ({
+      ...old,
+      latitude: next.latitude,
+      longitude: next.longitude,
+    }));
+    setPositionChosen(true);
+    setLocated(false);
+  });
+  const [step, setStep] = useState(0);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const lock = useRef(false);
@@ -44,23 +59,6 @@ export function BusinessEditor({
     setStep(next);
     setError("");
     heading.current?.focus();
-  }
-  async function gps(): Promise<void> {
-    setBusy(true);
-    setError("");
-    try {
-      const p = await locate();
-      setDraft((old) => ({
-        ...old,
-        latitude: p.latitude,
-        longitude: p.longitude,
-      }));
-      setLocated(true);
-    } catch (e) {
-      setError((e as Error).message);
-    } finally {
-      setBusy(false);
-    }
   }
   async function submit(
     event: React.FormEvent<HTMLFormElement>,
@@ -92,8 +90,8 @@ export function BusinessEditor({
             website: draft.website.trim(),
             offer: draft.offer.trim(),
             discount_code: draft.discount_code.trim().toUpperCase(),
-            latitude: draft.latitude,
-            longitude: draft.longitude,
+            latitude: position.latitude,
+            longitude: position.longitude,
             radius_meters: 500,
             media_id: draft.media_id,
             subtype: draft.subtype,
@@ -231,14 +229,28 @@ export function BusinessEditor({
                 <button
                   type="button"
                   className="button secondary"
-                  onClick={() => void gps()}
+                  disabled={request.busy}
+                  onClick={() => void request.find()}
                 >
                   <Navigation size={18} />
-                  Usar mi ubicación
+                  {request.busy ? "Ubicando…" : "Usar mi ubicación"}
                 </button>
+                {(request.busy || (automatic.busy && !positionChosen)) && (
+                  <p role="status">
+                    Buscando tu ubicación. También puedes elegir el punto
+                    directamente en el mapa.
+                  </p>
+                )}
+                {request.error && (
+                  <Notice error>
+                    {request.error} Puedes ajustar el mapa manualmente.
+                  </Notice>
+                )}
                 <PointMap
-                  point={draft}
+                  point={position}
                   onChange={(p) => {
+                    request.cancel();
+                    setPositionChosen(true);
                     setDraft((old) => ({ ...old, ...p }));
                     setLocated(false);
                   }}
@@ -247,7 +259,16 @@ export function BusinessEditor({
                   <input
                     type="checkbox"
                     checked={located}
-                    onChange={(e) => setLocated(e.target.checked)}
+                    onChange={(e) => {
+                      request.cancel();
+                      setDraft((old) => ({
+                        ...old,
+                        latitude: position.latitude,
+                        longitude: position.longitude,
+                      }));
+                      setPositionChosen(true);
+                      setLocated(e.target.checked);
+                    }}
                   />
                   El punto está en la entrada de mi negocio
                 </label>

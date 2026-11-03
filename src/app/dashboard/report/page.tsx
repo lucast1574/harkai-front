@@ -33,13 +33,34 @@ export default function Page(): React.JSX.Element {
         <span className="report-stage-word" aria-hidden="true">
           CERCA.
         </span>
-        <div className="report-download-phone">
-          <Image
-            src="/app/mapa.webp"
-            alt="Mapa de la app Harkai con reportes cercanos y datos de demostración"
-            width={650}
-            height={1413}
-          />
+        <div className="report-phone-stack">
+          <div className="report-download-phone report-phone-back report-phone-left">
+            <Image
+              src="/app/comunidad.webp"
+              alt="Conversaciones y alertas de la comunidad en Harkai"
+              width={650}
+              height={1413}
+              sizes="(max-width: 600px) 42vw, 230px"
+            />
+          </div>
+          <div className="report-download-phone report-phone-back report-phone-right">
+            <Image
+              src="/app/reportar.webp"
+              alt="Formulario para compartir un reporte desde la app"
+              width={650}
+              height={1413}
+              sizes="(max-width: 600px) 42vw, 230px"
+            />
+          </div>
+          <div className="report-download-phone report-phone-front">
+            <Image
+              src="/app/mapa.webp"
+              alt="Mapa de la app Harkai con reportes cercanos y datos de demostración"
+              width={650}
+              height={1413}
+              sizes="(max-width: 600px) 50vw, 280px"
+            />
+          </div>
         </div>
         <figcaption>
           <strong>Tu zona, en el mapa.</strong>

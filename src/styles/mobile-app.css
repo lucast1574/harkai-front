@@ -246,6 +246,52 @@
   box-shadow: 0 24px 60px #01193526;
   animation: report-phone 8s ease-in-out infinite;
 }
+.report-phone-stack {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  max-width: 520px;
+  padding: 32px 0 24px;
+  isolation: isolate;
+}
+.report-phone-stack .report-download-phone {
+  grid-area: 1 / 1;
+  width: 54%;
+  max-width: 280px;
+  border-radius: clamp(22px, 3vw, 40px);
+  padding: 5px;
+}
+.report-phone-stack .report-download-phone img {
+  border-radius: clamp(16px, 2.5vw, 32px);
+}
+.report-phone-front {
+  z-index: 2;
+}
+.report-phone-stack .report-phone-back {
+  width: 46%;
+  max-width: 238px;
+  animation: report-back-phone 9s ease-in-out infinite;
+}
+.report-phone-left {
+  --phone-x: -48%;
+  --phone-angle: -16deg;
+  transform: translate(var(--phone-x), 0) rotate(var(--phone-angle));
+}
+.report-phone-right {
+  --phone-x: 48%;
+  --phone-angle: 16deg;
+  transform: translate(var(--phone-x), 0) rotate(var(--phone-angle));
+  animation-delay: -4s !important;
+}
+@keyframes report-back-phone {
+  0%,
+  100% {
+    transform: translate(var(--phone-x), 0) rotate(var(--phone-angle));
+  }
+  50% {
+    transform: translate(var(--phone-x), -8px) rotate(var(--phone-angle));
+  }
+}
 .report-download-phone img {
   border-radius: 30px;
   display: block;
@@ -266,7 +312,8 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .report-download-phone {
+  .report-download-phone,
+  .report-phone-stack .report-phone-back {
     animation: none;
   }
   .report-store-links a {

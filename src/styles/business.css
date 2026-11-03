@@ -331,7 +331,7 @@
 }
 .business-map-popup .leaflet-popup-content {
   margin: 0;
-  width: min(220px, 60vw) !important;
+  width: min(160px, 45vw) !important;
 }
 .business-map-popup .leaflet-popup-tip {
   background: var(--surface);
@@ -348,8 +348,8 @@
 .business-map-photo {
   display: block;
   width: 100%;
-  height: auto;
-  max-height: 220px;
+  height: 140px;
+  max-height: 140px;
   object-fit: contain;
   background: #101a24;
 }

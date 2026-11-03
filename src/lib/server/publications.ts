@@ -8,9 +8,12 @@ export const publication = cache(async (id: string): Promise<Incident> => {
   const response = await backend(`incidents/${id}`);
   if (response.status === 404) notFound();
   if (!response.ok) throw new Error("No se pudo cargar la publicación");
-  return response.json();
+  const item: Incident = await response.json();
+  if (item.status === "hidden") notFound();
+  return item;
 });
 export async function publications(cursor = ""): Promise<Page<Incident>> {
+  if (cursor && !/^[a-f0-9]{24}$/.test(cursor)) notFound();
   const response = await backend(
     `publications?limit=100${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ""}`,
   );

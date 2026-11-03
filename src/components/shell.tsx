@@ -102,6 +102,7 @@ export function Shell({
         <header className="publication-header">
           <Brand />
           <nav aria-label="Navegación pública">
+            <a href="https://harkai.lat/">Inicio</a>
             <Link href="/comunidad">Alertas</Link>
             <Link href="/distritos">Chats por distrito</Link>
             <Link href="/dashboard">Mapa</Link>

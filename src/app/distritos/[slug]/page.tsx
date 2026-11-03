@@ -1,3 +1,5 @@
+import { publicMetadata, jsonLd, breadcrumb, website } from "@/lib/public-seo";
+import { PublicBreadcrumbs } from "@/components/public-breadcrumbs";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { permanentRedirect, notFound } from "next/navigation";
@@ -27,66 +29,50 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   const title = `Chat de ${first.district}, ${first.province}: conversaciones de vecinos`;
   const description = `Lee qué comentan los vecinos de ${first.district}, ${first.province}, Perú. Novedades y conversaciones anónimas del distrito. Entra gratis para participar.`;
   const url = `https://panel.harkai.lat${path}${cursor ? `?cursor=${cursor}` : ""}`;
-  return {
-    title,
-    description,
-    alternates: { canonical: url },
-    robots: { index: true, follow: true },
-    openGraph: { title, description, url, type: "website", locale: "es_PE" },
-    twitter: { card: "summary", title, description },
-  };
+  return publicMetadata({ title, description, path: url });
 }
 export default async function Page(props: Props): Promise<React.JSX.Element> {
   const { page, first, id, path, cursor } = await content(props);
   const url = `https://panel.harkai.lat${path}${cursor ? `?cursor=${cursor}` : ""}`;
-  const schema = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "CollectionPage",
-        url,
-        name: `Chat de ${first.district}, ${first.province}`,
-        inLanguage: "es-PE",
-        mainEntity: page.items.map((item) => ({
-          "@type": "DiscussionForumPosting",
-          "@id": `${url}#mensaje-${item.id}`,
-          url: `${url}#mensaje-${item.id}`,
-          headline: item.body.slice(0, 110),
-          text: item.body,
-          datePublished: item.created_at,
-          author: { "@type": "Person", name: "Vecino anónimo" },
-          contentLocation: {
-            "@type": "Place",
-            name: `${item.district}, ${item.province}, Perú`,
-          },
-        })),
-      },
-      {
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          {
-            "@type": "ListItem",
-            position: 1,
-            name: "Chats por distrito",
-            item: "https://panel.harkai.lat/distritos",
-          },
-          {
-            "@type": "ListItem",
-            position: 2,
-            name: first.district,
-            item: `https://panel.harkai.lat${path}`,
-          },
-        ],
-      },
-    ],
-  };
+  const schema = [
+    {
+      "@type": "CollectionPage",
+      "@id": `${url}#webpage`,
+      url,
+      name: `Chat de ${first.district}, ${first.province}`,
+      inLanguage: "es-PE",
+      isPartOf: { "@id": website["@id"] },
+      mainEntity: page.items.map((item) => ({
+        "@type": "DiscussionForumPosting",
+        "@id": `${url}#mensaje-${item.id}`,
+        url: `${url}#mensaje-${item.id}`,
+        headline: item.body.slice(0, 110),
+        text: item.body,
+        datePublished: item.created_at,
+        author: { "@type": "Person", name: "Vecino anónimo" },
+        contentLocation: {
+          "@type": "Place",
+          name: `${item.district}, ${item.province}, Perú`,
+        },
+      })),
+    },
+    breadcrumb([
+      { name: "Chats por distrito", url: "https://panel.harkai.lat/distritos" },
+      { name: first.district, url },
+    ]),
+  ];
   return (
     <article className="publication public-district-chat">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(schema).replace(/</g, "\\u003c"),
+          __html: jsonLd(schema),
         }}
+      />
+      <PublicBreadcrumbs
+        section="Chats por distrito"
+        href="/distritos"
+        current={first.district}
       />
       <Link href="/distritos" className="eyebrow">
         CHATS DE VECINOS DEL PERÚ
@@ -116,6 +102,12 @@ export default async function Page(props: Props): Promise<React.JSX.Element> {
           Mensajes anteriores
         </Link>
       )}
+      <p>
+        Este espacio reúne conversaciones de la comunidad, no comunicados
+        oficiales. Para consultar reportes sobre seguridad, emergencias,
+        accidentes o mascotas, visita{" "}
+        <Link href="/comunidad">las alertas vecinales de Harkai</Link>.
+      </p>
       <JoinHarkai />
     </article>
   );

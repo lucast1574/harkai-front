@@ -1,3 +1,11 @@
+import {
+  publicMetadata,
+  jsonLd,
+  breadcrumb,
+  organization,
+  website,
+} from "@/lib/public-seo";
+import { PublicBreadcrumbs } from "@/components/public-breadcrumbs";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { JoinHarkai } from "@/components/join-harkai";
@@ -18,26 +26,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const name = title(i);
   const image = photo(i);
   const url = reportURL(i.id);
-  return {
+  return publicMetadata({
     title: name,
-    description: i.description.slice(0, 160),
-    alternates: { canonical: url },
-    openGraph: {
-      type: "article",
-      title: name,
-      description: i.description.slice(0, 200),
-      url,
-      locale: "es_PE",
-      publishedTime: i.created_at,
-      images: image ? [{ url: image, alt: name }] : [],
-    },
-    twitter: {
-      card: image ? "summary_large_image" : "summary",
-      title: name,
-      description: i.description.slice(0, 160),
-      images: image ? [image] : [],
-    },
-  };
+    description: `${labels[i.type] || "Reporte vecinal"} en ${[i.district, i.city, "Perú"].filter(Boolean).join(", ")}. ${i.description}`,
+    path: url,
+    image,
+    publishedTime: i.created_at,
+  });
 }
 export default async function Page({
   params,
@@ -46,8 +41,9 @@ export default async function Page({
   const image = photo(i);
   const url = reportURL(i.id);
   const schema = {
-    "@context": "https://schema.org",
     "@type": "SocialMediaPosting",
+    "@id": `${url}#reporte`,
+    isPartOf: { "@id": website["@id"] },
     headline: title(i),
     text: i.description,
     articleBody: i.description,
@@ -57,11 +53,7 @@ export default async function Page({
     inLanguage: "es-PE",
     image: image ? [image] : undefined,
     author: { "@type": "Person", name: "Vecino anónimo" },
-    publisher: {
-      "@type": "Organization",
-      name: "Harkai",
-      url: "https://panel.harkai.lat",
-    },
+    publisher: { "@id": organization["@id"] },
     contentLocation: {
       "@type": "Place",
       name: [i.district, i.city, "Perú"].filter(Boolean).join(", "),
@@ -77,35 +69,31 @@ export default async function Page({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@graph": [
-              schema,
+          __html: jsonLd([
+            schema,
+            breadcrumb([
               {
-                "@type": "BreadcrumbList",
-                itemListElement: [
-                  {
-                    "@type": "ListItem",
-                    position: 1,
-                    name: "Reportes de la comunidad",
-                    item: "https://panel.harkai.lat/comunidad",
-                  },
-                  {
-                    "@type": "ListItem",
-                    position: 2,
-                    name: title(i),
-                    item: url,
-                  },
-                ],
+                name: "Alertas vecinales del Perú",
+                url: "https://panel.harkai.lat/comunidad",
               },
-            ],
-          }).replace(/</g, "\\u003c"),
+              { name: title(i), url },
+            ]),
+          ]),
         }}
+      />
+      <PublicBreadcrumbs
+        section="Alertas vecinales"
+        href="/comunidad"
+        current={i.district || i.city || "Perú"}
       />
       <Link href="/comunidad" className="eyebrow">
         Comunidad / {labels[i.type] || "Reporte"}
       </Link>
       <h1>{title(i)}</h1>
+      <p className="publication-meta">
+        {labels[i.type] || "Reporte vecinal"} ·{" "}
+        {[i.district, i.city, "Perú"].filter(Boolean).join(", ")}
+      </p>
       <p className="publication-meta">
         Vecino anónimo ·{" "}
         <time dateTime={i.created_at}>{dateLabel(i.created_at)}</time> ·{" "}
@@ -136,6 +124,13 @@ export default async function Page({
       <Link href={`/dashboard?incident=${i.id}`} className="button">
         Ver zona en el mapa
       </Link>
+      <p>
+        Consulta también{" "}
+        <Link href="/distritos">
+          las conversaciones de vecinos por distrito
+        </Link>{" "}
+        y <Link href="/comunidad">otras alertas de la comunidad</Link>.
+      </p>
       <Comments incidentId={i.id} />
       <JoinHarkai report />
     </article>

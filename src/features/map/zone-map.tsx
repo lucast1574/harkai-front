@@ -30,6 +30,7 @@ export type ZoneMapProps = {
   incidents: Incident[];
   categories: Category[];
   heat?: boolean;
+  municipal?: boolean;
   scrollWheelZoom?: boolean;
   selectedId?: string;
   onSelect?: (id: string) => void;
@@ -41,6 +42,7 @@ export default function ZoneMap({
   supportPlaces = [],
   categories,
   heat = false,
+  municipal = false,
   scrollWheelZoom = true,
   selectedId,
   onSelect,
@@ -123,7 +125,7 @@ export default function ZoneMap({
           <Popup pane="popupPane">Centro de tu zona de consulta</Popup>
         </CircleMarker>
       )}
-      <UserLocationMarker />
+      <UserLocationMarker compact={municipal} />
       <div className="map-zone-label" aria-live="polite">
         <i className="map-zone-dot" aria-hidden="true" />
         <strong>
@@ -142,23 +144,41 @@ export default function ZoneMap({
       </div>
       <SupportPlaceLayer places={supportPlaces} />
       <BusinessLayer points={businesses} />
-      {heat && <IncidentHeatLayer incidents={incidents} />}
-      <Pane name="report-alerts" style={{ zIndex: 500 }}>
+      {heat ? (
+        <IncidentHeatLayer incidents={incidents} />
+      ) : (
+        <Pane
+          name="report-zones"
+          style={{ zIndex: 410, opacity: 0.55, pointerEvents: "none" }}
+        >
+          {incidents.map((i) => (
+            <Circle
+              key={i.id}
+              center={[i.latitude, i.longitude]}
+              radius={85}
+              interactive={false}
+              pathOptions={{
+                stroke: false,
+                fillColor: incidentColor(i.type),
+                fillOpacity: 0.22,
+              }}
+            />
+          ))}
+        </Pane>
+      )}
+      <Pane name="report-alerts" style={{ zIndex: 500, opacity: 0.7 }}>
         {incidents.map((i) => (
           <CircleMarker
             key={i.id}
             center={[i.latitude, i.longitude]}
-            radius={selectedId === i.id ? 12 : heat ? 4 : 7}
+            radius={selectedId === i.id ? 10 : 7}
             eventHandlers={{ click: () => onSelect?.(i.id) }}
             pathOptions={{
-              color: heat ? "#ffffff" : i.verified ? "#247751" : "#b06a23",
-              fillColor: heat
-                ? incidentColor(i.type)
-                : i.verified
-                  ? "#39bc7c"
-                  : "#f6b44c",
-              weight: heat ? 1 : 3,
-              fillOpacity: heat ? 0.9 : 0.95,
+              color: incidentColor(i.type),
+              fillColor: incidentColor(i.type),
+              weight: selectedId === i.id ? 2 : 1,
+              opacity: 0.55,
+              fillOpacity: selectedId === i.id ? 0.5 : 0.25,
             }}
           >
             {!onSelect && (

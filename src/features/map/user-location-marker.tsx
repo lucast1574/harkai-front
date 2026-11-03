@@ -2,14 +2,18 @@
 import { Circle, Marker, Popup, Tooltip } from "react-leaflet";
 import { userIcon } from "./map-icons";
 import { useUserLocation } from "@/lib/use-area";
-export function UserLocationMarker(): React.JSX.Element | null {
+export function UserLocationMarker({
+  compact = false,
+}: {
+  compact?: boolean;
+}): React.JSX.Element | null {
   const point = useUserLocation();
   if (!point) return null;
   return (
     <>
       <Circle
         center={[point.latitude, point.longitude]}
-        radius={point.accuracy}
+        radius={compact ? Math.min(point.accuracy, 60) : point.accuracy}
         interactive={false}
         pathOptions={{
           color: "#287ee6",
@@ -26,7 +30,7 @@ export function UserLocationMarker(): React.JSX.Element | null {
         zIndexOffset={5000}
       >
         <Tooltip
-          permanent
+          permanent={!compact}
           direction="top"
           offset={[0, -14]}
           className="user-location-label"

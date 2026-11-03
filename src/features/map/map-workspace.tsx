@@ -94,10 +94,7 @@ export function MapWorkspace({
             <i className="report-dot support" /> Salud y ayuda
           </span>
           <span>
-            <i className="report-dot confirmed" /> Confirmado
-          </span>
-          <span>
-            <i className="report-dot" /> No verificado
+            <i className="report-dot" /> Reportes por categoría
           </span>
         </div>
         {selected && (

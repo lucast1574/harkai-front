@@ -17,6 +17,7 @@ export function IncidentHeatLayer({
     canvas.setAttribute("aria-hidden", "true");
     canvas.style.position = "absolute";
     canvas.style.pointerEvents = "none";
+    canvas.style.opacity = "0.55";
     map.getPane("overlayPane")?.appendChild(canvas);
     let frame = 0;
     const draw = (): void => {

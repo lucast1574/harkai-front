@@ -79,7 +79,6 @@ function Browser({
   mode: "cards" | "directory" | "feed" | "analytics";
 }): React.JSX.Element {
   const [area, setArea] = useArea({ ...LIMA, type: fixedType || "" });
-  const [heat, setHeat] = useState(false);
   const [municipalView, setMunicipalView] = useState("reports");
   const { data: meta, error: metaError } = useResource<Meta>("meta");
   const reports = useReports(
@@ -252,40 +251,21 @@ function Browser({
             {reports.cursor ? " · hay más resultados" : ""}
             {history ? " · historial de tu cuenta" : ""}
           </span>
-          {institutional && (
-            <label>
-              <input
-                type="checkbox"
-                checked={heat}
-                onChange={(e) => setHeat(e.target.checked)}
-              />{" "}
-              Densidad de reportes
-            </label>
-          )}
         </div>
       )}
       {map && (!institutional || municipalView === "map") && (
-        <details className="collection-zone" open>
-          <summary>
-            Mapa de los reportes<span>Ver ubicación y concentración</span>
-          </summary>
-          <section className="map-panel">
-            {heat && (
-              <p className="map-note">
-                Concentración de los reportes cargados; no representa una tasa
-                de criminalidad ni una cobertura completa.
-              </p>
-            )}
-            <ZoneMap
-              area={area}
-              incidents={reports.items}
-              categories={categories}
-              heat={mode === "analytics" || heat}
-              scrollWheelZoom={false}
-            />
-          </section>
-        </details>
+        <section className="report-map-frame" aria-label="Mapa de los reportes">
+          <ZoneMap
+            area={area}
+            incidents={reports.items}
+            categories={categories}
+            heat={mode === "analytics" && !institutional}
+            municipal={institutional}
+            scrollWheelZoom={false}
+          />
+        </section>
       )}
+
       {institutional && municipalView !== "reports" ? null : mode ===
           "directory" || mode === "feed" ? (
         <ReportCollection

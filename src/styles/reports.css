@@ -131,3 +131,13 @@
   background: #57d463;
   border-radius: 10px;
 }
+
+.report-map-frame {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+}
+.report-map-frame .zone-map {
+  height: clamp(360px, 62vh, 680px);
+  border-radius: 0;
+}

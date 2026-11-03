@@ -33,6 +33,7 @@ export function ForumCompose({
         <form
           onSubmit={async (event) => {
             event.preventDefault();
+            if (busy || !districtId || body.trim().length < 2) return;
             setBusy(true);
             setError("");
             try {
@@ -53,7 +54,8 @@ export function ForumCompose({
           }}
         >
           <TextArea
-            label="¿Qué quieres conversar con tus vecinos?"
+            label={`Mensaje para ${district}`}
+            rows={2}
             placeholder="Una pregunta, una novedad o algo que ayude a tu barrio…"
             value={body}
             onChange={(event) => setBody(event.target.value)}
@@ -73,7 +75,7 @@ export function ForumCompose({
               disabled={busy || !districtId || body.trim().length < 2}
             >
               <Send size={14} />
-              {busy ? "Publicando…" : "Publicar conversación"}
+              {busy ? "Enviando…" : "Enviar mensaje"}
             </button>
           </footer>
         </form>

@@ -92,7 +92,7 @@ export default function TicketComposer({
       <Alert>{error}</Alert>
       <Alert variant="success">{notice}</Alert>
       <fieldset disabled={busy}>
-        <label>
+        <label className="field">
           Asunto
           <input
             required
@@ -103,7 +103,7 @@ export default function TicketComposer({
             placeholder="Por ejemplo: no puedo abrir una sección"
           />
         </label>
-        <label>
+        <label className="field">
           Descripción
           <textarea
             required

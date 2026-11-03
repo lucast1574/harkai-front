@@ -16,13 +16,13 @@
   gap: 12px;
   width: 100%;
   min-width: 0;
-  min-height: 44px;
-  padding: 10px 12px;
+  min-height: 50px;
+  padding: 12px 16px;
   border: 1px solid var(--border);
   border-radius: 12px;
-  background: var(--surface);
+  background: var(--input-bg);
   color: var(--ink);
-  font-size: 13px;
+  font-size: 15px;
   text-align: left;
   line-height: 1.5;
   transition: background 150ms ease;
@@ -45,7 +45,7 @@
 .trigger:hover,
 .trigger:focus-visible,
 .trigger[aria-expanded="true"] {
-  background: var(--surface-soft);
+  background: var(--interaction-hover);
 }
 .menu {
   position: fixed;
@@ -58,7 +58,7 @@
   background: var(--surface);
   color: var(--ink);
   box-shadow: 0 12px 30px rgb(1 25 53 / 12%);
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.5;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -80,7 +80,7 @@
   cursor: pointer;
 }
 .active {
-  background: var(--surface-soft);
+  background: var(--interaction-hover);
 }
 .option[aria-selected="true"] {
   background: var(--accent-soft);

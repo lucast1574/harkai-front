@@ -1,12 +1,15 @@
 :root {
-  --bg: #f4f6f8;
-  --surface-soft: #f8fafb;
+  --bg: #f4f6f5;
+  --surface-soft: #eaf0ed;
+  --input-bg: #f7f9f8;
+  --interaction: #176344;
+  --interaction-hover: #dcece2;
   --accent-soft: #edf6f0;
   --accent-ink: #276346;
   --border-hover: #b8c7c0;
   --surface: #fff;
   --ink: #0f2133;
-  --muted: #617181;
+  --muted: #586b63;
   --border: #e1e7ec;
   --green: #57d463;
   --navy: #061325;
@@ -85,7 +88,7 @@ small,
   font-size: 11px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #4b8d5f;
+  color: var(--muted);
   font-weight: 700;
   display: block;
   margin-bottom: 16px;

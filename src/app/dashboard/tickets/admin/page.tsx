@@ -1,10 +1,5 @@
-import { Access } from "@/components/access";
-import { TicketsPage } from "@/features/tickets/tickets-page";
+import { redirect } from "next/navigation";
 
-export default function Page() {
-  return (
-    <Access roles={["admin"]}>
-      <TicketsPage admin />
-    </Access>
-  );
+export default function Page(): never {
+  redirect("/dashboard/tickets");
 }

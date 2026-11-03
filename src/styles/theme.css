@@ -1,12 +1,16 @@
 html[data-theme="dark"] {
-  --bg: #071526;
-  --surface: #0b1d33;
-  --surface-soft: #102641;
+  --bg: #10191e;
+  --navy: #10191e;
+  --surface: #182329;
+  --surface-soft: #233138;
+  --input-bg: #111c22;
+  --interaction: #8de3ad;
+  --interaction-hover: #293e35;
   --accent-soft: rgba(87, 212, 99, 0.14);
-  --accent-ink: #6be377;
+  --accent-ink: #8de3ad;
   --border-hover: rgba(87, 212, 99, 0.38);
-  --ink: #f0f6fc;
-  --muted: #93a8be;
+  --ink: #f1f6f3;
+  --muted: #a8bbb4;
   --border: rgba(255, 255, 255, 0.09);
 }
 html[data-theme="dark"] .notice {
@@ -18,4 +22,15 @@ html[data-theme="dark"] .notice.error {
   background: rgba(220, 53, 69, 0.15);
   color: #f9c8ce;
   border-color: rgba(220, 53, 69, 0.35);
+}
+/* Informational messages stay neutral; color is reserved for actions and errors. */
+html[data-theme="dark"] .notice:not(.error) {
+  background: var(--surface-soft);
+  border-color: var(--border);
+  color: var(--ink);
+}
+html:not([data-theme="dark"]) .notice:not(.error) {
+  background: var(--surface-soft);
+  border-color: var(--border);
+  color: var(--ink);
 }

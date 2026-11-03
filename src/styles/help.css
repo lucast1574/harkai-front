@@ -248,3 +248,49 @@
     grid-template-columns: 1fr;
   }
 }
+.help-sections {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.help-sections button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--muted);
+}
+.help-sections button[aria-pressed="true"] {
+  background: var(--accent-soft);
+  color: var(--interaction);
+  border-color: var(--border-hover);
+}
+.help-sections button:hover,
+.help-sections button:focus-visible {
+  background: var(--interaction-hover);
+  color: var(--ink);
+}
+.help-content {
+  max-width: 1100px;
+}
+.help-consult-card {
+  max-width: 800px;
+}
+.help-faq {
+  background: transparent;
+  border: 0;
+  padding: 16px 0;
+}
+.help-faq summary:focus-visible {
+  color: var(--interaction);
+  text-decoration: underline;
+}
+@media (max-width: 600px) {
+  .help-sections {
+    display: grid;
+  }
+}

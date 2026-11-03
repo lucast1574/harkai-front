@@ -11,71 +11,13 @@ export function Users(): React.JSX.Element {
   const { data, error, loading, reload } = useResource<Page<User>>(
     `admin/users?limit=50&cursor=${cursor}`,
   );
-  const [selected, setSelected] = useState<User | null>(null);
-  const [role, setRole] = useState<Role>("user");
-  const [busy, setBusy] = useState(false);
-  const [actionError, setActionError] = useState("");
-  async function assign(): Promise<void> {
-    if (!selected) return;
-    setBusy(true);
-    setActionError("");
-    try {
-      await api(`admin/users/${selected.id}/role`, {
-        method: "PATCH",
-        body: JSON.stringify({ role }),
-      });
-      setSelected(null);
-      await reload();
-    } catch (e) {
-      setActionError((e as Error).message);
-    } finally {
-      setBusy(false);
-    }
-    return;
-  }
   return (
     <>
       <Heading title="Usuarios y roles">
-        Los permisos se aplican en el backend. Los administradores existentes
-        están protegidos contra cambios de rol.
+        Selecciona un rol para guardarlo al instante. Las cuentas de
+        administrador están protegidas.
       </Heading>
-      {(error || actionError) && <Notice error>{error || actionError}</Notice>}
-      {selected && (
-        <section className="panel">
-          <h2>Permisos de {selected.name}</h2>
-          <p>{selected.email}</p>
-          <Select
-            label="Nuevo rol"
-            value={role}
-            onChange={(e) => setRole(e.target.value as Role)}
-          >
-            <option value="user">Usuario</option>
-            <option value="gov">Gobierno local</option>
-            <option value="admin">Administrador</option>
-          </Select>
-          <p className="muted">
-            Al confirmar darás acceso a las funciones correspondientes al rol.
-          </p>
-          <div className="page-actions">
-            <button
-              className="button"
-              disabled={busy || role === selected.role}
-              onClick={() => {
-                void assign();
-              }}
-            >
-              Confirmar asignación
-            </button>
-            <button
-              className="button secondary"
-              disabled={busy}
-              onClick={() => setSelected(null)}
-            >
-              Cancelar
-            </button>
-          </div>
-        </section>
-      )}
+      {error && <Notice error>{error}</Notice>}
       <section className="panel table-wrapper">
         <table>
           <thead>
@@ -83,7 +25,6 @@ export function Users(): React.JSX.Element {
               <th>Nombre</th>
               <th>Correo</th>
               <th>Rol</th>
-              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -91,18 +32,13 @@ export function Users(): React.JSX.Element {
               <tr key={u.id}>
                 <td>{u.name}</td>
                 <td>{u.email}</td>
-                <td>{u.role}</td>
-                <td>
-                  <button
-                    className="text-button"
-                    disabled={u.id === user?.id || u.role === "admin"}
-                    onClick={() => {
-                      setSelected(u);
-                      setRole(u.role);
-                    }}
-                  >
-                    Cambiar rol
-                  </button>
+                <td style={{ minWidth: 220 }}>
+                  <RoleSelect
+                    key={`${u.id}:${u.role}`}
+                    account={u}
+                    currentUser={user?.id}
+                    onSaved={reload}
+                  />
                 </td>
               </tr>
             ))}
@@ -126,5 +62,60 @@ export function Users(): React.JSX.Element {
         )}
       </div>
     </>
+  );
+}
+
+function RoleSelect({
+  account,
+  currentUser,
+  onSaved,
+}: {
+  account: User;
+  currentUser?: string;
+  onSaved: () => Promise<void>;
+}): React.JSX.Element {
+  const [role, setRole] = useState(account.role);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const [saved, setSaved] = useState(false);
+  async function assign(next: Role): Promise<void> {
+    if (busy || next === role) return;
+    setBusy(true);
+    setError("");
+    setSaved(false);
+    try {
+      await api(`admin/users/${account.id}/role`, {
+        method: "PATCH",
+        body: JSON.stringify({ role: next }),
+      });
+      setRole(next);
+      setSaved(true);
+      await onSaved();
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+  return (
+    <div className="user-role-control">
+      <Select
+        label={`Rol de ${account.name}`}
+        value={role}
+        disabled={busy || account.id === currentUser || role === "admin"}
+        onChange={(e) => void assign(e.target.value as Role)}
+      >
+        <option value="user">Usuario</option>
+        <option value="gov">Gobierno local</option>
+        <option value="admin">Administrador</option>
+      </Select>
+      {busy && <span role="status">Guardando…</span>}
+      {saved && <span role="status">Guardado</span>}
+      {error && (
+        <span role="alert" className="error">
+          {error}
+        </span>
+      )}
+    </div>
   );
 }

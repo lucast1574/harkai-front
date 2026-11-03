@@ -190,3 +190,59 @@
   gap: 4px;
   margin-bottom: 12px;
 }
+
+.admin-navigation-trigger {
+  width: 100%;
+  background: transparent;
+  text-align: left;
+}
+.admin-navigation-trigger > svg {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.admin-navigation-trigger > svg.expanded {
+  transform: rotate(180deg);
+}
+.admin-navigation-links:not([hidden]) {
+  display: grid;
+  gap: 4px;
+  margin: 6px 0 0 20px;
+  padding: 8px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.035);
+}
+.admin-navigation-links .nav-link {
+  min-height: 44px;
+  padding: 7px 10px;
+  font-size: 13px;
+  gap: 10px;
+}
+.admin-navigation-links .nav-icon {
+  width: 26px;
+  height: 26px;
+  background: none;
+}
+.admin-navigation .nav-link:focus-visible {
+  background: rgba(255, 255, 255, 0.09);
+  color: #fff;
+}
+html[data-theme="dark"] .nav-link {
+  color: var(--muted);
+}
+html[data-theme="dark"] .nav-icon {
+  background: transparent;
+  color: var(--muted);
+}
+html[data-theme="dark"] .nav-link.active {
+  background: var(--accent-soft);
+  border-color: transparent;
+  color: var(--ink);
+}
+html[data-theme="dark"] .nav-link.active .nav-icon {
+  color: var(--accent-ink);
+}
+html[data-theme="dark"] .nav-link:hover,
+html[data-theme="dark"] .nav-link:focus-visible {
+  background: var(--surface-soft);
+  color: var(--ink);
+}

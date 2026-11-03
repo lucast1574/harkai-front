@@ -5,6 +5,7 @@ import { CoverageNotice } from "@/features/support/coverage-notice";
 import Link from "next/link";
 import { Brand } from "./brand";
 import { UserAvatar } from "./user-avatar";
+import { AdminNavigation } from "./admin-navigation";
 import { usePathname } from "next/navigation";
 import { useRef } from "react";
 import {
@@ -19,23 +20,26 @@ import {
   History,
   LifeBuoy,
   Ticket,
+  type LucideIcon,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { Notice } from "./ui";
 
-const navigation = [
+type NavigationItem = {
+  href: string;
+  label: string;
+  icon: LucideIcon;
+  utility?: boolean;
+  admin?: boolean;
+  institutional?: boolean;
+  section?: string;
+};
+const navigation: NavigationItem[] = [
   {
     href: "/dashboard/tickets",
     label: "Soporte técnico",
     icon: Ticket,
     utility: true,
-  },
-  {
-    href: "/dashboard/tickets/admin",
-    label: "Tickets de usuarios",
-    icon: Ticket,
-    utility: true,
-    admin: true,
   },
   {
     href: "/dashboard",
@@ -146,7 +150,28 @@ export function Shell({
     <>
       <Brand onClick={close} />
       <nav aria-label="Navegación principal">
-        {renderLinks(navigation.filter((n) => !user || !n.utility))}
+        {renderLinks(
+          navigation.filter(
+            (n) =>
+              !n.admin &&
+              (!n.institutional || user?.role !== "admin") &&
+              (!user || !n.utility),
+          ),
+        )}
+        {user?.role === "admin" && (
+          <AdminNavigation
+            key={path}
+            active={navigation.some(
+              (n) => (n.admin || n.institutional) && n.href === path,
+            )}
+          >
+            {renderLinks(
+              navigation
+                .filter((n) => n.admin || n.institutional)
+                .map((n) => ({ ...n, section: undefined })),
+            )}
+          </AdminNavigation>
+        )}
       </nav>
       <div className="sidebar-purpose">
         <span className="live-dot" />
@@ -155,7 +180,7 @@ export function Shell({
       <div className="sidebar-bottom">
         {user && (
           <nav aria-label="Soporte y asistencia">
-            {renderLinks(navigation.filter((n) => n.utility))}
+            {renderLinks(navigation.filter((n) => n.utility && !n.admin))}
           </nav>
         )}
         <Link

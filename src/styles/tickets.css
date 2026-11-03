@@ -1,6 +1,6 @@
 .helpdesk-page,
 .helpdesk-inbox {
-  --helpdesk-line: color-mix(in srgb, var(--accent-ink) 18%, white);
+  --helpdesk-line: var(--border);
   --helpdesk-muted: var(--muted);
   min-width: 0;
 }
@@ -59,7 +59,7 @@
   background: var(--accent-ink);
 }
 .helpdesk-composer .helpdesk-action:hover {
-  background: var(--ink);
+  background: #83e59b;
 }
 .helpdesk-attachment-heading {
   display: flex;
@@ -522,8 +522,8 @@
   color: var(--ink);
 }
 .helpdesk-page .helpdesk-action {
-  background: var(--accent-ink);
-  color: white;
+  background: var(--green);
+  color: #092f1f;
 }
 .helpdesk-intro {
   max-width: 780px;

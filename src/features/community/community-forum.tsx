@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 import {
   MessageCircle,
   RefreshCw,
@@ -14,7 +15,7 @@ import { useLocationRequest } from "../map/use-location-request";
 import { ForumCompose } from "./forum-compose";
 import { ForumCard } from "./forum-card";
 import { useForum } from "./use-forum";
-import { GeographySelector } from "../map/geography-selector";
+import { DistrictSearch } from "../map/district-search";
 import styles from "./forum.module.css";
 
 export function CommunityForum(): React.JSX.Element {
@@ -41,7 +42,7 @@ export function CommunityForum(): React.JSX.Element {
   const path =
     area.geoPending || area.geoError || !id
       ? null
-      : `forum?ubigeo=${id}&scope=${area.scope || "district"}`;
+      : `forum?ubigeo=${id}&scope=district`;
 
   return (
     <div className={styles.shell}>
@@ -51,21 +52,13 @@ export function CommunityForum(): React.JSX.Element {
             <MessageCircle size={14} />
             <span>COMUNIDAD VECINAL</span>
           </div>
-          <h1>Conversa con tus vecinos</h1>
+          <h1>El chat de tu distrito</h1>
           <p>
-            Preguntas, avisos y novedades útiles de tu zona. Todos participamos
-            de forma anónima para cuidar la privacidad del barrio.
+            Un chat anónimo para cada distrito. Puedes leer cualquier zona,
+            estés donde estés.
           </p>
         </div>
         <div className={styles.heroActions}>
-          <span className="account-map-pill" role="status">
-            <LocateFixed size={15} aria-hidden="true" />
-            <span>
-              {area.geoPending
-                ? "Ubicando tu zona…"
-                : area.geography?.name || "Elige tu zona"}
-            </span>
-          </span>
           <button
             type="button"
             className="account-map-pill"
@@ -85,9 +78,7 @@ export function CommunityForum(): React.JSX.Element {
         </div>
       </header>
 
-      <section className="panel">
-        <GeographySelector area={area} onChange={setArea} quick={false} />
-      </section>
+      <DistrictSearch area={area} onChange={setArea} />
       <section
         id="forum-panel"
         aria-label="Conversaciones de la zona seleccionada"
@@ -122,19 +113,30 @@ function ForumContent({
   district: string;
 }): React.JSX.Element {
   const feed = useForum(path);
+  const messages = useRef<HTMLDivElement>(null);
+  const follow = useRef(true);
+  useEffect(() => {
+    if (follow.current && messages.current)
+      messages.current.scrollTop = messages.current.scrollHeight;
+  }, [feed.items]);
   return (
     <div className={styles.layout}>
-      <ForumCompose
-        districtId={districtId}
-        district={district}
-        onPublished={() => feed.reload()}
-      />
-      <div className={styles.feed}>
+      <div
+        className={styles.feed}
+        ref={messages}
+        tabIndex={0}
+        aria-label={`Mensajes de ${district}`}
+        onScroll={(event) => {
+          const el = event.currentTarget;
+          follow.current =
+            el.scrollHeight - el.scrollTop - el.clientHeight < 100;
+        }}
+      >
         <div className={styles.feedHeading}>
           <div>
-            <h2>Conversaciones en {district}</h2>
+            <h2>{district}</h2>
             <p className="muted small">
-              Participa con respeto y sin compartir datos privados.
+              Chat del distrito · Tu nombre y foto no se muestran.
             </p>
           </div>
           <button
@@ -148,7 +150,7 @@ function ForumContent({
           </button>
         </div>
         {feed.error && <Notice error>{feed.error}</Notice>}
-        {feed.loading && <Notice>Cargando conversaciones…</Notice>}
+        {feed.loading && <Notice>Cargando mensajes…</Notice>}
         {!feed.loading && !feed.error && !feed.items.length && (
           <div className={styles.empty}>
             <MessageCircle size={28} />
@@ -159,13 +161,6 @@ function ForumContent({
             </p>
           </div>
         )}
-        {feed.items.map((thread) => (
-          <ForumCard
-            key={thread.id}
-            thread={thread}
-            onRemoved={() => feed.reload()}
-          />
-        ))}
         {feed.cursor && (
           <button
             type="button"
@@ -173,10 +168,27 @@ function ForumContent({
             disabled={feed.loading}
             onClick={() => void feed.reload(feed.cursor)}
           >
-            Ver más conversaciones
+            Cargar mensajes anteriores
           </button>
         )}
+        {[...feed.items]
+          .sort((a, b) => a.created_at.localeCompare(b.created_at))
+          .map((thread) => (
+            <ForumCard
+              key={thread.id}
+              thread={thread}
+              onRemoved={() => feed.reload()}
+            />
+          ))}
       </div>
+      <ForumCompose
+        districtId={districtId}
+        district={district}
+        onPublished={() => {
+          follow.current = true;
+          return feed.reload();
+        }}
+      />
     </div>
   );
 }

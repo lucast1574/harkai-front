@@ -114,13 +114,15 @@ function Browser({
           </div>
           <h1>{title}</h1>
           <p>
-            {mode === "directory"
-              ? "Busca un reporte, revisa su estado y abre el detalle para ver su ubicación o confirmar lo ocurrido."
-              : mode === "feed"
-                ? "Cronología de lo que comparte la comunidad en tu zona."
-                : mode === "analytics"
-                  ? "Muestra de reportes de tu consulta: qué se reporta y cuántos cuentan con confirmación comunitaria."
-                  : "Explora los aportes de la comunidad en la zona que elijas."}
+            {institutional
+              ? "Revisa los reportes de tu distrito, filtra por confirmación y abre un reporte para gestionar su atención."
+              : mode === "directory"
+                ? "Busca un reporte, revisa su estado y abre el detalle para ver su ubicación o confirmar lo ocurrido."
+                : mode === "feed"
+                  ? "Cronología de lo que comparte la comunidad en tu zona."
+                  : mode === "analytics"
+                    ? "Muestra de reportes de tu consulta: qué se reporta y cuántos cuentan con confirmación comunitaria."
+                    : "Explora los aportes de la comunidad en la zona que elijas."}
           </p>
         </div>
         <div className="archive-hero-actions">
@@ -167,13 +169,19 @@ function Browser({
       </header>
 
       {institutional || history ? (
-        <AreaFilter
-          area={area}
-          categories={categories}
-          onChange={setArea}
-          fixedType={fixedType}
-          dates={institutional || history}
-        />
+        <details className="collection-zone">
+          <summary>
+            Filtros de consulta · {area.geography?.name || "Elegir zona"}
+            <span>Zona, categoría y fechas</span>
+          </summary>
+          <AreaFilter
+            area={area}
+            categories={categories}
+            onChange={setArea}
+            fixedType={fixedType}
+            dates={institutional || history}
+          />
+        </details>
       ) : (
         <details className="collection-zone">
           <summary>
@@ -232,20 +240,29 @@ function Browser({
         </div>
       )}
       {map && (
-        <section className="map-panel">
-          {heat && (
-            <p className="map-note">
-              Concentración de los reportes cargados; no representa una tasa de
-              criminalidad ni una cobertura completa.
-            </p>
-          )}
-          <ZoneMap
-            area={area}
-            incidents={reports.items}
-            categories={categories}
-            heat={mode === "analytics" || heat}
-          />
-        </section>
+        <details
+          className="collection-zone"
+          open={institutional ? undefined : true}
+        >
+          <summary>
+            Mapa de los reportes<span>Ver ubicación y concentración</span>
+          </summary>
+          <section className="map-panel">
+            {heat && (
+              <p className="map-note">
+                Concentración de los reportes cargados; no representa una tasa
+                de criminalidad ni una cobertura completa.
+              </p>
+            )}
+            <ZoneMap
+              area={area}
+              incidents={reports.items}
+              categories={categories}
+              heat={mode === "analytics" || heat}
+              scrollWheelZoom={false}
+            />
+          </section>
+        </details>
       )}
       {mode === "directory" || mode === "feed" ? (
         <ReportCollection

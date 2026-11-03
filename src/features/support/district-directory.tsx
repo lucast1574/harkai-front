@@ -5,7 +5,7 @@ import { LIMA } from "@/lib/contracts";
 import { useArea } from "@/lib/use-area";
 import { useResource } from "@/lib/use-resource";
 import { type SupportDistrict } from "./contracts";
-import { GeographySelector } from "../map/geography-selector";
+import { DistrictSearch } from "../map/district-search";
 import styles from "./directory.module.css";
 
 function normalizeName(value: string): string {
@@ -45,7 +45,7 @@ export function DistrictDirectory(): React.JSX.Element {
           </p>
         </div>
       </header>
-      <GeographySelector area={area} onChange={setArea} />
+      <DistrictSearch area={area} onChange={setArea} />
       {directory.loading && <Notice>Consultando el directorio…</Notice>}
       {directory.error && (
         <Notice error>

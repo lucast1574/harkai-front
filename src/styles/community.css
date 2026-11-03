@@ -119,7 +119,6 @@
 }
 .comment-compose .field textarea {
   min-height: 95px;
-  font-size: 13px;
   background: var(--bg);
 }
 .comment-compose > div {

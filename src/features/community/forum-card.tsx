@@ -44,7 +44,7 @@ export function ForumCard({
           onClick={() => setOpen(!open)}
         >
           <MessageCircle size={15} />
-          {open ? "Cerrar conversación" : "Abrir conversación"}
+          {open ? "Ocultar respuestas" : "Responder"}
         </button>
         {thread.can_delete && (
           <button className="text-button" onClick={() => setConfirm(!confirm)}>

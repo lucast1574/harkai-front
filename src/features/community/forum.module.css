@@ -9,97 +9,29 @@
   gap: 10px;
   flex-shrink: 0;
 }
-.toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  padding: 14px 18px;
-  margin-bottom: 24px;
-  border-radius: 16px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-}
-.tabs {
-  display: flex;
-  gap: 6px;
-  padding: 5px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  max-width: 100%;
-}
-.tabs button {
-  border: 1px solid transparent;
-  border-radius: 9px;
-  background: transparent;
-  color: var(--muted);
-  padding: 9px 15px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    background-color 150ms ease,
-    color 150ms ease;
-}
-.tabs button:hover {
-  color: var(--ink);
-}
-.tabs button[aria-selected="true"] {
-  background: var(--surface-soft);
-  border-color: var(--border);
-  color: var(--ink);
-}
-.districtPicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0 12px;
-  min-height: 42px;
-  border-radius: 11px;
-  background: var(--surface-soft);
-  border: 1px solid var(--border);
-  color: var(--ink);
-}
-.districtPicker svg {
-  color: var(--green);
-  flex-shrink: 0;
-}
-.districtPicker select {
-  border: 0;
-  background: transparent;
-  color: var(--ink);
-  font-size: 13px;
-  font-weight: 600;
-  padding: 8px 4px;
-  cursor: pointer;
-}
-.districtPicker select option {
-  background: var(--surface);
-  color: var(--ink);
-}
-
-.layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
-  gap: 24px;
-  align-items: start;
-}
 .feed {
-  grid-column: 1;
-  grid-row: 1;
   display: grid;
-  gap: 16px;
+  gap: 0;
+  order: 0;
+  width: 100%;
+  max-height: 60vh;
+  min-height: 260px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-behavior: auto;
 }
 .feedHeading {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 22px;
-  border-radius: 16px;
+  padding: 20px 24px;
+  border-radius: 0;
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 .feedHeading h2 {
   font-size: 17px;
@@ -109,22 +41,24 @@
   margin: 0;
 }
 .compose {
-  grid-column: 2;
-  grid-row: 1;
-  position: sticky;
-  top: 24px;
+  position: static;
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 24px 26px;
+  border: 0;
+  border-radius: 0;
+  padding: 20px 24px;
+  order: 1;
+  width: 100%;
+  border-top: 1px solid var(--border);
 }
 .compose header {
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   padding-bottom: 16px;
   border-bottom: 1px solid var(--border);
+  border: 0;
+  padding: 0;
 }
 .compose header > svg {
   color: var(--green);
@@ -143,9 +77,13 @@
   margin: 4px 0 0;
 }
 .compose footer {
-  display: grid;
-  gap: 14px;
+  display: flex;
+  gap: 16px;
   margin-top: 16px;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  flex-wrap: wrap;
 }
 .compose footer .button {
   width: 100%;
@@ -162,10 +100,10 @@
   font-size: 13px;
 }
 .card {
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  background: var(--surface);
-  padding: 24px 26px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 20px 24px;
   transition: border-color 150ms ease;
 }
 .card:hover {
@@ -204,19 +142,22 @@
   color: var(--muted);
 }
 .body {
-  font-size: 14.5px;
-  line-height: 1.75;
+  font-size: 16px;
+  line-height: 1.6;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  margin: 18px 0;
+  margin: 10px 0 12px 52px;
 }
 .card > footer {
   display: flex;
   gap: 14px;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding-top: 14px;
   border-top: 1px solid var(--border);
+  border: 0;
+  padding: 0;
+  margin-left: 52px;
 }
 .confirm {
   padding-top: 14px;
@@ -237,11 +178,15 @@
 }
 .empty {
   padding: 48px 28px;
-  border: 1px solid var(--border);
-  border-radius: 20px;
+  border: 0;
+  border-radius: 0;
   background: var(--surface);
   text-align: center;
   color: var(--muted);
+  min-height: 240px;
+  display: grid;
+  align-content: center;
+  justify-items: center;
 }
 .empty svg {
   color: var(--green);
@@ -256,34 +201,52 @@
   line-height: 1.65;
   margin: 0;
 }
-@media (max-width: 1000px) {
-  .layout {
-    grid-template-columns: 1fr;
-  }
-  .compose {
-    position: static;
-    grid-column: 1;
-    grid-row: 1;
-  }
-  .feed {
-    grid-row: 2;
-  }
+/* A single district conversation, with the composer directly below it. */
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 960px;
+  margin-inline: auto;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+  overflow: hidden;
 }
-@media (max-width: 760px) {
-  .tabs,
-  .districtPicker {
+
+.compose footer small {
+  max-width: 440px;
+}
+.compose footer :global(.button) {
+  width: auto;
+  flex-shrink: 0;
+}
+.compose :global(form) {
+  gap: 12px;
+}
+.compose :global(.field textarea) {
+  min-height: 80px;
+}
+
+.card + .card {
+  border-top: 1px solid var(--border);
+}
+
+.feed > :global(.notice) {
+  margin: 16px 24px;
+}
+@media (max-width: 600px) {
+  .compose footer :global(.button) {
     width: 100%;
   }
-  .districtPicker select {
-    flex: 1;
-  }
-  .tabs button {
-    flex: 1;
-    padding: 10px;
-    font-size: 12px;
-  }
+  .compose,
   .card,
-  .compose {
-    padding: 20px;
+  .feedHeading {
+    padding: 16px;
+  }
+
+  .body,
+  .card > footer {
+    margin-left: 0;
   }
 }

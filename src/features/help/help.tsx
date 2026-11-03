@@ -11,12 +11,14 @@ import { DistrictDirectory } from "../support/district-directory";
 
 export function Help(): React.JSX.Element {
   const { user } = useAuth();
+  const [section, setSection] = useState("contacts");
   const [text, setText] = useState("");
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
   async function ask(): Promise<void> {
+    if (busy || !user || text.trim().length < 5) return;
     setBusy(true);
     setError("");
     try {
@@ -41,13 +43,16 @@ export function Help(): React.JSX.Element {
             <LifeBuoy size={14} />
             <span>AYUDA Y ORIENTACIÓN</span>
           </div>
-          <h1>Primeros pasos y contactos oficiales</h1>
+          <h1>¿Cómo podemos orientarte?</h1>
           <p>
             Encuentra recomendaciones claras según la situación y comunícate con
             las líneas de emergencia de tu ciudad y distrito.
           </p>
         </div>
-        <div className="help-emergency-pills" aria-label="Líneas de emergencia rápida">
+        <div
+          className="help-emergency-pills"
+          aria-label="Líneas de emergencia rápida"
+        >
           <a href="tel:105" className="emergency-pill">
             <PhoneCall size={14} />
             <span>Policía</span>
@@ -66,68 +71,88 @@ export function Help(): React.JSX.Element {
         </div>
       </header>
 
-      <QuickGuidance />
+      <div className="help-sections" role="group" aria-label="Tipo de ayuda">
+        {[
+          { id: "contacts", label: "Contactos de mi zona", icon: PhoneCall },
+          { id: "guidance", label: "Qué hacer", icon: LifeBuoy },
+          { id: "assistant", label: "Consultar una situación", icon: Sparkles },
+        ].map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            aria-pressed={section === item.id}
+            onClick={() => setSection(item.id)}
+          >
+            <item.icon size={18} />
+            {item.label}
+          </button>
+        ))}
+      </div>
+      {section === "guidance" && <QuickGuidance />}
 
-      <div className="help-grid">
-        <DistrictDirectory />
+      <div className="help-content">
+        {section === "contacts" && <DistrictDirectory />}
 
         <div className="help-side-stack">
-          <section className="panel help-consult-card">
-            <div className="help-card-head">
-              <span className="account-benefit-icon">
-                <Sparkles size={18} />
-              </span>
-              <div>
-                <span className="eyebrow">ASISTENTE DE ORIENTACIÓN</span>
-                <h2>Describe lo que ocurre</h2>
+          {section === "assistant" && (
+            <section className="panel help-consult-card">
+              <div className="help-card-head">
+                <span className="account-benefit-icon">
+                  <Sparkles size={18} />
+                </span>
+                <div>
+                  <span className="eyebrow">ASISTENTE DE ORIENTACIÓN</span>
+                  <h2>Describe lo que ocurre</h2>
+                </div>
               </div>
-            </div>
-            <p className="muted small">
-              Recibe recomendaciones inmediatas basadas en el tipo de incidente.
-              Esta consulta es informativa y no genera un reporte público.
-            </p>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                void ask();
-              }}
-            >
-              <TextArea
-                label="¿Qué está ocurriendo?"
-                placeholder="Ej. Recibí un mensaje sospechoso pidiendo dinero en mi negocio…"
-                minLength={5}
-                maxLength={2000}
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                required
-              />
-              <div className="help-consult-footer">
-                <button className="button" disabled={busy || !user}>
-                  {busy ? "Consultando…" : "Ver recomendaciones"}
-                </button>
-                {!user && (
-                  <span className="muted small">
-                    <Link href="/dashboard/profile" className="legal-link">
-                      Inicia sesión
-                    </Link>{" "}
-                    para usar el asistente.
-                  </span>
-                )}
-              </div>
-            </form>
-            {error && <Notice error>{error}</Notice>}
-            {analysis && (
-              <div className="help-analysis-result">
-                <strong>{analysis.reason}</strong>
-                <ul className="advice">
-                  {analysis.advice.map((a) => (
-                    <li key={a}>{a}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </section>
-
+              <p className="muted small">
+                Recibe recomendaciones inmediatas basadas en el tipo de
+                incidente. Esta consulta es informativa y no genera un reporte
+                público.
+              </p>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  void ask();
+                }}
+              >
+                <TextArea
+                  label="¿Qué está ocurriendo?"
+                  placeholder="Ej. Recibí un mensaje sospechoso pidiendo dinero en mi negocio…"
+                  minLength={5}
+                  maxLength={2000}
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
+                  required
+                  disabled={busy}
+                />
+                <div className="help-consult-footer">
+                  <button className="button" disabled={busy || !user}>
+                    {busy ? "Consultando…" : "Ver recomendaciones"}
+                  </button>
+                  {!user && (
+                    <span className="muted small">
+                      <Link href="/dashboard/profile" className="legal-link">
+                        Inicia sesión
+                      </Link>{" "}
+                      para usar el asistente.
+                    </span>
+                  )}
+                </div>
+              </form>
+              {error && <Notice error>{error}</Notice>}
+              {analysis && (
+                <div className="help-analysis-result" role="status">
+                  <strong>{analysis.reason}</strong>
+                  <ul className="advice">
+                    {analysis.advice.map((a) => (
+                      <li key={a}>{a}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </section>
+          )}
           <section className="panel help-faq">
             <div className="help-card-head">
               <span className="account-benefit-icon">

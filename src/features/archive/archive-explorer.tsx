@@ -19,6 +19,7 @@ import { useReports } from "../reports/use-reports";
 import { Summary } from "../stats/summary";
 import { ReportCollection } from "../reports/report-collection";
 import { GeographySelector } from "../map/geography-selector";
+import { DistrictSearch } from "../map/district-search";
 import ZoneMap from "../map/map-loader";
 
 function daysAgoISO(days: number): string {
@@ -72,7 +73,7 @@ export function ArchiveExplorer(): React.JSX.Element {
             <History size={14} />
             <span>MEMORIA DE LA CIUDAD</span>
           </div>
-          <h1>Historial y perspectiva</h1>
+          <h1>Historial de la ciudad</h1>
           <p>
             Explora los reportes resueltos o con alerta vencida por ciudad,
             distrito, categoría y periodo.
@@ -113,10 +114,24 @@ export function ArchiveExplorer(): React.JSX.Element {
           <div className="archive-filter-section">
             <div className="archive-filter-title">
               <Layers3 size={17} />
-              <h2>Zona y categoría</h2>
+              <h2>Filtrar historial</h2>
+              <button
+                type="button"
+                className="text-button"
+                onClick={() => {
+                  setPreset("all");
+                  setArea({ ...area, type: "", after: "", before: "" });
+                }}
+              >
+                Limpiar
+              </button>
             </div>
 
-            <GeographySelector area={area} onChange={setArea} quick={false} />
+            <DistrictSearch area={area} onChange={setArea} />
+            <details className="archive-custom-dates">
+              <summary>Consultar una zona más amplia</summary>
+              <GeographySelector area={area} onChange={setArea} quick={false} />
+            </details>
             <Select
               label="Categoría"
               value={area.type}
@@ -153,6 +168,7 @@ export function ArchiveExplorer(): React.JSX.Element {
                 <button
                   key={id}
                   type="button"
+                  aria-pressed={preset === id}
                   className={`archive-preset-btn ${preset === id ? "active" : ""}`}
                   onClick={() => applyPreset(id)}
                 >
@@ -169,6 +185,7 @@ export function ArchiveExplorer(): React.JSX.Element {
               <div className="archive-date-fields">
                 <Field
                   label="Desde"
+                  max={area.before || undefined}
                   type="datetime-local"
                   value={area.after}
                   onChange={(e) => {
@@ -178,6 +195,7 @@ export function ArchiveExplorer(): React.JSX.Element {
                 />
                 <Field
                   label="Hasta"
+                  min={area.after || undefined}
                   type="datetime-local"
                   value={area.before || ""}
                   onChange={(e) => {

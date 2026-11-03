@@ -1,16 +1,16 @@
+import { backendPaths } from "@/lib/server/proxy-paths";
 import { NextRequest } from "next/server";
 import { allowedOrigin, backend, bearer } from "@/lib/server/backend";
 import { limitedBody } from "@/lib/server/body";
 export const dynamic = "force-dynamic";
 type Context = { params: Promise<{ path: string[] }> };
-const paths =
-  /^(publications|businesses(?:\/[a-f0-9]{24})?|me\/businesses(?:\/[a-f0-9]{24}(?:\/enabled)?)?|admin\/businesses(?:\/[a-f0-9]{24}\/moderation)?|geo\/(?:district|catalog)|support\/(?:directory|places|coverage|tickets(?:\/[a-f0-9]{24}\/images\/[0-2])?)|admin\/support\/tickets(?:\/[a-f0-9]{24})?|meta|archive\/(?:incidents|districts)|me(?:\/account-deletion-options|\/preferences|\/incidents|\/devices(?:\/[a-f0-9]{64})?)?|alerts|emergency-contacts|analysis\/(?:text|audio)|incidents(?:\/[a-f0-9]{24}(?:\/confirm|\/status|\/comments(?:\/[a-f0-9]{24})?)?)?|media(?:\/[a-f0-9]{24})?|gov\/incidents|admin\/(?:incidents|emergency-contacts|users(?:\/[a-f0-9]{24}\/role)?))$/;
+
 async function proxy(
   request: NextRequest,
   context: Context,
 ): Promise<Response> {
   const path = (await context.params).path.join("/");
-  if (!paths.test(path)) return new Response(null, { status: 404 });
+  if (!backendPaths.test(path)) return new Response(null, { status: 404 });
   if (
     request.method === "POST" &&
     ["incidents", "analysis/audio"].includes(path)

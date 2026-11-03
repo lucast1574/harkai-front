@@ -19,6 +19,7 @@
   padding: 11px 18px;
   font-size: 13px;
   display: inline-flex;
+  gap: 8px;
   align-items: center;
   justify-content: center;
   font-weight: 700;
@@ -93,7 +94,8 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  font-size: 13px;
+  font-size: 14px;
+  line-height: 1.5;
   font-weight: 600;
   min-width: 0;
 }
@@ -142,4 +144,107 @@ form {
 }
 .error {
   color: #a63329;
+}
+
+/* Shared text fields: consistent typography in every form and theme. */
+.field input:not([type="file"]):not([type="checkbox"]):not([type="radio"]),
+.field textarea {
+  min-height: 50px;
+  padding: 13px 16px;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ink);
+  caret-color: var(--interaction);
+  background: var(--input-bg);
+}
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+.field textarea {
+  min-height: 116px;
+}
+.field input:focus,
+.field textarea:focus {
+  background: var(--accent-soft);
+}
+.field input:disabled,
+.field textarea:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+.user-role-control > .field > label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.user-role-control {
+  max-width: 260px;
+}
+.user-role-control [role="status"],
+.user-role-control [role="alert"] {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+}
+/* District selection stays compact until the user wants to explore. */
+.district-search {
+  position: relative;
+  margin-bottom: 18px;
+}
+.district-search > button {
+  max-width: 100%;
+  text-align: left;
+  white-space: normal;
+}
+.district-search-panel {
+  display: grid;
+  gap: 16px;
+  padding: 18px;
+  margin-top: 10px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+}
+.archive-filter-title {
+  flex-wrap: wrap;
+}
+.archive-filter-title .text-button {
+  margin-left: auto;
+}
+/* Shared interaction hierarchy: neutral surfaces, accent for actions and selection. */
+.button:focus-visible:not(:disabled) {
+  background: #83e59b;
+  color: #092f1f;
+}
+.button.secondary:hover:not(:disabled),
+.button.secondary:focus-visible:not(:disabled) {
+  background: var(--interaction-hover);
+  color: var(--interaction);
+  border-color: var(--border);
+}
+.text-button {
+  color: var(--interaction);
+}
+.text-button:focus-visible,
+.legal-link:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.field input:hover:not(:disabled),
+.field textarea:hover:not(:disabled) {
+  border-color: var(--border-hover);
+}
+.field input:focus,
+.field textarea:focus {
+  background: var(--interaction-hover);
+}
+button:disabled {
+  opacity: 0.55;
 }

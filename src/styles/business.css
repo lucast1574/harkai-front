@@ -84,32 +84,6 @@
 }
 .business-form-main .field {
   margin-bottom: 20px;
-  font-size: 14px;
-  line-height: 1.5;
-}
-.business-form-main input,
-.business-form-main textarea {
-  width: 100%;
-}
-.business-form-main .field input:not([type="file"]),
-.business-form-main .field textarea {
-  min-height: 50px;
-  padding: 13px 16px;
-  border-radius: 12px;
-  font-family: inherit;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 1.5;
-  color: var(--ink);
-  caret-color: var(--green);
-}
-.business-form-main .field input::placeholder,
-.business-form-main .field textarea::placeholder {
-  color: var(--muted);
-  opacity: 1;
-}
-.business-form-main .field textarea {
-  min-height: 116px;
 }
 .business-form-main details summary {
   cursor: pointer;

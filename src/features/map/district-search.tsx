@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { MapPin, ChevronDown } from "lucide-react";
-import { Field, Select, Notice } from "@/components/ui";
+import { Select, Notice } from "@/components/ui";
 import { useResource } from "@/lib/use-resource";
 import type { Area } from "@/lib/contracts";
 
@@ -13,12 +13,6 @@ type District = {
   latitude: number;
   longitude: number;
 };
-const normalize = (value: string) =>
-  value
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase();
-
 export function DistrictSearch({
   area,
   onChange,
@@ -74,24 +68,12 @@ export function DistrictOptions({
   onChange: (area: Area) => void;
 }): React.JSX.Element {
   const catalog = useResource<{ items: District[] }>("geo/catalog");
-  const [search, setSearch] = useState("");
   const all = catalog.data?.items || [];
-  const matches = all.filter((d) =>
-    normalize(`${d.name} ${d.province} ${d.department}`).includes(
-      normalize(search.trim()),
-    ),
-  );
   return (
     <>
-      <Field
-        label="Buscar distrito"
-        placeholder="Distrito, provincia o departamento"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
       <Select
         label="Distrito que quieres ver"
-        value={matches.some((d) => d.id === area.ubigeo) ? area.ubigeo : ""}
+        value={all.some((d) => d.id === area.ubigeo) ? area.ubigeo : ""}
         disabled={catalog.loading}
         onChange={(e) => {
           const d = all.find((item) => item.id === e.target.value);
@@ -108,15 +90,15 @@ export function DistrictOptions({
         <option value="">
           {catalog.loading ? "Cargando distritos…" : "Seleccionar distrito"}
         </option>
-        {matches.map((d) => (
+        {all.map((d) => (
           <option key={d.id} value={d.id}>
             {d.name} · {d.province}, {d.department}
           </option>
         ))}
       </Select>
-      {!catalog.loading && !catalog.error && !matches.length && (
+      {!catalog.loading && !catalog.error && !all.length && (
         <p className="muted">
-          No encontramos ese distrito. Prueba otro nombre.
+          No hay distritos disponibles por el momento.
         </p>
       )}
       {catalog.error && (

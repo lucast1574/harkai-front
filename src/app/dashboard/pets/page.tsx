@@ -1,6 +1,4 @@
-import { ReportBrowser } from "@/features/reports/report-browser";
+import { PetsPage } from "@/features/pets/pets-page";
 export default function Page(): React.JSX.Element {
-  return (
-    <ReportBrowser title="Mascotas perdidas y encontradas" fixedType="pet" />
-  );
+  return <PetsPage />;
 }

@@ -16,6 +16,7 @@ import {
   X,
   Store,
   MessageCircle,
+  PawPrint,
   History,
   LifeBuoy,
   Ticket,
@@ -55,6 +56,7 @@ const navigation: NavigationItem[] = [
     utility: true,
   },
   { href: "/dashboard/incidents", label: "Comunidad", icon: MessageCircle },
+  { href: "/dashboard/pets", label: "Mascotas", icon: PawPrint },
   {
     href: "/dashboard/archive",
     label: "Historial de la ciudad",

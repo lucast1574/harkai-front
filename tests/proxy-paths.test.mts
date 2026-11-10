@@ -2,6 +2,12 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { backendPaths } from "../src/lib/server/proxy-paths.ts";
 
+test("only a business owner checkout route is exposed through the web proxy", () => {
+  assert.ok(backendPaths.test(`me/businesses/${"a".repeat(24)}/checkout`));
+  for (const path of ["business-billing/webhook", "me/businesses/checkout", `me/businesses/${"a".repeat(24)}/checkout/admin`])
+    assert.equal(backendPaths.test(path), false);
+});
+
 test("district chat supports feed, messages and replies through the web proxy", () => {
   const id = "a".repeat(24);
   for (const path of [

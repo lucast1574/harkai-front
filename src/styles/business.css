@@ -82,9 +82,9 @@
   color: var(--muted);
   font-size: 17px;
 }
-.business-free {
+.business-price {
   background: var(--brand-green-soft);
-  color: var(--brand-green);
+  color: var(--accent-ink);
   padding: 12px 18px;
   border-radius: 12px;
   white-space: nowrap;
@@ -277,7 +277,7 @@
   .business-actions .button {
     flex: 1;
   }
-  .business-free {
+  .business-price {
     font-size: 14px;
   }
 }
@@ -378,3 +378,6 @@
   fill: #89dfa5;
   stroke: #102a43;
 }
+
+.business-payment { padding: 24px; border-radius: 20px; background: var(--surface-soft); margin-block: 20px; }
+.business-list .business-payment p { max-width: 54ch; margin-block: 12px 20px; }

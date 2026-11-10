@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { CheckCircle2, Plus, Store } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { api } from "@/lib/api";
@@ -7,6 +8,7 @@ import type { Page } from "@/lib/contracts";
 import { Notice } from "@/components/ui";
 import { AuthForm } from "@/features/account/auth-form";
 import { BusinessEditor } from "./business-editor";
+import { BusinessPayment } from "./business-payment";
 import {
   businessKinds,
   businessStatus,
@@ -22,7 +24,7 @@ export function BusinessWorkspace(): React.JSX.Element {
           <h1>Ponte en el mapa</h1>
           <p>Tu negocio, al alcance de quienes están cerca.</p>
         </div>
-        <span className="business-free">Gratis por ahora · Sin tarjeta</span>
+        <span className="business-price">US$5 por negocio · Pago único</span>
       </header>
       {loading ? (
         <Notice>Cargando tu sesión…</Notice>
@@ -41,6 +43,7 @@ export function BusinessWorkspace(): React.JSX.Element {
   );
 }
 function BusinessManager(): React.JSX.Element {
+  const payment = useSearchParams().get("payment");
   const [items, setItems] = useState<Business[]>([]);
   const [cursor, setCursor] = useState("");
   const [loading, setLoading] = useState(true);
@@ -66,6 +69,15 @@ function BusinessManager(): React.JSX.Element {
   useEffect(() => {
     void load();
   }, [load]);
+  useEffect(() => {
+    if (payment !== "processing") return;
+    const timer = window.setInterval(() => void load(), 3000);
+    const stop = window.setTimeout(() => window.clearInterval(timer), 60000);
+    return () => {
+      window.clearInterval(timer);
+      window.clearTimeout(stop);
+    };
+  }, [load, payment]);
   async function toggle(point: Business): Promise<void> {
     if (busy) return;
     setBusy(true);
@@ -104,11 +116,13 @@ function BusinessManager(): React.JSX.Element {
         <CheckCircle2 size={48} />
         <h2>Ya recibimos tu negocio</h2>
         <p>
-          <strong>{saved.name}</strong> está en revisión. No tienes que pagar ni
-          añadir una tarjeta.
+          <strong>{saved.name}</strong> está en revisión.{" "}
+          {saved.billing_status === "active"
+            ? "Tu acceso se conserva y no necesitas volver a pagar."
+            : "Cuando lo aprobemos, podrás activar su publicación con un pago único de US$5."}
         </p>
         <p>
-          Cuando lo aprobemos, aparecerá en el mapa y podrá llegar a personas
+          Con el pago confirmado, aparecerá en el mapa y podrá llegar a personas
           cercanas según sus permisos de ubicación y notificaciones.
         </p>
         <button className="button" onClick={() => setSaved(null)}>
@@ -125,6 +139,24 @@ function BusinessManager(): React.JSX.Element {
           Añadir negocio
         </button>
       </div>
+      {payment === "processing" &&
+        items.some(
+          (point) =>
+            point.moderation === "approved" &&
+            point.billing_status === "pending",
+        ) && (
+          <Notice>
+            Estamos consultando la confirmación del pago. Tu negocio se activará
+            cuando Stripe lo confirme.{" "}
+            <button onClick={() => void load()}>Actualizar estado</button>
+          </Notice>
+        )}
+      {payment === "canceled" && (
+        <Notice>
+          Volviste del formulario de pago. Puedes revisar el estado de tu
+          negocio y retomar el pago si sigue pendiente.
+        </Notice>
+      )}
       {error && (
         <Notice error>
           {error} <button onClick={() => void load()}>Reintentar</button>
@@ -141,10 +173,11 @@ function BusinessManager(): React.JSX.Element {
             cerca.
           </p>
           <button className="button" onClick={() => setEditing("new")}>
-            Registrar mi negocio gratis
+            Registrar mi negocio
           </button>
           <p className="muted">
-            Sin tarjeta. Tú controlas cuándo pausar tu presencia.
+            Pagas una sola vez, después de la aprobación. Tú controlas cuándo
+            pausar tu presencia.
           </p>
         </section>
       )}
@@ -166,6 +199,7 @@ function BusinessManager(): React.JSX.Element {
                 </p>
               )}
             </div>
+            <BusinessPayment point={point} onRefresh={() => void load()} />
             <div className="business-actions">
               <button
                 className="button secondary"

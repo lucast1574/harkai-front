@@ -44,7 +44,8 @@ export function businessStatus(point: Business): string {
   if (!point.enabled) return "Pausado";
   if (point.moderation === "rejected") return "Necesita cambios";
   if (point.moderation !== "approved") return "En revisión";
+  if (point.billing_status === "refunded") return "Reembolsado";
   return point.billing_status === "active"
     ? "Aprobado"
-    : "Pendiente de activación";
+    : "Aprobado · Pendiente de pago";
 }

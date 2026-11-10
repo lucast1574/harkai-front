@@ -136,7 +136,7 @@ export function BusinessEditor({
               [
                 "Cuéntanos de tu negocio",
                 "Marca la entrada de tu negocio",
-                "Revisa y envía gratis",
+                "Revisa tu negocio",
               ][step]
             }
           </h2>
@@ -145,7 +145,7 @@ export function BusinessEditor({
               [
                 "Solo lo esencial para que tus vecinos te conozcan.",
                 "Usa tu ubicación si estás allí, o mueve el mapa hasta tu local.",
-                "Puedes añadir una oferta. No necesitas pagar ni añadir una tarjeta.",
+                "Publicar cuesta US$5 por negocio, una sola vez. Pagarás después de la aprobación.",
               ][step]
             }
           </p>
@@ -306,7 +306,7 @@ export function BusinessEditor({
               {busy
                 ? "Un momento…"
                 : step === 2
-                  ? "Enviar a revisión gratis"
+                  ? "Enviar a revisión"
                   : "Continuar"}
             </button>
           </div>

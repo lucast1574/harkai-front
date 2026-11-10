@@ -49,12 +49,13 @@ export default async function Page({
           <section className="panel">
             <h2>Ganancias</h2>
             <Notice>
-              El registro de negocios es gratuito por ahora. No hay cobros
-              activos.
+              Los nuevos negocios aprobados se activan con un pago único de
+              US$5 por punto, procesado por Stripe desde la web.
             </Notice>
             <p className="muted">
-              Los ingresos estarán disponibles cuando se habiliten los pagos con
-              Stripe.
+              El detalle de pagos, comisiones, reembolsos y depósitos se consulta
+              en la cuenta de Stripe configurada para Harkai. Los negocios con
+              acceso gratuito anterior conservan ese acceso.
             </p>
           </section>
         )}

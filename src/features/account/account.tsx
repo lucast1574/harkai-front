@@ -12,6 +12,8 @@ import { useAuth } from "@/lib/auth";
 import { AuthForm } from "./auth-form";
 import { Profile } from "./profile";
 import { MobileReporting } from "./mobile-reporting";
+import { useState } from "react";
+import { AccountDeletionSuccess } from "./delete-account";
 
 const FEATURES = [
   {
@@ -36,6 +38,8 @@ const FEATURES = [
 
 export function Account(): React.JSX.Element {
   const { user, loading, error, reload } = useAuth();
+  const [deleted, setDeleted] = useState(false);
+  if (deleted) return <AccountDeletionSuccess />;
   if (loading) return <Notice>Cargando tu cuenta…</Notice>;
   if (error)
     return (
@@ -46,7 +50,7 @@ export function Account(): React.JSX.Element {
         </button>
       </Notice>
     );
-  if (user) return <Profile key={user.id} />;
+  if (user) return <Profile key={user.id} onDeleted={() => setDeleted(true)} />;
   return (
     <div className="account-shell">
       <header className="account-hero">

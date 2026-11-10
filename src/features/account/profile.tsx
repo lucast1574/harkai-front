@@ -3,6 +3,7 @@ import { UserAvatar } from "@/components/user-avatar";
 import Link from "next/link";
 import { MobileReporting } from "./mobile-reporting";
 import { AccountSession } from "./account-session";
+import { DeleteAccountDialog } from "./delete-account-dialog";
 import { PushSettings } from "@/features/notifications/push-settings";
 import { useState } from "react";
 import { useAuth } from "@/lib/auth";
@@ -10,7 +11,11 @@ import { api } from "@/lib/api";
 import type { Preferences } from "@/lib/contracts";
 import { Field, Select, Heading, Notice } from "@/components/ui";
 
-export function Profile(): React.JSX.Element {
+export function Profile({
+  onDeleted,
+}: {
+  onDeleted: () => void;
+}): React.JSX.Element {
   const { user, reload } = useAuth();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -125,16 +130,13 @@ export function Profile(): React.JSX.Element {
       <section className="panel account-privacy">
         <h2>Privacidad y cuenta</h2>
         <p className="muted small">
-          Consulta cómo se protegen tus datos o solicita la eliminación de tu
-          cuenta.
+          Consulta cómo se protegen tus datos o elimina tu cuenta.
         </p>
         <div className="page-actions">
           <a className="button secondary" href="https://harkai.lat/privacidad/">
             Política de privacidad
           </a>
-          <a className="text-button" href="/eliminar-cuenta">
-            Solicitar eliminación de cuenta ↗
-          </a>
+          <DeleteAccountDialog onDeleted={onDeleted} />
         </div>
       </section>
       <MobileReporting />

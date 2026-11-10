@@ -7,7 +7,15 @@ import { useResource } from "@/lib/use-resource";
 import { api } from "@/lib/api";
 import { googleToken } from "@/lib/google-login";
 import { Field, Notice } from "@/components/ui";
-export function DeleteAccount(): React.JSX.Element {
+export function DeleteAccount({
+  modal = false,
+  onDeleted,
+  onBusyChange,
+}: {
+  modal?: boolean;
+  onDeleted?: () => void;
+  onBusyChange?: (busy: boolean) => void;
+} = {}): React.JSX.Element {
   const { user, logout, loading } = useAuth();
   const options = useResource<{ password: boolean; google: boolean }>(
     user ? "me/account-deletion-options" : null,
@@ -22,59 +30,64 @@ export function DeleteAccount(): React.JSX.Element {
     if (
       !user ||
       busy ||
-      !checked ||
-      confirmation.trim().toLowerCase() !== user.email.toLowerCase()
+      (!modal &&
+        (!checked ||
+          confirmation.trim().toLowerCase() !== user.email.toLowerCase()))
     )
       return;
     setBusy(true);
+    onBusyChange?.(true);
     setError("");
     try {
       const token = google ? await googleToken() : undefined;
       await api("me", {
         method: "DELETE",
         body: JSON.stringify({
-          confirmation,
+          confirmation: modal ? user.email : confirmation,
           password: google ? undefined : password,
           google_id_token: token,
         }),
       });
       setPassword("");
       setDone(true);
+      onDeleted?.();
       await logout();
     } catch (e) {
       setPassword("");
       setError((e as Error).message);
     } finally {
       setBusy(false);
+      onBusyChange?.(false);
     }
   }
-  if (done)
-    return (
-      <section className="publication">
-        <ShieldAlert size={36} />
-        <h1>Tu eliminación está en proceso</h1>
-        <p>
-          El acceso a tu cuenta queda bloqueado. Retiraremos las sesiones,
-          dispositivos, puntos, publicaciones, comentarios y fotos vinculados a
-          ella. El proceso continúa aunque cierres esta página.
-        </p>
-        <Link href="https://harkai.lat/">Volver a Harkai</Link>
-      </section>
-    );
+  if (done) return <AccountDeletionSuccess />;
   const ready =
-    checked &&
     !!user &&
-    confirmation.trim().toLowerCase() === user.email.toLowerCase();
+    (modal ||
+      (checked &&
+        confirmation.trim().toLowerCase() === user.email.toLowerCase()));
   return (
-    <section className="publication">
+    <section className={modal ? "account-deletion-content" : "publication"}>
       <p className="eyebrow">Tu cuenta y tus datos</p>
-      <h1>Eliminar tu cuenta</h1>
-      <p>
-        Esta acción es permanente. Se retirarán tu cuenta, sesiones y
-        dispositivos, tus puntos de negocio y el contenido que publicaste,
-        incluidas las fotos. Las copias compartidas fuera de Harkai y las cachés
-        de buscadores pueden tardar en actualizarse.
-      </p>
+      {modal ? (
+        <h2 id="delete-account-title">¿Eliminar tu cuenta de Harkai?</h2>
+      ) : (
+        <h1>Eliminar tu cuenta</h1>
+      )}
+      {modal ? (
+        <p>
+          Se eliminarán de forma permanente tu cuenta, sesiones, dispositivos,
+          puntos de negocio, publicaciones, comentarios y fotos. Esta acción no
+          se puede deshacer.
+        </p>
+      ) : (
+        <p>
+          Esta acción es permanente. Se retirarán tu cuenta, sesiones y
+          dispositivos, tus puntos de negocio y el contenido que publicaste,
+          incluidas las fotos. Las copias compartidas fuera de Harkai y las
+          cachés de buscadores pueden tardar en actualizarse.
+        </p>
+      )}
       <p>
         El acceso se bloquea al confirmar. El borrado se procesa en segundo
         plano y se reintenta si algún servicio está temporalmente indisponible.
@@ -93,8 +106,9 @@ export function DeleteAccount(): React.JSX.Element {
         </Notice>
       ) : (
         <form
-          className="panel"
-          style={{ padding: 24, marginTop: 24 }}
+          className={
+            modal ? "account-deletion-form" : "panel account-deletion-form"
+          }
           onSubmit={(e) => {
             e.preventDefault();
             void remove();
@@ -103,13 +117,15 @@ export function DeleteAccount(): React.JSX.Element {
           <p>
             Cuenta: <strong>{user.email}</strong>
           </p>
-          <Field
-            label="Escribe tu correo para confirmar"
-            value={confirmation}
-            onChange={(e) => setConfirmation(e.target.value)}
-            autoComplete="email"
-            disabled={busy}
-          />
+          {!modal && (
+            <Field
+              label="Escribe tu correo para confirmar"
+              value={confirmation}
+              onChange={(e) => setConfirmation(e.target.value)}
+              autoComplete="email"
+              disabled={busy}
+            />
+          )}
           {options.data?.password && (
             <Field
               label="Vuelve a introducir tu contraseña"
@@ -120,33 +136,46 @@ export function DeleteAccount(): React.JSX.Element {
               disabled={busy}
             />
           )}
-          <label
-            style={{
-              display: "flex",
-              gap: 12,
-              alignItems: "start",
-              margin: "20px 0",
-            }}
-          >
-            <input
-              type="checkbox"
-              checked={checked}
-              onChange={(e) => setChecked(e.target.checked)}
-              disabled={busy}
-            />
-            <span>
-              Entiendo que la cuenta y su contenido se eliminarán de forma
-              permanente.
-            </span>
-          </label>
+          {!modal && (
+            <label
+              style={{
+                display: "flex",
+                gap: 12,
+                alignItems: "start",
+                margin: "20px 0",
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={checked}
+                onChange={(e) => setChecked(e.target.checked)}
+                disabled={busy}
+              />
+              <span>
+                Entiendo que la cuenta y su contenido se eliminarán de forma
+                permanente.
+              </span>
+            </label>
+          )}
+          {options.loading && (
+            <Notice>Comprobando cómo confirmar tu identidad…</Notice>
+          )}
           {(error || options.error) && (
             <Notice error>{error || options.error}</Notice>
+          )}
+          {options.error && (
+            <button
+              type="button"
+              className="text-button"
+              onClick={() => void options.reload()}
+            >
+              Reintentar
+            </button>
           )}
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
             {options.data?.password && (
               <button
-                className="button"
-                style={{ background: "#b9434c", color: "white" }}
+                className="button account-delete-button"
                 disabled={!ready || busy || !password}
                 type="submit"
               >
@@ -164,16 +193,37 @@ export function DeleteAccount(): React.JSX.Element {
                 Confirmar con Google y eliminar
               </button>
             )}
-            <Link href="/dashboard/profile" className="button secondary">
-              Volver a mi cuenta
-            </Link>
+            {!modal && (
+              <Link href="/dashboard/profile" className="button secondary">
+                Volver a mi cuenta
+              </Link>
+            )}
           </div>
         </form>
       )}
-      <p className="publication-meta">
-        Si ya no puedes acceder, utiliza el contacto de privacidad publicado en
-        la landing para solicitar ayuda y acreditar la titularidad.
+      {!modal && (
+        <p className="publication-meta">
+          Si ya no puedes acceder, utiliza el contacto de privacidad publicado
+          en la landing para solicitar ayuda y acreditar la titularidad.
+        </p>
+      )}
+    </section>
+  );
+}
+
+export function AccountDeletionSuccess(): React.JSX.Element {
+  return (
+    <section className="publication" role="status">
+      <ShieldAlert size={36} />
+      <h1>Tu eliminación está en proceso</h1>
+      <p>
+        El acceso a tu cuenta queda bloqueado. Retiraremos las sesiones,
+        dispositivos, puntos, publicaciones, comentarios y fotos vinculados a
+        ella. El proceso continúa aunque cierres esta página.
       </p>
+      <Link href="https://harkai.lat/" className="button secondary">
+        Volver a Harkai
+      </Link>
     </section>
   );
 }

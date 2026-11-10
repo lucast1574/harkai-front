@@ -145,7 +145,9 @@ export function BusinessEditor({
               [
                 "Solo lo esencial para que tus vecinos te conozcan.",
                 "Usa tu ubicación si estás allí, o mueve el mapa hasta tu local.",
-                "Publicar cuesta US$5 por negocio, una sola vez. Pagarás después de la aprobación.",
+                point?.billing_status === "active"
+                  ? "Tu acceso se conserva. Guardar estos cambios no requiere otro pago."
+                  : "Publicar cuesta US$5 por negocio, una sola vez. Pagarás después de la aprobación.",
               ][step]
             }
           </p>

@@ -51,6 +51,14 @@ export default function TicketDetail({
         <div className="helpdesk-requester">
           <strong>{ticket.requester.name}</strong>
           <span>{ticket.requester.email}</span>
+          {ticket.kind === "municipal" && (
+            <a
+              href={`mailto:${ticket.requester.email}`}
+              className="text-button"
+            >
+              Contactar por correo
+            </a>
+          )}
         </div>
       )}
       <p className="helpdesk-description">{ticket.description}</p>
@@ -98,7 +106,9 @@ export default function TicketDetail({
             </Select>
           </div>
           <label>
-            Respuesta al usuario
+            {ticket.kind === "municipal"
+              ? "Nota interna de seguimiento"
+              : "Respuesta al usuario"}
             <textarea
               rows={3}
               maxLength={1500}
@@ -119,8 +129,9 @@ export default function TicketDetail({
       )}
       {ticket.state === "DONE" && (
         <p className="helpdesk-closed">
-          Reporte resuelto. Si encuentras otro problema, puedes crear un nuevo
-          reporte.
+          {ticket.kind === "municipal"
+            ? "Solicitud atendida. El historial de seguimiento se conserva."
+            : "Reporte resuelto. Si encuentras otro problema, puedes crear un nuevo reporte."}
         </p>
       )}
     </article>

@@ -97,7 +97,8 @@ export function Shell({
     path === "/login" ||
     path === "/distritos" ||
     path.startsWith("/distritos/") ||
-    path === "/eliminar-cuenta"
+    path === "/eliminar-cuenta" ||
+    path === "/municipalidades"
   )
     return (
       <>
@@ -108,6 +109,7 @@ export function Shell({
             <Link href="/comunidad">Alertas</Link>
             <Link href="/distritos">Chats por distrito</Link>
             <Link href="/dashboard">Mapa</Link>
+            <Link href="/municipalidades">Municipalidades</Link>
             <Link href={user ? "/dashboard/profile" : "/login"}>
               {user ? "Mi cuenta" : "Ingresar"}
             </Link>

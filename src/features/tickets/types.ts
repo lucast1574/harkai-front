@@ -6,6 +6,7 @@ export const supportStates = [
 ] as const;
 export type SupportState = (typeof supportStates)[number]["id"];
 export type Ticket = {
+  kind?: "municipal";
   id: string;
   title: string;
   description: string;

@@ -1,5 +1,6 @@
 /** Keep public content and account deletion accessible in mobile browsers. */
 export function shouldInviteToMobileApp(path: string): boolean {
+  if (/^\/municipalidades\/?$/.test(path)) return false;
   if (/^\/eliminar-cuenta\/?$/.test(path)) return false;
   if (path === "/dashboard/report") return false;
   if (

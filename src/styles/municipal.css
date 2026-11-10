@@ -1,0 +1,119 @@
+.municipal-contact {
+  max-width: 1240px;
+  padding: 64px 32px 96px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  align-items: start;
+  gap: 64px;
+}
+.municipal-intro h1 {
+  font-size: clamp(2.6rem, 4.6vw, 4.5rem);
+  letter-spacing: -0.05em;
+  line-height: 1.05;
+  margin: 20px 0 28px;
+}
+.municipal-intro > p:not(.eyebrow) {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--muted);
+}
+.municipal-agreement {
+  margin-top: 48px;
+}
+.municipal-agreement h2 {
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+.municipal-agreement p {
+  color: var(--muted);
+}
+.municipal-agreement a {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.municipal-form,
+.municipal-received {
+  padding: 32px;
+}
+.municipal-form h2 {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+.municipal-form {
+  display: block;
+}
+.municipal-form > p {
+  margin-bottom: 0;
+}
+.municipal-form fieldset {
+  border: 0;
+  padding: 0;
+  margin: 28px 0 0;
+  min-width: 0;
+  display: grid;
+  gap: 24px;
+}
+.municipal-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.municipal-form .field {
+  margin: 0;
+}
+.municipal-consent {
+  display: flex;
+  align-items: start;
+  gap: 12px;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.municipal-consent input {
+  width: 20px;
+  height: 20px;
+  margin: 3px 0 0;
+  flex-shrink: 0;
+  accent-color: var(--accent-ink);
+}
+.municipal-consent a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.municipal-received svg {
+  color: var(--accent-ink);
+}
+.municipal-inbox {
+  padding: 28px;
+}
+.municipal-inbox .helpdesk-list {
+  margin: 24px 0;
+}
+@media (max-width: 900px) {
+  .municipal-contact {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 40px 24px 64px;
+  }
+  .municipal-agreement {
+    margin-top: 24px;
+  }
+}
+@media (max-width: 540px) {
+  .municipal-form,
+  .municipal-received {
+    padding: 24px;
+  }
+  .municipal-fields {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .municipal-contact {
+    padding-inline: 20px;
+  }
+}

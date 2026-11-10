@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Store, Users as UsersIcon, Wallet } from "lucide-react";
+import { Store, Users as UsersIcon, Wallet, Building2 } from "lucide-react";
+import { MunicipalInbox } from "@/features/municipal/municipal-inbox";
 import { Access } from "@/components/access";
 import { Heading, Notice } from "@/components/ui";
 import { BusinessReview } from "@/features/business/business-review";
@@ -7,6 +8,7 @@ import { Users } from "@/features/admin/users";
 import styles from "./page.module.css";
 
 const sections = [
+  { id: "municipal", label: "Municipalidades", icon: Building2 },
   { id: "businesses", label: "Negocios", icon: Store },
   { id: "users", label: "Usuarios", icon: UsersIcon },
   { id: "revenue", label: "Ganancias", icon: Wallet },
@@ -23,7 +25,8 @@ export default async function Page({
   return (
     <Access roles={["admin"]}>
       <Heading title="Administración">
-        Negocios, usuarios y ganancias en un solo lugar.
+        Solicitudes municipales, negocios, usuarios y ganancias en un solo
+        lugar.
       </Heading>
       <nav className={styles.sections} aria-label="Secciones de administración">
         {sections.map((item) => (
@@ -39,6 +42,7 @@ export default async function Page({
         ))}
       </nav>
       <div className={styles.content}>
+        {section === "municipal" && <MunicipalInbox />}
         {section === "businesses" && <BusinessReview embedded />}
         {section === "users" && <Users embedded />}
         {section === "revenue" && (

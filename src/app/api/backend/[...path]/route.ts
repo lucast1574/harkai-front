@@ -32,7 +32,9 @@ async function proxy(
       status: error instanceof RangeError ? 413 : 400,
     });
   }
-  const headers = new Headers(bearer(request));
+  const headers = new Headers(
+    path === "municipal-inquiries" ? {} : bearer(request),
+  );
   const clientIp =
     request.headers.get("cf-connecting-ip") ||
     request.headers.get("x-real-ip") ||
